@@ -1,2 +1,190 @@
-# oddashboard
-Officer on Duty, Incident Collection &amp; Automation
+# Open Incident Bot
+
+## Structure Folder
+
+```
+src/
+├── main.ts
+├── app.ts
+│
+├── config/
+│   ├── env.ts
+│   ├── redis.ts
+│   ├── prisma.ts
+│   └── logger.ts
+│
+├── domain/
+│   ├── incident/
+│   │   ├── Incident.ts
+│   │   ├── IncidentStatus.ts
+│   │   ├── IncidentSource.ts
+│   │   ├── IncidentRepository.ts        <-- interface (port)
+│   │   └── IncidentPolicy.ts
+│   │
+│   ├── monitoring/
+│   │   ├── MonitoringEvent.ts
+│   │   ├── MonitoringStatus.ts
+│   │   └── MonitoringState.ts
+│   │
+│   └── shared/
+│       ├── Entity.ts
+│       ├── ValueObject.ts
+│       └── DomainEvent.ts
+│
+├── application/
+│   ├── ports/
+│   │   ├── EventStore.ts                <-- Redis ZSET port
+│   │   ├── MonitoringStateStore.ts
+│   │   ├── DedupLock.ts
+│   │   └── IncidentGateway.ts           <-- external system port (Remedy)
+│   │
+│   ├── services/
+│   │   ├── SlidingWindowEvaluator.ts
+│   │   ├── DeduplicationService.ts
+│   │   └── MonitoringStateService.ts
+│   │
+│   └── usecases/
+│       ├── ProcessMonitoringEvent/
+│       │   ├── ProcessMonitoringEvent.ts
+│       │   └── ProcessMonitoringEventDTO.ts
+│       ├── EvaluateIncident/
+│       │   ├── EvaluateIncident.ts
+│       │   └── EvaluateIncidentResult.ts
+│       ├── CreateIncident/
+│       │   └── CreateIncident.ts
+│       └── ResolveIncident/
+│           └── ResolveIncident.ts
+│
+├── infrastructure/
+│   ├── http/
+│   │   ├── express.ts
+│   │   └── routes/
+│   │       ├── qris.routes.ts
+│   │       └── health.routes.ts
+│   │
+│   ├── consumers/
+│   │   ├── whatsapp/
+│   │   │   ├── WhatsAppClient.ts
+│   │   │   ├── MessageParser.ts
+│   │   │   └── BifastConsumer.ts
+│   │   └── api/
+│   │       └── QrisHealthConsumer.ts
+│   │
+│   ├── external/
+│   │   └── remedy/
+│   │       ├── RemedyAuthClient.ts         <-- calls /jwt/login
+│   │       ├── RemedyTokenStore.ts         <-- redis-backed token cache
+│   │       ├── RemedyIncidentClient.ts     <-- uses token to call open_incident
+│   │       └── RemedyCircuitBreaker.ts
+│   │
+│   ├── persistence/
+│   │   ├── redis/
+│   │   │   ├── RedisClient.ts
+│   │   │   ├── EventStoreRedis.ts
+│   │   │   ├── MonitoringStateRedis.ts
+│   │   │   └── DedupLockRedis.ts
+│   │   └── mysql/
+│   │       ├── PrismaClient.ts
+│   │       └── IncidentPrismaRepository.ts <-- implements domain IncidentRepository
+│   │
+│   ├── scheduler/
+│   │   ├── QrisHealthCheckJob.ts
+│   │   └── IncidentResolveJob.ts
+│   │
+│   └── logger/
+│       └── WinstonLogger.ts
+│
+├── interfaces/
+│   ├── controllers/
+│   │   ├── QrisController.ts
+│   │   └── IncidentController.ts
+│   ├── presenters/
+│   │   └── IncidentPresenter.ts
+│   └── mappers/
+│       └── MonitoringEventMapper.ts
+│
+├── utils/
+│   ├── Time.ts
+│   ├── UUID.ts
+│   └── Guard.ts
+│
+└── tests/
+    ├── domain/
+    ├── application/
+    ├── infrastructure/
+    └── e2e/
+```
+
+## Flow Logic
+
+```
+[WhatsApp Message / Fetch Logs]
+          ↓
+   Infrastructure Consumer
+          ↓
+  MonitoringEvent (normalized)
+          ↓
+  ProcessMonitoringEvent
+          ↓
+  Redis ZSET (event history)
+          ↓
+  Sliding Window Evaluation
+          ↓
+  Dedup Lock
+          ↓
+  Create Incident (MySQL)
+          ↓
+  Open Incident ke Remedy (token auto relogin)
+```
+
+```mermaid
+sequenceDiagram
+    participant WA as WhatsApp Bot
+    participant BC as BifastConsumer
+    participant PME as ProcessMonitoringEvent
+    participant ES as EventStore (Redis ZSET)
+    participant MS as MonitoringStateStore (Redis)
+    participant EVAL as EvaluateIncident
+    participant DL as DedupLock (Redis)
+    participant IR as IncidentRepository (MySQL)
+    participant RG as RemedyGateway
+
+    WA->>BC: WhatsApp Message (BANK CLOSED / OPEN)
+    BC->>PME: execute(MonitoringEvent)
+
+    PME->>ES: addEvent(event)
+    PME->>MS: updateState(event)
+
+    PME->>EVAL: evaluate(entityId)
+
+    EVAL->>ES: countFailures(window=1h)
+    EVAL->>IR: findOpenIncident()
+
+    alt threshold >= 3 AND no open incident
+        EVAL-->>PME: shouldCreateIncident = true
+        PME->>DL: acquire(dedupKey)
+        alt lock acquired
+            PME->>IR: createIncident(OPEN)
+            PME->>RG: open_incident()
+        else duplicate detected
+            PME-->>PME: skip
+        end
+    else below threshold
+        EVAL-->>PME: do nothing
+    end
+```
+
+# Example Message / API Response
+## Whatsapp Message BiFast
+```
+💡 BI Fast [CT Outgoing] 
+DANAIDJ1 Has successfully Closed Automatically on 2026-01-22 17:24:15.0
+
+source: autoclose_bifast
+```
+```
+❌ BI Fast DANA [CT Outgoing] 
+DANAIDJ1 Has successfully Closed Automatically on 2026-01-22 17:24:15.0
+
+source: autoclose_bifast
+```
