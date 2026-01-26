@@ -4,7 +4,7 @@ export class SlidingWindowEvaluator {
     constructor(private eventStore: EventStore, private windowMs: number) {}
 
     async countFailures(source: string, entity: string) {
-        return this.eventStore.countInWindow(source, entity, this.windowMs);
+        return await this.eventStore.countInWindow(source, entity, this.windowMs);
     }
 
     async isThresholdExceeded(source: string, entity: string, threshold: number) {

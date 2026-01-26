@@ -74,7 +74,8 @@ export class WhatsAppClient extends EventEmitter {
                     timestamp: (message.timestamp ? message.timestamp * 1000 : Date.now()),
                     raw: message,
                 };
-                this.logger.info(`ℹ️  ${message.from} : ${message.body}`)
+                this.logger.info(`ℹ️  ${message.id}`)
+                this.logger.info(`ℹ️  ${message.from} - ${message.timestamp} : ${message.body}`)
                 this.emit("message", raw);
             } catch (err) {
                 this.logger.error("Error mapping whatsapp message", err);

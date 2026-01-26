@@ -15,152 +15,152 @@ import { ProcessMonitoringEventDTO } from "./ProcessMonitoringEventDTO";
 import { ENV } from "../../../config/env";
 
 export class ProcessMonitoringEvent {
-  constructor(
-    private readonly eventStore: EventStore,
-    private readonly stateStore: MonitoringStateStore,
-    private readonly evaluator: SlidingWindowEvaluator,
-    private readonly dedup: DeduplicationService,
-    private readonly incidentGateway: IncidentGateway,
-    private readonly incidentRepo?: IncidentRepository,
-    private readonly threshold: number = 3
-  ) {}
+    constructor(
+        private readonly eventStore: EventStore,
+        private readonly stateStore: MonitoringStateStore,
+        private readonly evaluator: SlidingWindowEvaluator,
+        private readonly dedup: DeduplicationService,
+        private readonly incidentGateway: IncidentGateway,
+        private readonly incidentRepo?: IncidentRepository,
+        private readonly threshold: number = 3
+    ) {}
 
-  async execute(dto: ProcessMonitoringEventDTO): Promise<void> {
-    const eventId = dto.id ?? uuidv4();
-    const occurredAt = dto.occurredAt ?? Date.now();
+    async execute(dto: ProcessMonitoringEventDTO): Promise<void> {
+        const eventId = dto.id ?? uuidv4();
+        const occurredAt = Date.now();
 
-    const event = new MonitoringEvent(
-        eventId,
-        dto.source,
-        dto.entity,
-        dto.status,
-        occurredAt
-    );
-
-    /**
-     * 1️⃣ Load previous monitoring state
-     */
-    const prevState = await this.stateStore.get(
-        event.source,
-        event.entity
-    );
-
-    /**
-     * 2️⃣ First time seeing this entity → just record state
-     */
-    if (!prevState) {
-        await this.stateStore.set(
-            event.source,
-            event.entity,
-            new MonitoringState(this.mapToIncidentStatus(event.status), occurredAt)
+        const event = new MonitoringEvent(
+            eventId,
+            dto.source,
+            dto.entity,
+            dto.status,
+            occurredAt
         );
-        return;
-    }
 
-    /**
-     * 3️⃣ Ignore duplicate status (anti-spam)
-     * CLOSED -> CLOSED
-     * OPEN   -> OPEN
-     */
-    console.log(prevState.lastStatus === event.status, " - ", prevState.lastStatus, event.status);
-    
-    if (prevState.lastStatus === event.status) {
-        return;
-    }
+        /**
+         * 1️⃣ Load previous monitoring state
+         */
+        const prevState = await this.stateStore.get(
+            event.source,
+            event.entity
+        );
 
-    /**
-     * 4️⃣ Detect meaningful transition
-     * Business rule:
-     * - BIFAST  : OPEN -> CLOSED (flapping)
-     * - QRIS    : SUCCESS -> FAILURE
-     */
-    const isTransition =
-        IncidentPolicy.isCountableTransition(
+        /**
+         * 2️⃣ First time seeing this entity → just record state
+         */
+        if (!prevState) {
+            await this.stateStore.set(
+                event.source,
+                event.entity,
+                new MonitoringState(this.mapToIncidentStatus(event.status), occurredAt)
+            );
+            return;
+        }
+
+        /**
+         * 3️⃣ Ignore duplicate status (anti-spam)
+         * CLOSED -> CLOSED
+         * OPEN   -> OPEN
+         */
+        console.log(prevState.lastStatus === event.status, " - ", prevState.lastStatus, event.status);
+        
+        if (prevState.lastStatus === event.status) {
+            return;
+        }
+
+        /**
+         * 4️⃣ Detect meaningful transition
+         * Business rule:
+         * - BIFAST  : OPEN -> CLOSED (flapping)
+         * - QRIS    : SUCCESS -> FAILURE
+         */
+        const isTransition = IncidentPolicy.isCountableTransition(
             prevState.lastStatus ?? "",
             event.status,
             event.source
         );
 
-    /**
-     * Always update latest state
-     */
-    await this.stateStore.set(
-        event.source,
-        event.entity,
-        new MonitoringState(this.mapToIncidentStatus(event.status), occurredAt)
-    );
+        /**
+         * Always update latest state
+         */
+        await this.stateStore.set(
+            event.source,
+            event.entity,
+            new MonitoringState(this.mapToIncidentStatus(event.status), occurredAt)
+        );
 
-    /**
-     * If transition is NOT countable → stop here
-     */
-    if (!isTransition) {
-        return;
+        /**
+         * If transition is NOT countable → stop here
+         */
+        if (!isTransition) {
+            return;
+        }
+
+        /**
+         * 5️⃣ Append ONLY transition event to sliding window store
+         */
+        await this.eventStore.append(event);
+
+        /**
+         * 6️⃣ Evaluate sliding window threshold
+         */
+        const exceeded = await this.evaluator.isThresholdExceeded(
+            event.source,
+            event.entity,
+            this.threshold
+        );
+        console.log(exceeded, occurredAt, this.threshold, " - ", await this.eventStore.countInWindow(event.source, event.entity, 60 * 60 * 1000));
+        
+        if (!exceeded) {
+            return;
+        }
+        console.log(`✅ Treshold tercapai`);
+
+        /**
+         * 7️⃣ Prevent duplicate open incident
+         */
+        if (this.incidentRepo == undefined) return
+        const hasOpenIncident = await this.incidentRepo.hasOpenIncident(event.source,event.entity);
+
+        if (!IncidentPolicy.canCreateIncident(hasOpenIncident)) {
+            return;
+        }
+
+        /**
+         * 8️⃣ Dedup lock (race condition protection)
+         */
+        const locked = await this.dedup.acquireIncidentLock(event.source,event.entity,ENV.DEDUP_LOCK_TTL_MS);
+
+        if (!locked) {
+            return;
+        }
+
+        /**
+         * 9️⃣ Create incident (DB = source of truth)
+         */
+        const incident = new Incident(
+            uuidv4(),
+            event.source,
+            event.entity,
+            `Unstable state detected (${this.threshold} flaps)`
+        );
+
+        await this.incidentRepo.create(incident);
+
+        /**
+         * 🔟 Best-effort call external system (Remedy)
+         * Never rollback DB if this fails
+         */
+        try {
+            await this.incidentGateway.openIncident({
+                id: incident.id,
+                title: incident.entity,
+                severity: "P3",
+            });
+        } catch (err) {
+        // log + mark external failure if needed
+        }
     }
-
-    /**
-     * 5️⃣ Append ONLY transition event to sliding window store
-     */
-    await this.eventStore.append(event);
-
-    /**
-     * 6️⃣ Evaluate sliding window threshold
-     */
-    const exceeded = await this.evaluator.isThresholdExceeded(
-        event.source,
-        event.entity,
-        this.threshold
-    );
-    console.log(exceeded);
-    
-    if (!exceeded) {
-        return;
-    }
-
-    /**
-     * 7️⃣ Prevent duplicate open incident
-     */
-    if (this.incidentRepo == undefined) return
-    const hasOpenIncident = await this.incidentRepo.hasOpenIncident(event.source,event.entity);
-
-    if (!IncidentPolicy.canCreateIncident(hasOpenIncident)) {
-        return;
-    }
-
-    /**
-     * 8️⃣ Dedup lock (race condition protection)
-     */
-    const locked = await this.dedup.acquireIncidentLock(event.source,event.entity,ENV.DEDUP_LOCK_TTL_MS);
-
-    if (!locked) {
-        return;
-    }
-
-    /**
-     * 9️⃣ Create incident (DB = source of truth)
-     */
-    const incident = new Incident(
-        uuidv4(),
-        event.source,
-        event.entity,
-        `Unstable state detected (${this.threshold} flaps)`
-    );
-
-    await this.incidentRepo.create(incident);
-
-    /**
-     * 🔟 Best-effort call external system (Remedy)
-     * Never rollback DB if this fails
-     */
-    try {
-      await this.incidentGateway.openIncident({
-        id: incident.id,
-        title: incident.entity,
-        severity: "P3",
-      });
-    } catch (err) {
-      // log + mark external failure if needed
-    }
-  }
 
     private mapToIncidentStatus(status: string): "OPEN" | "CLOSED" | null {
         if (status === "FAILURE") return "CLOSED";

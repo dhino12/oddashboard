@@ -11,40 +11,32 @@ export class MonitoringStateRedis implements MonitoringStateStore {
         return `monitoring:state:${source}:${entity}`;
     }
 
-    async get(
-        source: Source,
-        entity: string
-    ): Promise<MonitoringState | null> {
+    async get(source: Source,entity: string): Promise<MonitoringState | null> {
         const redis = getRedisClient()
         const raw = await redis.get(this.key(source, entity));
         if (!raw) return null;
-
         try {
-        const parsed = JSON.parse(raw);
-        return new MonitoringState(
-            parsed.lastStatus,
-            parsed.lastChangedAt
-        );
+            const parsed = JSON.parse(raw);
+            return new MonitoringState(
+                parsed.lastStatus,
+                parsed.lastChangedAt
+            );
         } catch {
-        // corrupted data → treat as no state
-        return null;
+            // corrupted data → treat as no state
+            return null;
         }
     }
 
-    async set(
-        source: Source,
-        entity: string,
-        state: MonitoringState
-    ): Promise<void> {
+    async set(source: Source,entity: string,state: MonitoringState): Promise<void> {
         const redis = getRedisClient()
         await redis.set(
-        this.key(source, entity),
-        JSON.stringify({
-            lastStatus: state.lastStatus,
-            lastChangedAt: state.lastChangedAt,
-        }),
-        "PX",
-        STATE_TTL_MS
+            this.key(source, entity),
+            JSON.stringify({
+                lastStatus: state.lastStatus,
+                lastChangedAt: state.lastChangedAt,
+            }),
+            "PX",
+            STATE_TTL_MS
         );
     }
 
