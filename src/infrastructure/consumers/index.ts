@@ -16,17 +16,22 @@ import { getPrisma } from "../../config/prisma";
 import { Logger } from "winston";
 import { MonitoringState } from "../../domain/monitoring/MonitoringState";
 import { MonitoringStateRedis } from "../persistence/redis/MonitoringStateRedis";
+import { startWhatsApp } from "./whatsapp";
+import { IncidentGateway } from "../../application/ports/IncidentGateway";
+import { EventStore } from "../../application/ports/EventStore";
 
 export async function registerConsumers(logger: Logger) {
     // instantiate infra implementations
-    const eventStore = new EventStoreRedis();
-    const dedupLock = new DedupLockRedis();
-    const stateStore = new MonitoringStateRedis();
+    const eventStore: EventStore = new EventStoreRedis();
+    const dedupLock: DedupLockRedis = new DedupLockRedis();
+    const stateStore: MonitoringStateRedis = new MonitoringStateRedis();
     // const incidentRepo = new IncidentPrismaRepository();
 
-    const sliding = new SlidingWindowEvaluator(eventStore, Number(process.env.SLIDING_WINDOW_MS || 60 * 60 * 1000));
-    const dedupSvc = new DeduplicationService(dedupLock);
-    const remedyGateway = new RemedyIncidentClient();
+    const sliding: SlidingWindowEvaluator = new SlidingWindowEvaluator(
+        eventStore, Number(process.env.SLIDING_WINDOW_MS || 60 * 60 * 1000)
+    );
+    const dedupSvc: DeduplicationService = new DeduplicationService(dedupLock);
+    const remedyGateway: IncidentGateway = new RemedyIncidentClient();
 
     // create the main usecase
     const processMonitoringEvent = new ProcessMonitoringEvent(
@@ -40,7 +45,7 @@ export async function registerConsumers(logger: Logger) {
     );
 
     // WhatsApp setup
-    const waClient = new WhatsAppClient("incident-bot",logger);
+    const waClient = startWhatsApp(logger);
     const bifastConsumer = new BifastConsumer(waClient, processMonitoringEvent);
     bifastConsumer.start();
 

@@ -25,7 +25,7 @@ export class RemedyIncidentClient implements IncidentGateway {
             const fresh = await this.auth.login();
             await this.store.saveToken(fresh.token, fresh.exp);
             await axios.post(`${process.env.REMEDY_BASE}/incident/open`, payload, {
-            headers: { Authorization: `Bearer ${fresh.token}` },
+                headers: { Authorization: `Bearer ${fresh.token}` },
             });
         } else {
             throw err;

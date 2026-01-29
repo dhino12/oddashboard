@@ -9,7 +9,10 @@ import { setRedisClient } from "./infrastructure/persistence/redis/RedisClient";
 async function bootstrap() {
     const logger = initLogger();
     const redis = await initRedis();
-    setRedisClient(redis);
+    if (redis != undefined) {
+        logger.info('Redis initialized')
+        setRedisClient(redis);
+    }
 
     // const prisma = await initPrisma();
     // setPrismaClient(prisma);

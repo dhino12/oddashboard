@@ -1,124 +1,168 @@
-// src/infrastructure/consumers/whatsapp/WhatsAppClient.ts
-import { Client, LocalAuth, Message } from "whatsapp-web.js";
-import qrcode from "qrcode-terminal";
+import {
+    makeWASocket,
+    useMultiFileAuthState,
+    DisconnectReason,
+    WASocket,
+    proto,
+    fetchLatestBaileysVersion,
+    makeCacheableSignalKeyStore,
+    CacheStore,
+    DEFAULT_CONNECTION_CONFIG,
+    generateMessageIDV2
+} from "@whiskeysockets/baileys";
+import { Boom } from "@hapi/boom";
 import { EventEmitter } from "events";
-import { initLogger } from "../../../config/logger";
 import { Logger } from "winston";
+import NodeCache from "@cacheable/node-cache";
+import pino from "pino";
 
 export type RawWhatsAppMessage = {
-    id?: string; // message id if available
+    id?: string;
     body: string;
     from: string;
-    timestamp?: number; // epoch ms
-    raw?: Message;
+    timestamp?: number;
+    raw?: proto.IWebMessageInfo;
 };
 
 export class WhatsAppClient extends EventEmitter {
-    private client?: Client;
-    private reconnectAttempts = 0;
-    private readonly maxReconnectAttempts = 10;
-    private readonly baseReconnectMs = 1000; // initial backoff
+    private socket?: WASocket;
     private started = false;
-    private logger: Logger
+    private reconnectAttempts = 0;
+    private connected = false;
+    private reconnecting = false;
+
+
+    private readonly maxReconnectAttempts = 10;
+    private readonly baseReconnectMs = 1000;
+
+    private msgRetryCounterCache = new NodeCache() as CacheStore;
 
     constructor(
-        private readonly clientId = "incident-bot",
-        logger: Logger,
+        private readonly sessionPath = "./baileys_auth",
+        private readonly logger: Logger
     ) {
         super();
-        this.logger = logger
     }
 
-    start() {
-        if (this.started) return;
-        this.started = true;
+    async start() {
+        const { state, saveCreds } = await useMultiFileAuthState(this.sessionPath);
+        const { version } = await fetchLatestBaileysVersion();
 
-        this.client = new Client({
-            authStrategy: new LocalAuth({ clientId: this.clientId }),
-            puppeteer: { headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] },
+        this.socket = makeWASocket({
+            version,
+            waWebSocketUrl:
+                process.env.SOCKET_URL ??
+                DEFAULT_CONNECTION_CONFIG.waWebSocketUrl,
+            auth: {
+                creds: state.creds,
+                keys: makeCacheableSignalKeyStore(state.keys),
+            },
+            msgRetryCounterCache: this.msgRetryCounterCache,
         });
 
-        this.client.on("qr", (qr: string) => {
-            this.logger.info("WhatsApp QR code received — scan with WhatsApp mobile app.");
-            qrcode.generate(qr, { small: true });
-        });
+        this.socket.ev.process(async (events) => {
+            if (events["connection.update"]) {
+                const { connection, lastDisconnect, qr } = events["connection.update"];
+                const reason = (lastDisconnect?.error as Boom)?.output?.statusCode;
 
-        this.client.on("ready", () => {
-            this.logger.info("WhatsApp client ready");
-            this.reconnectAttempts = 0;
-            this.emit("ready");
-        });
+                if (qr) this.emit("qr", qr);
+                if (connection === "open") {
+                    if (!this.connected) this.emit("ready");
+                    this.connected = true;
+                    this.reconnecting = false;
+                    this.reconnectAttempts = 0;
+                    return;
+                }
 
-        this.client.on("authenticated", () => {
-            this.logger.info("WhatsApp authenticated");
-        });
+                if (connection === "close") {
+                    this.connected = false;
+                    this.logger.error(`❌ Connection ${connection} - ${reason}`);
+                    if (reason === DisconnectReason.loggedOut || reason === DisconnectReason.badSession) {
+                        this.logger.error("Session invalid — stop reconnect");
+                        return;
+                    }
+                    if (reason === DisconnectReason.restartRequired || reason === 440) {
+                        return
+                    };
 
-        this.client.on("auth_failure", (msg: any) => {
-            this.logger.warn("WhatsApp auth failure", msg);
-            // force restart which will prompt QR if needed
-            this.scheduleReconnect(true);
-        });
+                    if (!this.reconnecting) {
+                        this.reconnecting = true;
+                        this.scheduleReconnect();
+                    }
+                }
+            }
 
-            this.client.on("disconnected", (reason: any) => {
-            this.logger.warn("WhatsApp disconnected:", reason);
-            this.scheduleReconnect(false);
-            this.emit("disconnected", reason);
-        });
+            if (events["creds.update"]) {
+                this.logger.info("Credentials has been saved !");
+                await saveCreds();
+            }
+            if (events["messages.upsert"]) {
+                const upsert = events["messages.upsert"];
+                if (upsert.type !== "notify") return;
+                for (const msg of upsert.messages) {
+                    if (!msg.message || msg.key.fromMe) continue;
 
-        this.client.on("message", (message: Message) => {
-            try {
-                const raw: RawWhatsAppMessage = {
-                    id: (message?.id as any)?.id || (message?.id as any)?._serialized || undefined,
-                    body: message.body,
-                    from: message.from,
-                    timestamp: (message.timestamp ? message.timestamp * 1000 : Date.now()),
-                    raw: message,
-                };
-                this.logger.info(`ℹ️  ${message.id}`)
-                this.logger.info(`ℹ️  ${message.from} - ${message.timestamp} : ${message.body}`)
-                this.emit("message", raw);
-            } catch (err) {
-                this.logger.error("Error mapping whatsapp message", err);
+                    const body = msg.message.conversation || msg.message.extendedTextMessage?.text || "";
+                    if (!body) continue;
+                    const raw: RawWhatsAppMessage = {
+                        id: msg.key.id ?? "",
+                        body,
+                        from: msg.key.remoteJid!,
+                        timestamp: Number(msg.messageTimestamp) * 1000,
+                        raw: msg,
+                    };
+                    this.logger.info(`ℹ️ ${raw.from}: ${raw.body.trim().replace("\n", "")}`);
+                    
+                    if (body.toLowerCase().includes("ping")) {
+                        await this.sendMessage(raw.from, "pong!");
+                    }
+
+                    this.emit("message", raw);
+                }
             }
         });
-
-        this.client.initialize().catch((err) => {
-            this.logger.error("WhatsApp client initialize error", err);
-            this.scheduleReconnect(true);
-        });
     }
 
-    stop() {
+    async stop() {
         try {
-            if (this.client) {
-                // best-effort destroy
-                // @ts-ignore
-                this.client.destroy && this.client.destroy();
-            }
+            this.socket?.end(undefined);
         } catch (err) {
-            this.logger.warn("error stopping whatsapp client", err);
+            this.logger.warn("Error stopping WhatsApp client", err);
         } finally {
             this.started = false;
         }
     }
 
-    private scheduleReconnect(forceAuth = false) {
+    async sendMessage(jid: string, text: string) {
+        if (!this.socket) throw new Error("WhatsApp socket not ready");
+        const id = generateMessageIDV2(this.socket.user?.id)
+        await this.socket.sendMessage(jid!, { text }, {messageId: id })
+    }
+
+    private restartImmediate() {
+        try {
+            this.socket?.end(undefined);
+        } catch {}
+
+        setTimeout(() => {
+            this.start().catch((err) =>
+                this.logger.error("Restart failed", err)
+            );
+        }, 500);
+    }
+
+    private scheduleReconnect() {
         this.reconnectAttempts++;
-        if (this.reconnectAttempts > this.maxReconnectAttempts) {
-            this.logger.error("max whatsapp reconnect attempts reached");
+
+        if (this.reconnectAttempts > 5) {
+            this.logger.error("Reconnect limit reached");
             return;
         }
-        const delay = this.baseReconnectMs * Math.pow(2, this.reconnectAttempts);
-        this.logger.info(`scheduling whatsapp reconnect in ${delay}ms (attempt ${this.reconnectAttempts})`);
-        setTimeout(() => {
-            try {
-                // destroy and restart client
-                // @ts-ignore
-                this.client && this.client.destroy && this.client.destroy();
-            } catch (err) {
-                this.logger.warn("error destroying whatsapp client before reconnect", err);
-            }
-            this.start();
-        }, delay);
+
+        const delay = 2000;
+        this.logger.info(`Reconnecting in ${delay}ms`);
+
+        setTimeout(() => this.start(), delay);
     }
+
 }

@@ -4,8 +4,6 @@ import { ENV } from "./env"
 let client: Redis | null = null
 export async function initRedis() {
     client = new Redis(ENV.REDIS_URL);
-    console.log('Redis initialized');
-    
     return client;
 }
 
