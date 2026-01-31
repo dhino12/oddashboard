@@ -50,13 +50,11 @@ export class WhatsAppClient extends EventEmitter {
 
         this.socket = makeWASocket({
             version,
-            waWebSocketUrl:
-                process.env.SOCKET_URL ??
-                DEFAULT_CONNECTION_CONFIG.waWebSocketUrl,
+            waWebSocketUrl: DEFAULT_CONNECTION_CONFIG.waWebSocketUrl,
             auth: {
                 creds: state.creds,
                 keys: makeCacheableSignalKeyStore(state.keys),
-            },
+            },logger: pino({level: "fatal"}),
             msgRetryCounterCache: this.msgRetryCounterCache,
         });
 

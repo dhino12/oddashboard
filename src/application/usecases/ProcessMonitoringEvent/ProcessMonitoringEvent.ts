@@ -13,6 +13,7 @@ import { IncidentGateway } from "../../ports/IncidentGateway";
 
 import { ProcessMonitoringEventDTO } from "./ProcessMonitoringEventDTO";
 import { ENV } from "../../../config/env";
+import { NotificationGateway } from "../../ports/NotificationGateway";
 
 export class ProcessMonitoringEvent {
     constructor(
@@ -21,7 +22,8 @@ export class ProcessMonitoringEvent {
         private readonly evaluator: SlidingWindowEvaluator,
         private readonly dedup: DeduplicationService,
         private readonly incidentGateway: IncidentGateway,
-        private readonly incidentRepo?: IncidentRepository,
+        private readonly notificationGateway: NotificationGateway,
+        private readonly incidentRepo: IncidentRepository,
         private readonly threshold: number = 3
     ) {}
 
@@ -75,7 +77,7 @@ export class ProcessMonitoringEvent {
          * - QRIS    : SUCCESS -> FAILURE
          */
         const isTransition = IncidentPolicy.isCountableTransition(
-            prevState.lastStatus ?? "",
+            `${prevState.lastStatus}`,
             event.status,
             event.source
         );
@@ -117,11 +119,25 @@ export class ProcessMonitoringEvent {
         console.log(`✅ Treshold tercapai`);
 
         /**
+         * 🔁 Recovery signal
+         * Jika service kembali OPEN dan masih ada open incident → resolve sekarang
+         */
+        if (event.status == "OPEN") {
+            const openIncident = await this.incidentRepo.findOpenIncident(
+                event.source, event.entity
+            )
+            if (openIncident) {
+                openIncident.resolve()
+                await this.incidentRepo.save(openIncident)
+            }
+        }
+
+        /**
          * 7️⃣ Prevent duplicate open incident
          */
-        if (this.incidentRepo == undefined) return
         const hasOpenIncident = await this.incidentRepo.hasOpenIncident(event.source,event.entity);
-
+        console.log(`hasOpenIncident: ${hasOpenIncident}`);
+        
         if (!IncidentPolicy.canCreateIncident(hasOpenIncident)) {
             return;
         }
@@ -146,6 +162,11 @@ export class ProcessMonitoringEvent {
         );
 
         await this.incidentRepo.create(incident);
+        await this.notificationGateway.notifyIncident({
+            source: event.source,
+            entity: event.entity,
+            message: null
+        });
 
         /**
          * 🔟 Best-effort call external system (Remedy)

@@ -7,4 +7,5 @@ export const ENV = {
     REMEDY_BASE: process.env.REMEDY_BASE || "https://10.254.152.105:8443/remedy",
     REMEDY_USER: process.env.REMEDY_USER || "user",
     REMEDY_PASS: process.env.REMEDY_PASS || "pass",
+    ALERT_WA_NUMBER: process.env.ALERT_WA_NUMBER || "6282191029737@s.whatsapp.net"
 };

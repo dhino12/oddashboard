@@ -23,9 +23,12 @@ export class EventStoreRedis implements EventStore {
         return Number(count);
     }
 
-    async cleanupOlderThan(source: string, entity: string, olderThanMs: number) {
+    async cleanupSourceOlderThan(source: string, entity: string, olderThanMs: number) {
         const redis = getRedisClient();
         const key = `events:${source}:${entity}`;
         await redis.zremrangebyscore(key, 0, Date.now() - olderThanMs);
+    }
+    cleanupOlderThan(ms: number): Promise<void> {
+        throw new Error("Method not implemented.");
     }
 }

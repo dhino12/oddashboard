@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model UserToken {
+  key        String   @id @db.VarChar(50)
+  token      String   @db.Text
+  expires_at BigInt
+  username   String   @db.VarChar(80)
+  updated_at DateTime @updatedAt
+
+  @@map("user_token")
+}
+
+model MonitoringEvents {
+  id      String @id @db.VarChar(100)
+  source  String @db.VarChar(80)
+  entity  String @db.VarChar(80)
+  status  String @db.VarChar(80)
+  occurred_at BigInt
+  created_at DateTime @default(now())
+  
+  @@index([source, entity, occurred_at], name: "idx_window")
+  @@map("monitoring_events")
+}
+
+model MonitoringState {
+  source    String @db.VarChar(80)
+  entity    String @unique @db.VarChar(80)
+  last_status String @db.VarChar(80)
+  last_changed_at   BigInt
+
+  @@id([source, entity])
+  @@map("monitoring_state")
+}
+
+enum IncidentStatus {
+  OPEN
+  SUCCESS
+  CLOSED
+  FAILURE
+  RESOLVED
+}
+
+model Incidents {
+  id      String  @id @db.VarChar(100)
+  source  String  @db.VarChar(80)
+  entity  String  @db.VarChar(80)
+  status  IncidentStatus
+  reason  String  @db.MediumText
+  created_at DateTime @default(now())
+  resolved_at DateTime?
+
+  @@map("incidents")
+  @@unique([source, entity, status], map: "uniq_open_incident")
+}

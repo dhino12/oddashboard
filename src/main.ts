@@ -14,8 +14,8 @@ async function bootstrap() {
         setRedisClient(redis);
     }
 
-    // const prisma = await initPrisma();
-    // setPrismaClient(prisma);
+    const prisma = await initPrisma();
+    setPrismaClient(prisma);
 
     const app = createApp();
     const port = Number(process.env.PORT || 3000);

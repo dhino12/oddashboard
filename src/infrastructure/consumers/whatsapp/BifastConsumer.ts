@@ -5,7 +5,10 @@ import { ProcessMonitoringEvent } from "../../../application/usecases/ProcessMon
 import { uuid } from "../../../utils/UUID";
 
 export class BifastConsumer {
-    constructor(private wa: WhatsAppClient, private processor: ProcessMonitoringEvent) {}
+    constructor(
+        private wa: WhatsAppClient, 
+        private processor: ProcessMonitoringEvent,
+    ) {}
 
     start() {
         this.wa.on("message", async (msg: RawWhatsAppMessage) => {

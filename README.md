@@ -1,4 +1,5 @@
 # Open Incident Bot
+https://www.prisma.io/docs/orm/overview/databases/mysql
 
 ## Structure Folder
 
