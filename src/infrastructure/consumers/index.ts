@@ -24,6 +24,8 @@ import { MonitoringStatePrisma } from "../persistence/mysql/MonitoringStatePrism
 import { startResolveJob } from "../scheduler/IncidentResolveJob";
 import { ENV } from "../../config/env";
 import { WhatsAppNotificationGateway } from "./whatsapp/WhatsappNotificationGW";
+import { startCleanupEventsJob } from "../scheduler/MonitoringEventCleanupJob";
+import { CleanupMonitoringJob } from "../../application/usecases/CleanupMonitoringJob/CleanupMonitoringJob";
 
 export async function registerConsumers(logger: Logger) {
     // instantiate infra implementations
@@ -37,6 +39,7 @@ export async function registerConsumers(logger: Logger) {
     );
     const dedupSvc: DeduplicationService = new DeduplicationService(dedupLock);
     const remedyGateway: IncidentGateway = new RemedyIncidentClient();
+    const monitoringEvent = new CleanupMonitoringJob(eventStore)
 
     // WhatsApp setup
     const waClient = startWhatsApp(logger);
@@ -65,4 +68,5 @@ export async function registerConsumers(logger: Logger) {
     const resolveUsecase = new ResolveIncident(incidentRepo, eventStore, Number(process.env.STABLE_OPEN_MS || 15 * 60 * 1000));
     // assume startResolveJob in scheduler:
     startResolveJob(resolveUsecase);
+    startCleanupEventsJob(monitoringEvent, 24 * 60 * 60 * 100, logger)
 }

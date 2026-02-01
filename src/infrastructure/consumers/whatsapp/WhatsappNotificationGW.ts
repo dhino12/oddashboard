@@ -10,24 +10,13 @@ export class WhatsAppNotificationGateway implements NotificationGateway {
         try {
             if (typeof this.targetWA == "string") {
                 console.log(`sendMessage to ${this.targetWA}`);
-                
-                await this.wa.sendMessage(this.targetWA, `
-                    🚨 INCIDENT DETECTED
-                    Source : ${payload.source}
-                    Entity : ${payload.entity}
-                    Reason : ${3}x flapping detected
-                    Time   : ${new Date().toISOString()}
-                `)
+                const message = `🚨 INCIDENT DETECTED\nSource : ${payload.source}\nEntity : ${payload.entity}\nReason : ${3}x flapping detected\nTime   : ${new Date().toISOString()}`
+                await this.wa.sendMessage(this.targetWA, message)
             }
             if (typeof this.targetWA == "object") {
                 for (const targetNumber of this.targetWA) {
-                    await this.wa.sendMessage(targetNumber, `
-                        🚨 INCIDENT DETECTED
-                        Source : ${payload.source}
-                        Entity : ${payload.entity}
-                        Reason : ${3}x flapping detected
-                        Time   : ${new Date().toISOString()}
-                    `)
+                    const message = `🚨 INCIDENT DETECTED\nSource : ${payload.source}\nEntity : ${payload.entity}\nReason : ${3}x flapping detected\nTime   : ${new Date().toISOString()}`
+                    await this.wa.sendMessage(targetNumber, message)
                 }
             }
         } catch (err) {

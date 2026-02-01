@@ -15,6 +15,8 @@ export class BifastConsumer {
         try {
             // msg.body may contain other text; parse it
             const parsed = parseBifastMessage(msg.body || "");
+            console.log(parsed);
+            
             if (!parsed) return;
 
             // Build DTO for ProcessMonitoringEvent
