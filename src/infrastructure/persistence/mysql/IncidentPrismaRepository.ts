@@ -25,13 +25,16 @@ export class IncidentPrismaRepository implements IncidentRepository {
         });
     }
     async listOpenIncidents() {
-        const prisma = getPrismaClient();
-        const rows = await prisma.incidents.findMany({ where: { status: "OPEN" } });
+        const rows = await this.prisma.incidents.findMany({ where: { status: "OPEN" } });
         return rows.map((r) => new Incident(r.id, r.source, r.entity, r.reason, r.status as any, r.created_at.getTime(), r.resolved_at?.getTime()));
     }
     async save(inc: Incident) {
-        const prisma = getPrismaClient();
-        await prisma.incidents.update({ where: { id: inc.id }, data: { status: inc.status, resolved_at: inc.resolvedAt ? new Date(inc.resolvedAt) : null } });
+        await this.prisma.incidents.update({ where: { id: inc.id }, data: { status: inc.status, resolved_at: inc.resolvedAt ? new Date(inc.resolvedAt) : null } });
+    }
+    async delete(inc: Incident) {
+        await this.prisma.incidents.delete({
+            where: { id: inc.id, status: inc.status }
+        })
     }
     async findOpenIncident(source: string, entity: string): Promise<Incident | null> {
         const row = await this.prisma.incidents.findFirst({
