@@ -1,46 +1,80 @@
 // src/infrastructure/consumers/whatsapp/MessageParser.ts
+import nlp from "compromise";
+const OPEN_VERBS = ["open", "opened", "buka", "aktif", "reopen"];
+const CLOSED_PATTERNS = [ "closed", "ditutup", "down", "autoclose", "auto close", "has closed", "successfully closed" ];
+const OPEN_PATTERNS = [ "open", "dibuka", "dibuka kembali", "reopen", "up" ];
+
+const IGNORE_WORDS = new Set([
+    "bifast", "qris", "rtgs", "skn",
+    "ditutup", "dibuka", "closed", "open", "down", "error",
+]);
 
 export type ParsedBifastMessage = {
     source: "BIFAST";
     entity: string;
     status: "OPEN" | "CLOSED";
     reason?: "AUTOCLOSE" | "MANUAL" | "UNKNOWN";
-};
+}; 
 
-const ENTITY_REGEX = /\b([A-Z]{3,}[A-Z0-9]+)\b/;
-const CLOSED_REGEX = /\bclosed\b/i;
-const OPEN_REGEX = /\bopen(ed)?\b/i;
-const AUTOCLOSE_REGEX = /\bautomatically\b/i;
+function extractEntities(text: string): string[] {
+    const doc = nlp(text);
+    return doc
+        .terms()
+        .not("#Verb")
+        .not("#Preposition")
+        .out("array")
+        .map((t: any) => t.toLowerCase())
+        .filter((t: any) => /^[a-z]{3,}$/i.test(t))
+        .filter((t: any) => !IGNORE_WORDS.has(t));
+}
+
+function detectSource(text: string): "BIFAST" | null {
+    return /bi\s*fast/i.test(text) ? "BIFAST" : null;
+}
+function detectStatusNLP(text: string): "OPEN" | "CLOSED" | null {
+    const t = text.toLowerCase();
+
+    if (CLOSED_PATTERNS.some(p => t.includes(p))) {
+        return "CLOSED";
+    }
+
+    if (OPEN_PATTERNS.some(p => t.includes(p))) {
+        return "OPEN";
+    }
+
+    return null;
+}
+
+function detectEntity(text: string): string | null {
+    const tokens = extractEntities(text.toLowerCase());
+    console.log(tokens);
+    
+    return tokens[0];
+}
+function detectReason(text: string): ParsedBifastMessage["reason"] {
+    if (/auto|otomatis|automatically/i.test(text)) return "AUTOCLOSE";
+    if (/manual/i.test(text)) return "MANUAL";
+    return "UNKNOWN";
+}
 
 export function parseBifastMessage(rawText: string): ParsedBifastMessage | null {
     if (!rawText) return null;
+    rawText = rawText.replace(/^source:.*$/gim, "").trim();
 
-    // Must contain "BI Fast" keyword (guard awal)
-    if (!/bi\s*fast/i.test(rawText)) return null;
-
-    // Extract entity (contoh: DANAIDJ1)
-    const entityMatch = rawText.match(ENTITY_REGEX);
-    if (!entityMatch) return null;
-    const entity = entityMatch[1].toUpperCase();
-    // Determine status
-    let status: "OPEN" | "CLOSED" | null = null;
-    if (CLOSED_REGEX.test(rawText)) {
-        status = "CLOSED";
-    } else if (OPEN_REGEX.test(rawText)) {
-        status = "OPEN";
-    }
+    const source = detectSource(rawText); 
+    console.log(`Source: ${source}`);
+    if (!source) return null;
+    
+    const entity = detectEntity(rawText);
+    console.log(`Entity: ${entity}`);
+    if (!entity) return null;
+    
+    const status = detectStatusNLP(rawText);
+    console.log(`Status: ${status}`);
     if (!status) return null;
+    
+    const reason = detectReason(rawText);
+    console.log(`Reason: ${reason}`);
 
-    // Optional reason
-    let reason: ParsedBifastMessage["reason"] = "UNKNOWN";
-    if (AUTOCLOSE_REGEX.test(rawText)) {
-        reason = "AUTOCLOSE";
-    }
-
-    return {
-        source: "BIFAST",
-        entity,
-        status,
-        reason,
-    };
+    return { source, entity, status, reason };
 }
