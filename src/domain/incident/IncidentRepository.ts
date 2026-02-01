@@ -5,5 +5,6 @@ export interface IncidentRepository {
     create(inc: Incident): Promise<void>
     listOpenIncidents(): Promise<Incident[]>
     save(inc: Incident): Promise<void>
+    delete(inc: Incident): Promise<void>
     findOpenIncident(source: string, entity: string): Promise<Incident | null>
 }
