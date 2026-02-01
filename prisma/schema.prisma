@@ -63,5 +63,5 @@ model Incidents {
   resolved_at DateTime?
 
   @@map("incidents")
-  @@unique([source, entity, status], map: "uniq_open_incident")
+  @@unique([source, entity], map: "uniq_open_incident")
 }

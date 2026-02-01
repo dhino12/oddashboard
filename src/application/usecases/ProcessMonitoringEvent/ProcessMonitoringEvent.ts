@@ -128,7 +128,7 @@ export class ProcessMonitoringEvent {
             )
             if (openIncident) {
                 openIncident.resolve()
-                await this.incidentRepo.save(openIncident)
+                await this.incidentRepo.delete(openIncident)
             }
         }
 
