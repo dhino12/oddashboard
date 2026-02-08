@@ -114,6 +114,22 @@ export class WhatsAppClient extends EventEmitter {
                     if (body.toLowerCase().includes("ping")) {
                         await this.sendMessage(raw.from, "pong!");
                     }
+                    if (body.toLowerCase().includes("getinfogroup")) {
+                        if (this.socket == null) return
+                        const groups = await this.socket?.groupFetchAllParticipating();
+                        const groupIdKeys = Object.keys(groups)
+                        for (const [groupId, group] of Object.entries(groups)) {
+                            console.log({
+                                id: groupId,
+                                name: group.subject
+                            });
+                            
+                            await this.sendMessage(
+                                raw.from,
+                                `Saya tergabung di ${groupIdKeys.length} grup dengan id ${groupId} name ${group.subject}`
+                            );
+                        }
+                    }
 
                     this.emit("message", raw);
                 }

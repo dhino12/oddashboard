@@ -14,6 +14,8 @@ import { IncidentGateway } from "../../ports/IncidentGateway";
 import { ProcessMonitoringEventDTO } from "./ProcessMonitoringEventDTO";
 import { ENV } from "../../../config/env";
 import { NotificationGateway } from "../../ports/NotificationGateway";
+import { NauraGateway } from "../../ports/NauraGateway";
+import { now, timeFormatDraft, timeFormatStatusUpdate } from "../../../utils/Time";
 
 export class ProcessMonitoringEvent {
     constructor(
@@ -22,6 +24,7 @@ export class ProcessMonitoringEvent {
         private readonly evaluator: SlidingWindowEvaluator,
         private readonly dedup: DeduplicationService,
         private readonly incidentGateway: IncidentGateway,
+        private readonly nauraGateway: NauraGateway,
         private readonly notificationGateway: NotificationGateway,
         private readonly incidentRepo: IncidentRepository,
         private readonly threshold: number = 3
@@ -46,6 +49,7 @@ export class ProcessMonitoringEvent {
             event.source,
             event.entity
         );
+        
 
         /**
          * 2️⃣ First time seeing this entity → just record state
@@ -154,14 +158,40 @@ export class ProcessMonitoringEvent {
         /**
          * 9️⃣ Create incident (DB = source of truth)
          */
+        const idDraft = uuidv4()
+        // const incident = new Incident(
+        //     idDraft,
+        //     event.source,
+        //     event.entity,
+        //     `Unstable state detected (${this.threshold} flaps)`
+        // );
+        const currentTime = now()
         const incident = new Incident(
-            uuidv4(),
-            event.source,
-            event.entity,
-            `Unstable state detected (${this.threshold} flaps)`
+            idDraft,
+            event.source, // app_name (BIFAST / QRIS)
+            event.entity, // nama_bank or nama_qris
+            `Unstable state detected (${this.threshold} flaps)`,
+            {
+                bankName: event.entity.toLowerCase(),
+                incidentNumber: "",
+                incidentDescription: `Gangguan layanan transaksi pada BIFAST ${event.entity}`,
+                impactedApplication: "BIFAST",
+                priority: "MEDIUM",
+                typeIncident: `3rd Party`,
+                impact: `Nasabah tidak dapat melakukan transaksi pada BIFAST ${event.entity}`,
+                suspect: `Gangguan disisi ${event.entity}`,
+                incTimestamp: timeFormatDraft(`${currentTime}`.substring(0,16)), 
+                incTimestamps: currentTime,
+                incTimestampNextUpdate: timeFormatStatusUpdate(`${currentTime}`.substring(0,16)),
+                closedTimestamp: `${currentTime}`.substring(0,16),
+                estimation: "Belum Dapat Ditentukan",
+                picConfirmation: "Tim Monitoring",
+                statusNextUpdate: `[${timeFormatStatusUpdate(`${currentTime}`.substring(0,16))}] Saat ini untuk sementara waktu dilakukan penutupan layanan transaksi pada BIFAST ${event.entity}`,
+                status: "Pending",
+            },
         );
-
         await this.incidentRepo.create(incident);
+
         await this.notificationGateway.notifyIncident({
             source: event.source,
             entity: event.entity,
@@ -173,11 +203,51 @@ export class ProcessMonitoringEvent {
          * Never rollback DB if this fails
          */
         try {
-            await this.incidentGateway.openIncident({
-                id: incident.id,
-                title: incident.entity,
-                severity: "P3",
-            });
+            const parsedPayloadMap = this.incidentGateway.mapOpenIncidentPayload(
+                {
+                    "First Name": "",
+                    "Full Name": "",
+                    "Last Name": "",
+                    "Person ID": "",
+                    "Remedy Login ID": ""
+                },
+                {
+                    idDraft: incident.id,
+                    description: incident.metadata.incidentDescription ?? "",
+                    priority: incident.metadata.priority ?? "",
+                    categoryCause: incident.metadata.typeIncident ?? "",
+                    impactedApplications: incident.metadata.impactedApplication ?? "",
+                    impact: incident.metadata.impact ?? "",
+                    cause: incident.metadata.suspect ?? "",
+                    thirdPartyPIC: incident.metadata.picConfirmation ?? "",
+                    incidentCaused: "External",
+                    incTimestampStarted: incident.metadata.incTimestamp ?? "",
+                }
+            )
+            const incNumber = await this.incidentGateway.openIncident(parsedPayloadMap);
+            if (!incNumber) {
+                console.log(`incNumber is null`, incNumber);
+                return
+            }
+            incident.metadata.incidentNumber = incNumber
+            await this.incidentRepo.create(incident);
+            await this.nauraGateway.postToNaura({
+                idDraft,
+                incidentNumber: incident.metadata.incidentNumber,
+                incidentDescription: incident.metadata.incidentDescription,
+                impactedApplications: incident.metadata.impactedApplication,
+                priority: incident.metadata.priority,
+                typeIncident: incident.metadata.typeIncident,
+                impact: incident.metadata.impact,
+                suspect: incident.metadata.suspect,
+                waktuTerindikasi: incident.metadata.incTimestamp,
+                durasiGangguan: incident.metadata.estimation,
+                konfirmasiPIC: incident.metadata.picConfirmation,
+                status: incident.metadata.status,
+                solusiNextUpdate: incident.metadata.statusNextUpdate,
+                ticketStatus: incident.metadata.status,
+                officerName: "automation_test",
+            })
         } catch (err) {
         // log + mark external failure if needed
         }

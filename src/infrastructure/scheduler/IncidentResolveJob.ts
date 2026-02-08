@@ -3,6 +3,8 @@ import { ResolveIncident } from "../../application/usecases/ResolveIncident/Reso
 export function startResolveJob(resolveUsecase: ResolveIncident) {
     setInterval(async () => {
         try {
+            console.log(`RUNNING Resolve JOB`);
+            
             await resolveUsecase.run();
         } catch (err) {
             console.error("resolve job error", err);

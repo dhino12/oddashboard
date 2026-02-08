@@ -1,5 +1,6 @@
 // src/infrastructure/consumers/whatsapp/MessageParser.ts
 import nlp from "compromise";
+import { bifastList } from "../../../config/bifastlist";
 const OPEN_VERBS = ["open", "opened", "buka", "aktif", "reopen"];
 const CLOSED_PATTERNS = [ "closed", "ditutup", "down", "autoclose", "auto close", "has closed", "successfully closed" ];
 const OPEN_PATTERNS = [ "open", "dibuka", "dibuka kembali", "reopen", "up" ];
@@ -17,6 +18,10 @@ export type ParsedBifastMessage = {
 }; 
 
 function extractEntities(text: string): string[] {
+    if (text.split("\n")[0].includes("BI FAST [CT OUTGOING]")){
+        const match = text.match(/\b[A-Z]{3,}ID[A-Z0-9]+\b/);
+        return match ? [match[0]] : [""];
+    }
     const doc = nlp(text);
     return doc
         .terms()
@@ -26,6 +31,13 @@ function extractEntities(text: string): string[] {
         .map((t: any) => t.toLowerCase())
         .filter((t: any) => /^[a-z]{3,}$/i.test(t))
         .filter((t: any) => !IGNORE_WORDS.has(t));
+}
+
+function normalizeEntity(raw: string): string {
+    const t = raw.toUpperCase()
+    return bifastList.find(bifastName => {
+        if (bifastName.id_bank.toUpperCase() == t || t == bifastName.nama_bank.toUpperCase()) return bifastName.nama_bank.toUpperCase()
+    })?.nama_bank ?? ""
 }
 
 function detectSource(text: string): "BIFAST" | null {
@@ -41,15 +53,17 @@ function detectStatusNLP(text: string): "OPEN" | "CLOSED" | null {
     if (OPEN_PATTERNS.some(p => t.includes(p))) {
         return "OPEN";
     }
+    if (/[❌⛔🚫]/.test(text)) return "CLOSED";
+    if (/[✅🟢]/.test(text)) return "OPEN";
 
     return null;
 }
 
 function detectEntity(text: string): string | null {
-    const tokens = extractEntities(text.toLowerCase());
+    const tokens = extractEntities(text.toUpperCase());
     console.log(tokens);
     
-    return tokens[0];
+    return normalizeEntity(tokens[0])
 }
 function detectReason(text: string): ParsedBifastMessage["reason"] {
     if (/auto|otomatis|automatically/i.test(text)) return "AUTOCLOSE";

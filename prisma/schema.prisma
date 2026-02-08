@@ -12,6 +12,10 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
 
 model UserToken {
   key        String   @id @db.VarChar(50)
@@ -55,11 +59,13 @@ enum IncidentStatus {
 
 model Incidents {
   id      String  @id @db.VarChar(100)
+  incNumber String @db.Text @default("")
   source  String  @db.VarChar(80)
   entity  String  @db.VarChar(80)
   status  IncidentStatus
   reason  String  @db.MediumText
   created_at DateTime @default(now())
+  incTimestamp DateTime @default(now())
   resolved_at DateTime?
 
   @@map("incidents")

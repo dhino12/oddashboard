@@ -26,6 +26,8 @@ import { ENV } from "../../config/env";
 import { WhatsAppNotificationGateway } from "./whatsapp/WhatsappNotificationGW";
 import { startCleanupEventsJob } from "../scheduler/MonitoringEventCleanupJob";
 import { CleanupMonitoringJob } from "../../application/usecases/CleanupMonitoringJob/CleanupMonitoringJob";
+import { NauraGateway } from "../../application/ports/NauraGateway";
+import { NauraClient } from "../external/naura/NauraClient";
 
 export async function registerConsumers(logger: Logger) {
     // instantiate infra implementations
@@ -35,10 +37,16 @@ export async function registerConsumers(logger: Logger) {
     const incidentRepo = new IncidentPrismaRepository();
 
     const sliding: SlidingWindowEvaluator = new SlidingWindowEvaluator(
-        eventStore, Number(process.env.SLIDING_WINDOW_MS || 60 * 60 * 1000)
+        eventStore, Number(ENV.SLIDING_WINDOW_MS)
     );
     const dedupSvc: DeduplicationService = new DeduplicationService(dedupLock);
     const remedyGateway: IncidentGateway = new RemedyIncidentClient();
+    const nauraGateway: NauraGateway = new NauraClient(logger, [
+        ENV.BROADCAST_WHATSAPP_GROUP_APPIUM,
+        ENV.BROADCAST_WHATSAPP_GROUP_COMCEN,
+        ENV.BROADCAST_WHATSAPP_GROUP_MANDIRI_CARE,
+        ENV.BROADCAST_WHATSAPP_GROUP_PTR_BROADCAST,
+    ])
     const monitoringEvent = new CleanupMonitoringJob(eventStore)
 
     // WhatsApp setup
@@ -52,6 +60,7 @@ export async function registerConsumers(logger: Logger) {
         sliding,
         dedupSvc,
         remedyGateway,
+        nauraGateway,
         whatsappNotify,
         incidentRepo, //incidentRepo,
         Number(process.env.FLAP_THRESHOLD ?? 3)
@@ -65,7 +74,7 @@ export async function registerConsumers(logger: Logger) {
     // startQrisPolling(qrisConsumer);
 
     // Start resolve job
-    const resolveUsecase = new ResolveIncident(incidentRepo, eventStore, Number(process.env.STABLE_OPEN_MS || 15 * 60 * 1000));
+    const resolveUsecase = new ResolveIncident(incidentRepo, eventStore, Number(ENV.STABLE_OPEN_MS));
     // assume startResolveJob in scheduler:
     startResolveJob(resolveUsecase);
     startCleanupEventsJob(monitoringEvent, 24 * 60 * 60 * 100, logger)
