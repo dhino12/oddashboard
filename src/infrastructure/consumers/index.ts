@@ -1,20 +1,12 @@
-// src/infrastructure/consumers/index.ts
-import { DedupLockRedis } from "../persistence/redis/DedupLockRedis";
-import { MonitoringStateRedis } from "../persistence/redis/MonitoringStateRedis";
-import { EventStoreRedis } from "../persistence/redis/EventStoreRedis";
 import { IncidentPrismaRepository } from "../persistence/mysql/IncidentPrismaRepository";
 import { SlidingWindowEvaluator } from "../../application/services/SlidingWindowEvaluator";
 import { DeduplicationService } from "../../application/services/DeduplicationService";
 import { RemedyIncidentClient } from "../external/remedy/RemedyIncidentClient";
 import { ProcessMonitoringEvent } from "../../application/usecases/ProcessMonitoringEvent/ProcessMonitoringEvent";
 import { BifastConsumer } from "./whatsapp/BifastConsumer";
-import { WhatsAppClient } from "./whatsapp/WhatsappClient";
-import { startQrisPolling } from "../scheduler/QrisHealthCheckJob";
 import { createQrisHealthConsumer } from "./api/QrisHealthConsumer";
 import { ResolveIncident } from "../../application/usecases/ResolveIncident/ResolveIncident";
-import { getRedis } from "../../config/redis";
 import { Logger } from "winston";
-import { MonitoringState } from "../../domain/monitoring/MonitoringState";
 import { startWhatsApp } from "./whatsapp";
 import { IncidentGateway } from "../../application/ports/IncidentGateway";
 import { EventStore } from "../../application/ports/EventStore";
@@ -28,12 +20,15 @@ import { startCleanupEventsJob } from "../scheduler/MonitoringEventCleanupJob";
 import { CleanupMonitoringJob } from "../../application/usecases/CleanupMonitoringJob/CleanupMonitoringJob";
 import { NauraGateway } from "../../application/ports/NauraGateway";
 import { NauraClient } from "../external/naura/NauraClient";
+import { CloseRecoveryScheduler } from "../scheduler/CloseRecoveryBiFastScheduler";
+import { BiFastHealthChecker } from "../external/healthcheck/BiFastHealthChecker";
+import { MonitoringStateStore } from "../../application/ports/MonitoringStateStore";
 
 export async function registerConsumers(logger: Logger) {
     // instantiate infra implementations
     const eventStore: EventStore = new EventStorePrisma();
     const dedupLock: DedupLockDb = new DedupLockDb();
-    const stateStore: MonitoringStatePrisma = new MonitoringStatePrisma();
+    const stateStore: MonitoringStateStore = new MonitoringStatePrisma();
     const incidentRepo = new IncidentPrismaRepository();
 
     const sliding: SlidingWindowEvaluator = new SlidingWindowEvaluator(
@@ -47,7 +42,10 @@ export async function registerConsumers(logger: Logger) {
         ENV.BROADCAST_WHATSAPP_GROUP_MANDIRI_CARE,
         ENV.BROADCAST_WHATSAPP_GROUP_PTR_BROADCAST,
     ])
+
+    // Cleanup setup
     const monitoringEvent = new CleanupMonitoringJob(eventStore)
+    const biFastHealthChecker = new BiFastHealthChecker()
 
     // WhatsApp setup
     const waClient = startWhatsApp(logger);
@@ -66,7 +64,14 @@ export async function registerConsumers(logger: Logger) {
         Number(process.env.FLAP_THRESHOLD ?? 3)
     );
 
-    const bifastConsumer = new BifastConsumer(waClient, processMonitoringEvent);
+    const closeRecoveryScheduler = new CloseRecoveryScheduler(
+        biFastHealthChecker, 
+        incidentRepo, 
+        stateStore,
+        processMonitoringEvent,
+        logger
+    )
+    const bifastConsumer = new BifastConsumer(waClient, processMonitoringEvent, closeRecoveryScheduler);
     bifastConsumer.start();
 
     // QRIS polling (as before)

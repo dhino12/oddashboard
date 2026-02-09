@@ -18,4 +18,5 @@ export type NauraPayload = {
 
 export interface NauraGateway {
     postToNaura(payload: NauraPayload): Promise<void>
+    postNotifyFromNaura(message: string): Promise<void>
 }

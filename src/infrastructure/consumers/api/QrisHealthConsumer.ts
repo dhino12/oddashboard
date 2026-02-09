@@ -10,6 +10,5 @@ export function createQrisHealthConsumer(processMonitoring: ProcessMonitoringEve
                 occurredAt: Date.now(),
             });
         },
-        // helper to poll remote logs (fetch) can be inside or external scheduler
     };
 }

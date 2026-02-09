@@ -21,6 +21,7 @@ export type RawWhatsAppMessage = {
     body: string;
     from: string;
     timestamp?: number;
+    participant: string | null | undefined,
     raw?: proto.IWebMessageInfo;
 };
 
@@ -105,7 +106,8 @@ export class WhatsAppClient extends EventEmitter {
                     const raw: RawWhatsAppMessage = {
                         id: msg.key.id ?? "",
                         body,
-                        from: msg.key.remoteJid!,
+                        from: msg.key.remoteJid!, // ID GROUP
+                        participant: msg.key.participant, // Siapa yg chat
                         timestamp: Number(msg.messageTimestamp) * 1000,
                         raw: msg,
                     };

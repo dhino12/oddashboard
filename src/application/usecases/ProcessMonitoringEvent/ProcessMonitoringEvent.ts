@@ -149,11 +149,11 @@ export class ProcessMonitoringEvent {
         /**
          * 8️⃣ Dedup lock (race condition protection)
          */
-        const locked = await this.dedup.acquireIncidentLock(event.source,event.entity,ENV.DEDUP_LOCK_TTL_MS);
+        // const locked = await this.dedup.acquireIncidentLock(event.source,event.entity,ENV.DEDUP_LOCK_TTL_MS);
 
-        if (!locked) {
-            return;
-        }
+        // if (!locked) {
+        //     return;
+        // }
 
         /**
          * 9️⃣ Create incident (DB = source of truth)
@@ -190,7 +190,7 @@ export class ProcessMonitoringEvent {
                 status: "Pending",
             },
         );
-        await this.incidentRepo.create(incident);
+        // await this.incidentRepo.create(incident);
 
         await this.notificationGateway.notifyIncident({
             source: event.source,
@@ -224,12 +224,13 @@ export class ProcessMonitoringEvent {
                     incTimestampStarted: incident.metadata.incTimestamp ?? "",
                 }
             )
-            const incNumber = await this.incidentGateway.openIncident(parsedPayloadMap);
-            if (!incNumber) {
-                console.log(`incNumber is null`, incNumber);
-                return
-            }
-            incident.metadata.incidentNumber = incNumber
+            // let incNumber = await this.incidentGateway.openIncident(parsedPayloadMap);
+            let incNumber = null;
+            // if (!incNumber) {
+            //     console.log(`incNumber is null`, incNumber);
+            //     return
+            // }
+            incident.metadata.incidentNumber = incNumber ?? "INC_TEST"
             await this.incidentRepo.create(incident);
             await this.nauraGateway.postToNaura({
                 idDraft,
@@ -249,7 +250,10 @@ export class ProcessMonitoringEvent {
                 officerName: "automation_test",
             })
         } catch (err) {
-        // log + mark external failure if needed
+            // log + mark external failure if needed
+            console.error("ERROR ProcesssMonnitoringEvent");
+            console.error(err);
+        
         }
     }
 

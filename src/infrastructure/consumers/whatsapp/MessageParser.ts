@@ -34,9 +34,12 @@ function extractEntities(text: string): string[] {
 }
 
 function normalizeEntity(raw: string): string {
+    if (raw == "") return ""
     const t = raw.toUpperCase()
     return bifastList.find(bifastName => {
-        if (bifastName.id_bank.toUpperCase() == t || t == bifastName.nama_bank.toUpperCase()) return bifastName.nama_bank.toUpperCase()
+        if (bifastName.id_bank.toUpperCase() == t || t == bifastName.nama_bank.toUpperCase()) {
+            return bifastName.nama_bank.toUpperCase()
+        }
     })?.nama_bank ?? ""
 }
 

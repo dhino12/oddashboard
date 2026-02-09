@@ -34,7 +34,7 @@ src/
 │
 ├── application/
 │   ├── ports/
-│   │   ├── EventStore.ts                <-- Redis ZSET port
+│   │   ├── EventStore.ts                <-- Mysql ZSET port
 │   │   ├── MonitoringStateStore.ts
 │   │   ├── DedupLock.ts
 │   │   └── IncidentGateway.ts           <-- external system port (Remedy)
@@ -74,13 +74,13 @@ src/
 │   ├── external/
 │   │   └── remedy/
 │   │       ├── RemedyAuthClient.ts         <-- calls /jwt/login
-│   │       ├── RemedyTokenStore.ts         <-- redis-backed token cache
+│   │       ├── RemedyTokenStore.ts         <-- mysql-backed token cache
 │   │       ├── RemedyIncidentClient.ts     <-- uses token to call open_incident
 │   │       └── RemedyCircuitBreaker.ts
 │   │
 │   ├── persistence/
 │   │   ├── redis/
-│   │   │   ├── RedisClient.ts
+│   │   │   ├── RedisClient.ts               <-- Redis Cache for plan B
 │   │   │   ├── EventStoreRedis.ts
 │   │   │   ├── MonitoringStateRedis.ts
 │   │   │   └── DedupLockRedis.ts
