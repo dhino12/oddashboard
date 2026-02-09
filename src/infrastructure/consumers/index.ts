@@ -69,7 +69,12 @@ export async function registerConsumers(logger: Logger) {
         processMonitoringEvent,
         logger
     )
-    const bifastConsumer = new BifastConsumer(waClient, processMonitoringEvent, closeRecoveryScheduler);
+    const bifastConsumer = new BifastConsumer(
+        waClient, 
+        processMonitoringEvent, 
+        closeRecoveryScheduler,
+        stateStore
+    );
     bifastConsumer.start();
 
     // QRIS polling (as before)

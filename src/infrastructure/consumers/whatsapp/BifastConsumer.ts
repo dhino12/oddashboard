@@ -5,15 +5,17 @@ import { ProcessMonitoringEvent } from "../../../application/usecases/ProcessMon
 import { uuid } from "../../../utils/UUID";
 import { CloseRecoveryScheduler } from "../../scheduler/CloseRecoveryBiFastScheduler";
 import { ENV } from "../../../config/env";
+import { MonitoringStateStore } from "../../../application/ports/MonitoringStateStore";
 
 export class BifastConsumer {
     constructor(
         private wa: WhatsAppClient, 
         private processor: ProcessMonitoringEvent,
-        private closeRecoveryScheduler: CloseRecoveryScheduler
+        private closeRecoveryScheduler: CloseRecoveryScheduler,
+        private stateStore: MonitoringStateStore,
     ) {}
 
-    start() {
+    async start() {
         this.wa.on("message", async (msg: RawWhatsAppMessage) => {
         try {
             if (
@@ -35,10 +37,16 @@ export class BifastConsumer {
                 occurredAt: msg.timestamp ?? Date.now(),
             };
             if (dto.status === "CLOSED") {
-                this.closeRecoveryScheduler.start(
+                const prevState = await this.stateStore.get(
                     dto.source,
                     dto.entity
                 );
+                if (prevState?.lastStatus != dto.status) {
+                    this.closeRecoveryScheduler.start(
+                        dto.source,
+                        dto.entity
+                    );
+                }
             }
             if (dto.status === "OPEN") {
                 this.closeRecoveryScheduler.stop(
