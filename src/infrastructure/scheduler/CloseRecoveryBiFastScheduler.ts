@@ -1,7 +1,4 @@
 import { Logger } from "winston";
-import { MonitoringStateStore } from "../../application/ports/MonitoringStateStore";
-import { IncidentRepository } from "../../domain/incident/IncidentRepository";
-import { MonitoringState } from "../../domain/monitoring/MonitoringState";
 import { HealthChecker } from "../external/healthcheck/BiFastHealthChecker";
 import { ProcessMonitoringEvent } from "../../application/usecases/ProcessMonitoringEvent/ProcessMonitoringEvent";
 
@@ -12,8 +9,6 @@ export class CloseRecoveryScheduler {
     private timers = new Map<Key, NodeJS.Timeout>()
     constructor(
         private healthChecker: HealthChecker,
-        private incidentRepo: IncidentRepository,
-        private stateStore: MonitoringStateStore,
         private processMonitoringEvent: ProcessMonitoringEvent,
         private logger: Logger,
     ){}
@@ -32,7 +27,6 @@ export class CloseRecoveryScheduler {
                         source, entity, status: "OPEN"
                     })
                     console.log(`${key} recoverd via health API`);
-                    // NAURA REMINDER
                     this.stop(source, entity)
                 }
             } catch (error) {

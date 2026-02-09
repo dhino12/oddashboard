@@ -45,7 +45,7 @@ export async function registerConsumers(logger: Logger) {
 
     // Cleanup setup
     const monitoringEvent = new CleanupMonitoringJob(eventStore)
-    const biFastHealthChecker = new BiFastHealthChecker()
+    const biFastHealthChecker = new BiFastHealthChecker(nauraGateway)
 
     // WhatsApp setup
     const waClient = startWhatsApp(logger);
@@ -65,9 +65,7 @@ export async function registerConsumers(logger: Logger) {
     );
 
     const closeRecoveryScheduler = new CloseRecoveryScheduler(
-        biFastHealthChecker, 
-        incidentRepo, 
-        stateStore,
+        biFastHealthChecker,
         processMonitoringEvent,
         logger
     )

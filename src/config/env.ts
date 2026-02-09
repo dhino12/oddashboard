@@ -1,3 +1,5 @@
+import { SourceHealthCheck } from "../infrastructure/scheduler/CloseRecoveryBiFastScheduler";
+
 export const ENV = {
     REDIS_URL: process.env.REDIS_URL || "redis://127.0.0.1:6379",
     DATABASE_URL: process.env.DATABASE_URL || "mysql://user:pass@localhost:3306/db",
@@ -14,4 +16,7 @@ export const ENV = {
     BROADCAST_WHATSAPP_GROUP_COMCEN:"com_cen",
     LISTEN_GROUP_CHAT_TEST_BROADCAST: "120363424819385538@g.us",
     LISTEN_GROUP_CHAT_BIFAST_MONITORING: "null",
+    MESSAGE_NOTIFY_BIFAST_OPENED_NAURA: (source: SourceHealthCheck, entity: string, sourceWaNumber: string) => {
+        return `✅ Transaksi ${source} kearah ${entity} sudah dibuka kembali\n\ncc: @${sourceWaNumber}`
+    }
 };
