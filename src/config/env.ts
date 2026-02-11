@@ -5,6 +5,8 @@ export const ENV = {
     DATABASE_URL: process.env.DATABASE_URL || "mysql://user:pass@localhost:3306/db",
     SLIDING_WINDOW_MS: Number(process.env.SLIDING_WINDOW_MS) || 60 * 1000,
     STABLE_OPEN_MS: Number(process.env.STABLE_OPEN_MS) || 60 * 1000,
+    INTERVAL_HEALTHCHECK: Number(process.env.STABLE_OPEN_MS) || 60 * 1000,
+    MASSIVE_INTERVAL_HEALTHCHECK: Number(process.env.STABLE_OPEN_MS) || 5 * 1000,
     DEDUP_LOCK_TTL_MS: Number(process.env.DEDUP_LOCK_TTL_MS) || 5 * 60 * 1000,
     REMEDY_BASE: process.env.REMEDY_BASE || "https://10.254.152.105:8443/remedy",
     REMEDY_USER: process.env.REMEDY_USER || "user",

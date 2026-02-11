@@ -23,6 +23,9 @@ import { NauraClient } from "../external/naura/NauraClient";
 import { CloseRecoveryScheduler } from "../scheduler/CloseRecoveryBiFastScheduler";
 import { BiFastHealthChecker } from "../external/healthcheck/BiFastHealthChecker";
 import { MonitoringStateStore } from "../../application/ports/MonitoringStateStore";
+import { BifastVerificationJob } from "../scheduler/BifastVerificationJob";
+import { AdvancedBifastVerifier } from "../../application/usecases/AdvancedBifastVerifier/AdvancedBifastVerifier";
+import { ElasticMetricService, WagHelpdeskService } from "../external/elastic/ElasticMetricService";
 
 export async function registerConsumers(logger: Logger) {
     // instantiate infra implementations
@@ -42,16 +45,15 @@ export async function registerConsumers(logger: Logger) {
         ENV.BROADCAST_WHATSAPP_GROUP_MANDIRI_CARE,
         ENV.BROADCAST_WHATSAPP_GROUP_PTR_BROADCAST,
     ])
-
-    // Cleanup setup
-    const monitoringEvent = new CleanupMonitoringJob(eventStore)
-    const biFastHealthChecker = new BiFastHealthChecker(nauraGateway)
+    const elasticMatricService = new ElasticMetricService(logger);
+    const wagHelpDeskService = new WagHelpdeskService();
 
     // WhatsApp setup
     const waClient = startWhatsApp(logger);
     const whatsappNotify = new WhatsAppNotificationGateway(waClient, ENV.ALERT_WA_NUMBER)
 
     // create the main usecase
+    const advancedBifastVerify = new AdvancedBifastVerifier(elasticMatricService, wagHelpDeskService, incidentRepo)
     const processMonitoringEvent = new ProcessMonitoringEvent(
         eventStore,
         stateStore,
@@ -64,15 +66,20 @@ export async function registerConsumers(logger: Logger) {
         Number(process.env.FLAP_THRESHOLD ?? 3)
     );
 
+    // Cleanup setup
+    const monitoringEvent = new CleanupMonitoringJob(eventStore)
+    const biFastHealthChecker = new BiFastHealthChecker(nauraGateway)
     const closeRecoveryScheduler = new CloseRecoveryScheduler(
         biFastHealthChecker,
         processMonitoringEvent,
         logger
     )
+    const bifastVerificationJob = new BifastVerificationJob(advancedBifastVerify, logger);
     const bifastConsumer = new BifastConsumer(
         waClient, 
-        processMonitoringEvent, 
+        processMonitoringEvent,
         closeRecoveryScheduler,
+        bifastVerificationJob,
         stateStore
     );
     bifastConsumer.start();

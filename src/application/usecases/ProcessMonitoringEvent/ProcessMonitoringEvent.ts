@@ -43,7 +43,7 @@ export class ProcessMonitoringEvent {
         );
 
         /**
-         * 1️⃣ Load previous monitoring state
+         * 1 Load previous monitoring state
          */
         const prevState = await this.stateStore.get(
             event.source,
@@ -52,7 +52,7 @@ export class ProcessMonitoringEvent {
         
 
         /**
-         * 2️⃣ First time seeing this entity → just record state
+         * 2 First time seeing this entity → just record state
          */
         if (!prevState) {
             await this.stateStore.set(
@@ -64,7 +64,7 @@ export class ProcessMonitoringEvent {
         }
 
         /**
-         * 3️⃣ Ignore duplicate status (anti-spam)
+         * 3 Ignore duplicate status (anti-spam)
          * CLOSED -> CLOSED
          * OPEN   -> OPEN
          */
@@ -75,7 +75,7 @@ export class ProcessMonitoringEvent {
         }
 
         /**
-         * 4️⃣ Detect meaningful transition
+         * 4 Detect meaningful transition
          * Business rule:
          * - BIFAST  : OPEN -> CLOSED (flapping)
          * - QRIS    : SUCCESS -> FAILURE
@@ -103,12 +103,12 @@ export class ProcessMonitoringEvent {
         }
 
         /**
-         * 5️⃣ Append ONLY transition event to sliding window store
+         * 5 Append ONLY transition event to sliding window store
          */
         await this.eventStore.append(event);
 
         /**
-         * 6️⃣ Evaluate sliding window threshold
+         * 6 Evaluate sliding window threshold
          */
         const exceeded = await this.evaluator.isThresholdExceeded(
             event.source,
@@ -137,7 +137,7 @@ export class ProcessMonitoringEvent {
         }
 
         /**
-         * 7️⃣ Prevent duplicate open incident
+         * 7 Prevent duplicate open incident
          */
         const hasOpenIncident = await this.incidentRepo.hasOpenIncident(event.source,event.entity);
         console.log(`hasOpenIncident: ${hasOpenIncident}`);
@@ -147,7 +147,7 @@ export class ProcessMonitoringEvent {
         }
 
         /**
-         * 8️⃣ Dedup lock (race condition protection)
+         * 8 Dedup lock (race condition protection)
          */
         // const locked = await this.dedup.acquireIncidentLock(event.source,event.entity,ENV.DEDUP_LOCK_TTL_MS);
 
@@ -156,7 +156,7 @@ export class ProcessMonitoringEvent {
         // }
 
         /**
-         * 9️⃣ Create incident (DB = source of truth)
+         * 9 Create incident (DB = source of truth)
          */
         const idDraft = uuidv4()
         // const incident = new Incident(
@@ -199,7 +199,7 @@ export class ProcessMonitoringEvent {
         });
 
         /**
-         * 🔟 Best-effort call external system (Remedy)
+         * 10 Best-effort call external system (Remedy)
          * Never rollback DB if this fails
          */
         try {

@@ -6,12 +6,14 @@ import { uuid } from "../../../utils/UUID";
 import { CloseRecoveryScheduler } from "../../scheduler/CloseRecoveryBiFastScheduler";
 import { ENV } from "../../../config/env";
 import { MonitoringStateStore } from "../../../application/ports/MonitoringStateStore";
+import { BifastVerificationJob } from "../../scheduler/BifastVerificationJob";
 
 export class BifastConsumer {
     constructor(
         private wa: WhatsAppClient, 
         private processor: ProcessMonitoringEvent,
         private closeRecoveryScheduler: CloseRecoveryScheduler,
+        private closeBiFastVerifyScheduler: BifastVerificationJob,
         private stateStore: MonitoringStateStore,
     ) {}
 
@@ -19,10 +21,10 @@ export class BifastConsumer {
         this.wa.on("message", async (msg: RawWhatsAppMessage) => {
         try {
             if (
-                msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST || 
+                msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST &&
                 msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_MONITORING
             ) return
-            // msg.body may contain other text; parse it
+            
             const parsed = parseBifastMessage(msg.body || "");
             if (!parsed) return;
 
@@ -42,17 +44,18 @@ export class BifastConsumer {
                     dto.entity
                 );
                 if (prevState?.lastStatus != dto.status) {
-                    this.closeRecoveryScheduler.start(
-                        dto.source,
-                        dto.entity
-                    );
+                    console.log('masuk if');
+                    
+                    this.closeRecoveryScheduler.start(dto.source, dto.entity);
                 }
+                this.closeBiFastVerifyScheduler.start(dto.source, dto.entity)
             }
             if (dto.status === "OPEN") {
                 this.closeRecoveryScheduler.stop(
                     dto.source,
                     dto.entity
                 );
+                this.closeBiFastVerifyScheduler.stop(dto.source, dto.entity)
             }
             await this.processor.execute(dto);
         } catch (err) {
