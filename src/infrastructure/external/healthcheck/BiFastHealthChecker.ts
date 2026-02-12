@@ -17,7 +17,7 @@ export class BiFastHealthChecker implements HealthChecker {
         // })
         // const resultJson = await res.data;
         const resultJson = resultAxiosRequest;
-        const findStatusBank = resultJson.data.chart_extracts[0].table.find(item => item["BANK NAME"].toUpperCase() == entity);
+        const findStatusBank = resultJson.data.chart_extracts[0].table.find(item => item["BANK NAME"].toUpperCase() == entity.toUpperCase());
         if (findStatusBank?.STATUS.toUpperCase() == "OPEN") {
             this.nauraGateway.postNotifyFromNaura(ENV.MESSAGE_NOTIFY_BIFAST_OPENED_NAURA("BIFAST", findStatusBank["BANK NAME"], "6281119350138"))
             return true
