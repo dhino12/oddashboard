@@ -38,12 +38,7 @@ export class BifastVerificationJob {
                     `Verification running ${key} → ${result}, elapsed ${elapsed}ms`
                 );
 
-                // 🧠 Belum 5 menit → jangan ambil keputusan
-                if (elapsed < this.observationMs) {
-                    return;
-                }
-
-                // ⏳ Sudah 5 menit → baru evaluasi final
+                if (elapsed < this.observationMs) return;
                 if (
                     session.lastResult === "CONFIRMED_INCIDENT" ||
                     session.lastResult === "FALSE_POSITIVE"
@@ -54,7 +49,7 @@ export class BifastVerificationJob {
             } catch (err) {
                 this.logger.error(err);
             }
-        }, 5000);
+        }, 60 * 40000);
 
         this.jobs.set(key, timer);
     }

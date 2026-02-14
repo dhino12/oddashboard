@@ -7,6 +7,7 @@ import { CloseRecoveryScheduler } from "../../scheduler/CloseRecoveryBiFastSched
 import { ENV } from "../../../config/env";
 import { MonitoringStateStore } from "../../../application/ports/MonitoringStateStore";
 import { BifastVerificationJob } from "../../scheduler/BifastVerificationJob";
+import { InMemoryWagComplaintStore } from "../../persistence/memory/InMemoryWagComplaint";
 
 export class BifastConsumer {
     constructor(
@@ -15,6 +16,7 @@ export class BifastConsumer {
         private closeRecoveryScheduler: CloseRecoveryScheduler,
         private closeBiFastVerifyScheduler: BifastVerificationJob,
         private stateStore: MonitoringStateStore,
+        private wagCompaint: InMemoryWagComplaintStore,
     ) {}
 
     async start() {
@@ -26,6 +28,12 @@ export class BifastConsumer {
             ) return
             
             const parsed = parseBifastMessage(msg.body || "");
+            // if (parsed.isComplaint && parsed.entity) {
+            //     wagComplaintStore.record(
+            //         parsed.entity,
+            //         parsed.text
+            //     )
+            // }
             if (!parsed) return;
 
             // Build DTO for ProcessMonitoringEvent
@@ -47,8 +55,8 @@ export class BifastConsumer {
                     console.log('masuk if');
                     
                     this.closeRecoveryScheduler.start(dto.source, dto.entity);
+                    this.closeBiFastVerifyScheduler.start(dto.source, dto.entity)
                 }
-                this.closeBiFastVerifyScheduler.start(dto.source, dto.entity)
             }
             if (dto.status === "OPEN") {
                 this.closeRecoveryScheduler.stop(

@@ -829,3 +829,38 @@ export const resultAxiosRequest = {
         }
     }
 }
+
+export const BIFAST_METRIC_CONFIGS = [
+    {
+        name: "BIFAST_INQUIRY",
+        threshold: 2000,
+        queryType: "INQUIRY",
+        urlCrawling: "",
+        reqBody: "",
+        channel: "BIFAST"
+    },
+    {
+        name: "BIFAST_INQUIRY_CIHUB",
+        threshold: 2000,
+        queryType: "INQUIRY",
+        urlCrawling: "",
+        reqBody: "",
+        channel: "CIHUB"
+    },
+    {
+        name: "BIFAST_TX",
+        threshold: 2500,
+        queryType: "TRANSACTION",
+        urlCrawling: "",
+        reqBody: "",
+        channel: "BIFAST"
+    },
+    {
+        name: "BIFAST_TX_CIHUB",
+        threshold: 2500,
+        queryType: "TRANSACTION",
+        urlCrawling: "",
+        reqBody: "",
+        channel: "CIHUB"
+    }
+]

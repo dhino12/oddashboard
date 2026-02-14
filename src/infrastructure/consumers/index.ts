@@ -25,7 +25,10 @@ import { BiFastHealthChecker } from "../external/healthcheck/BiFastHealthChecker
 import { MonitoringStateStore } from "../../application/ports/MonitoringStateStore";
 import { BifastVerificationJob } from "../scheduler/BifastVerificationJob";
 import { AdvancedBifastVerifier } from "../../application/usecases/AdvancedBifastVerifier/AdvancedBifastVerifier";
-import { ElasticMetricService, WagHelpdeskService } from "../external/elastic/ElasticMetricService";
+import { ElasticMetricService, MetricConfig } from "../external/elastic/ElasticMetricService";
+import { BIFAST_METRIC_CONFIGS } from "../../config/bifastlist";
+import { WagHelpdeskService } from "../external/elastic/WagHelpdeskService";
+import { InMemoryWagComplaintStore } from "../persistence/memory/InMemoryWagComplaint";
 
 export async function registerConsumers(logger: Logger) {
     // instantiate infra implementations
@@ -45,8 +48,9 @@ export async function registerConsumers(logger: Logger) {
         ENV.BROADCAST_WHATSAPP_GROUP_MANDIRI_CARE,
         ENV.BROADCAST_WHATSAPP_GROUP_PTR_BROADCAST,
     ])
-    const elasticMatricService = new ElasticMetricService(logger);
-    const wagHelpDeskService = new WagHelpdeskService();
+    const inMemoryWagComplaint = new InMemoryWagComplaintStore();
+    const elasticMatricService = new ElasticMetricService(logger, BIFAST_METRIC_CONFIGS as MetricConfig[]);
+    const wagHelpDeskService = new WagHelpdeskService(inMemoryWagComplaint);
 
     // WhatsApp setup
     const waClient = startWhatsApp(logger);
@@ -80,7 +84,8 @@ export async function registerConsumers(logger: Logger) {
         processMonitoringEvent,
         closeRecoveryScheduler,
         bifastVerificationJob,
-        stateStore
+        stateStore,
+        inMemoryWagComplaint
     );
     bifastConsumer.start();
 

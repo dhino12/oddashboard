@@ -10,11 +10,11 @@ export class AdvancedBifastVerifier {
     ) {}
     async verfiy (source: string, entity: string): Promise<"WAIT" | "FALSE_POSITIVE" | "CONFIRMED_INCIDENT"> {
         const metrics = await this.elasticSvc.fetch(source, entity);
-        if (metrics.trend == null) {
+        if (metrics.overallLevel == null) {
             return "WAIT"
         }
         
-        if (metrics.trend !== "CRITICAL") {
+        if (metrics.overallLevel !== "CRITICAL") {
             return "FALSE_POSITIVE"
         }
 
@@ -27,7 +27,15 @@ export class AdvancedBifastVerifier {
         if (hasOpen) {
             return "CONFIRMED_INCIDENT"
         }
-
+        
+        // contoh policy rule eksplisit
+        const criticalSignals = metrics.signals.filter(s => s.trend?.level === "CRITICAL")
+        if (
+            criticalSignals.some(s => s.source === "BIFAST_TX") &&
+            criticalSignals.some(s => s.source === "BIFAST_TX_CIHUB")
+        ) {
+            // benar-benar incident berat
+        }
         // await this.incidentRepo.create()
         return "CONFIRMED_INCIDENT" 
     }
