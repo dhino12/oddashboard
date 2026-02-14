@@ -1,6 +1,7 @@
 import { Logger } from "winston";
 import { AdvancedBifastVerifier } from "../../application/usecases/AdvancedBifastVerifier/AdvancedBifastVerifier";
 import { ENV } from "../../config/env";
+import { HealthChecker } from "../external/healthcheck/BiFastHealthChecker";
 type VerificationSession = {
     startedAt: number;
     lastResult: "WAIT" | "CONFIRMED_INCIDENT" | "FALSE_POSITIVE";
@@ -14,6 +15,7 @@ export class BifastVerificationJob {
 
     constructor(
         private readonly verifier: AdvancedBifastVerifier,
+        private readonly healthChecker: HealthChecker,
         private readonly logger: Logger
     ) {}
 
@@ -29,6 +31,12 @@ export class BifastVerificationJob {
 
         const timer = setInterval(async () => {
             try {
+                const isOpen = await this.healthChecker.isServiceOpen(source, entity);
+                if (isOpen) {
+                    this.logger.info(`Service ${key} already OPEN → stop verification`);
+                    this.stop(source, entity);
+                    return;
+                }
                 const result = await this.verifier.verfiy(source, entity);
                 const session = this.sessions.get(key);
                 if (!session) return;

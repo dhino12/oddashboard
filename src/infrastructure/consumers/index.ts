@@ -78,7 +78,11 @@ export async function registerConsumers(logger: Logger) {
         processMonitoringEvent,
         logger
     )
-    const bifastVerificationJob = new BifastVerificationJob(advancedBifastVerify, logger);
+    const bifastVerificationJob = new BifastVerificationJob(
+        advancedBifastVerify, 
+        biFastHealthChecker,
+        logger
+    );
     const bifastConsumer = new BifastConsumer(
         waClient, 
         processMonitoringEvent,

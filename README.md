@@ -137,3 +137,8 @@ Error Count: 9 out of 228 is U173
 
 source: autoclose_bifast
 ```
+
+# TODO
+- fetchFromElastic harus diubah seluruhnya hasil dari respbody callElastic by crawling playwright service
+- buat parseComplaint by WhatsappGroup HelpdeskBiFast
+- Jika bifast service sudah open pada CloseRecoveryBiFastScheduler isServiceOpen, maka saat ini BiFastVerificationJob belum menghentikan interval otomatis
