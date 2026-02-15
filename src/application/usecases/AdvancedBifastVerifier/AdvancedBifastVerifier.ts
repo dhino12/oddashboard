@@ -1,6 +1,7 @@
 import { Incident } from "../../../domain/incident/Incident";
 import { IncidentRepository } from "../../../domain/incident/IncidentRepository";
-import { ElasticMetricService, WagHelpdeskService } from "../../../infrastructure/external/elastic/ElasticMetricService";
+import { ElasticMetricService } from "../../../infrastructure/external/elastic/ElasticMetricService";
+import { WagHelpdeskService } from "../../../infrastructure/external/elastic/WagHelpdeskService";
 
 export class AdvancedBifastVerifier {
     constructor(

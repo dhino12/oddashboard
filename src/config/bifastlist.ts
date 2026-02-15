@@ -1,29 +1,30 @@
 export const bifastList = [
-    { "id_bank": "BTANIDJA", "nama_bank": "Bank Tabungan Negara", "kode": 9 },
-    { "id_bank": "BBBAIDJA", "nama_bank": "Bank Permata", "kode": 14 },
-    { "id_bank": "BDINIDJA", "nama_bank": "Bank Danamon Indonesia", "kode": 13 },
-    { "id_bank": "BNIAIDJA", "nama_bank": "Bank CIMB Niaga", "kode": 18 },
-    { "id_bank": "MUABIDJA", "nama_bank": "Bank Muamalat Indonesia", "kode": 19 },
-    { "id_bank": "MEGAIDJA", "nama_bank": "Bank Mega", "kode": 17 },
-    { "id_bank": "PDKTIDJ1", "nama_bank": "BPD Kaltimtara", "kode": 85 },
-    { "id_bank": "DANAIDJ1", "nama_bank": "DANA", "kode": 316 },
-    { "id_bank": "PDJTIDJ1", "nama_bank": "BPD Jatim", "kode": 81 },
-    { "id_bank": "PDWSIDJA", "nama_bank": "Bank Sulselbar", "kode": 95 },
-    { "id_bank": "BSSPIDSP", "nama_bank": "BPD Sumsel Babel", "kode": 48 },
-    { "id_bank": "JAGBIDJA", "nama_bank": "Bank Jago", "kode": 214 },
-    { "id_bank": "IBBKIDJA", "nama_bank": "Bank Maybank Indonesia", "kode": 60 },
-    { "id_bank": "PDJGIDJ1", "nama_bank": "BPD Jateng", "kode": 79 },
-    { "id_bank": "NISPIDJA", "nama_bank": "Bank OCBC", "kode": 74 },
-    { "id_bank": "BSYAIDJA", "nama_bank": "Bank Central Asia Syariah", "kode": 112 },
-    { "id_bank": "PDJBIDJA", "nama_bank": "Bank BJB", "kode": 78 },
-    { "id_bank": "PDSUIDJ1", "nama_bank": "BPD Sumut", "kode": 92 },
-    { "id_bank": "BNINIDJA", "nama_bank": "Bank Negara Indonesia", "kode": 5 },
-    { "id_bank": "BRINIDJA", "nama_bank": "Bank Rakyat Indonesia", "kode": 1 },
-    { "id_bank": "CENAIDJA", "nama_bank": "Bank Central Asia", "kode": 2 },
-    { "id_bank": "BSMDIDJA", "nama_bank": "Bank Syariah Indonesia", "kode": 11 },
-    { "id_bank": "DANAIDJ1", "nama_bank": "DANA", "kode": 316 },
-    { "id_bank": "SSPIIDJA", "nama_bank": "Seabank", "kode": 65 }
+    { "id_bank": "BTANIDJA", "nama_bank": "Bank Tabungan Negara", "abbreviation": "BTN", "kode": 901 },
+    { "id_bank": "BBBAIDJA", "nama_bank": "Bank Permata", "abbreviation": "Permata", "kode": 347 },
+    { "id_bank": "BDINIDJA", "nama_bank": "Bank Danamon Indonesia", "abbreviation": "Danamon", "kode": 582 },
+    { "id_bank": "BNIAIDJA", "nama_bank": "Bank CIMB Niaga", "abbreviation": "CIMB", "kode": 764 },
+    { "id_bank": "MUABIDJA", "nama_bank": "Bank Muamalat Indonesia", "abbreviation": "Muamalat", "kode": 219 },
+    { "id_bank": "MEGAIDJA", "nama_bank": "Bank Mega", "abbreviation": "Mega", "kode": 438 },
+    { "id_bank": "PDKTIDJ1", "nama_bank": "BPD Kaltimtara", "abbreviation": "Kaltimtara", "kode": 655 },
+    { "id_bank": "DANAIDJ1", "nama_bank": "DANA", "abbreviation": "DANA", "kode": 873 },
+    { "id_bank": "PDJTIDJ1", "nama_bank": "BPD Jatim", "abbreviation": "Jatim", "kode": 120 },
+    { "id_bank": "PDWSIDJA", "nama_bank": "Bank Sulselbar", "abbreviation": "Sulselbar", "kode": 944 },
+    { "id_bank": "BSSPIDSP", "nama_bank": "BPD Sumsel Babel", "abbreviation": "SSBB", "kode": 301 },
+    { "id_bank": "JAGBIDJA", "nama_bank": "Bank Jago", "abbreviation": "Jago", "kode": 777 },
+    { "id_bank": "IBBKIDJA", "nama_bank": "Bank Maybank Indonesia", "abbreviation": "Maybank", "kode": 489 },
+    { "id_bank": "PDJGIDJ1", "nama_bank": "BPD Jateng", "abbreviation": "Jateng", "kode": 632 },
+    { "id_bank": "NISPIDJA", "nama_bank": "Bank OCBC", "abbreviation": "OCBC", "kode": 258 },
+    { "id_bank": "BSYAIDJA", "nama_bank": "Bank Central Asia Syariah", "abbreviation": "BCA Sy", "kode": 519 },
+    { "id_bank": "PDJBIDJA", "nama_bank": "Bank BJB", "abbreviation": "BJB", "kode": 864 },
+    { "id_bank": "PDSUIDJ1", "nama_bank": "BPD Sumut", "abbreviation": "Sumut", "kode": 415 },
+    { "id_bank": "BNINIDJA", "nama_bank": "Bank Negara Indonesia", "abbreviation": "BNI", "kode": 690 },
+    { "id_bank": "BRINIDJA", "nama_bank": "Bank Rakyat Indonesia", "abbreviation": "BRI", "kode": 133 },
+    { "id_bank": "CENAIDJA", "nama_bank": "Bank Central Asia", "abbreviation": "BCA", "kode": 256 },
+    { "id_bank": "BSMDIDJA", "nama_bank": "Bank Syariah Indonesia", "abbreviation": "BSI", "kode": 998 },
+    { "id_bank": "DANAIDJ1", "nama_bank": "DANA", "abbreviation": "DANA", "kode": 742 },
+    { "id_bank": "SSPIIDJA", "nama_bank": "Seabank", "abbreviation": "Seabank", "kode": 381 }
 ];
+
 
 export const resultAxiosRequest = {
     "code": 200,
@@ -830,6 +831,105 @@ export const resultAxiosRequest = {
     }
 }
 
+export const resultAxiosElastic1 = {
+    "code": 200,
+    "status": "success",
+    "data": {
+        "action": "scrape",
+        "chart_extracts": [
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    {
+                        "#": "1",
+                        "creationDate per minute": "15:39",
+                        "Filters": "BCA",
+                        "Average totalTime": "777"
+                    },
+                    {
+                        "#": "2",
+                        "creationDate per minute": "15:39",
+                        "Filters": "BRI",
+                        "Average totalTime": "712"
+                    },
+                    {
+                        "#": "3",
+                        "creationDate per minute": "15:39",
+                        "Filters": "BNI",
+                        "Average totalTime": "777"
+                    },
+                    {
+                        "#": "4",
+                        "creationDate per minute": "15:39",
+                        "Filters": "BSI",
+                        "Average totalTime": "711"
+                    },
+                    {
+                        "#": "3",
+                        "creationDate per minute": "15:39",
+                        "Filters": "DANA",
+                        "Average totalTime": "934"
+                    },
+                    {
+                        "#": "4",
+                        "creationDate per minute": "15:39",
+                        "Filters": "Sea Bank",
+                        "Average totalTime": "880"
+                    },
+                ]
+            },
+            {
+                "title": "Avg Transaction BIFAST",
+                "table": [
+                    {
+                        "#": "1",
+                        "creationDate per minute": "15:39",
+                        "Filters": "BCA",
+                        "Average totalTime": "777"
+                    },
+                    {
+                        "#": "2",
+                        "creationDate per minute": "15:39",
+                        "Filters": "BRI",
+                        "Average totalTime": "712"
+                    },
+                    {
+                        "#": "3",
+                        "creationDate per minute": "15:39",
+                        "Filters": "BNI",
+                        "Average totalTime": "777"
+                    },
+                    {
+                        "#": "4",
+                        "creationDate per minute": "15:39",
+                        "Filters": "BSI",
+                        "Average totalTime": "711"
+                    },
+                    {
+                        "#": "3",
+                        "creationDate per minute": "15:39",
+                        "Filters": "DANA",
+                        "Average totalTime": "934"
+                    },
+                    {
+                        "#": "4",
+                        "creationDate per minute": "15:39",
+                        "Filters": "Sea Bank",
+                        "Average totalTime": "880"
+                    },
+                ]
+            }
+        ],
+        "screenshots": [],
+        "metadata": {
+            "web_name": "Token_Tracker_-_Etherscan",
+            "url": "https://etherscan.io/tokens?ps=10",
+            "executionTime": "9.12s",
+            "timestamp": "2026-02-15T01:34:52.707Z"
+        }
+    }
+}
+
 export const BIFAST_METRIC_CONFIGS = [
     {
         name: "BIFAST_INQUIRY",
@@ -839,28 +939,13 @@ export const BIFAST_METRIC_CONFIGS = [
         reqBody: "",
         channel: "BIFAST"
     },
-    {
-        name: "BIFAST_INQUIRY_CIHUB",
-        threshold: 2000,
-        queryType: "INQUIRY",
-        urlCrawling: "",
-        reqBody: "",
-        channel: "CIHUB"
-    },
-    {
-        name: "BIFAST_TX",
-        threshold: 2500,
-        queryType: "TRANSACTION",
-        urlCrawling: "",
-        reqBody: "",
-        channel: "BIFAST"
-    },
-    {
-        name: "BIFAST_TX_CIHUB",
-        threshold: 2500,
-        queryType: "TRANSACTION",
-        urlCrawling: "",
-        reqBody: "",
-        channel: "CIHUB"
-    }
 ]
+
+export default function findBiFastAbbreviationByBankName(bankName:string): string {
+    const entity: string = bankName.toUpperCase();
+    return bifastList.find(bifastName => {
+        if (entity == bifastName.nama_bank.toUpperCase()) {
+            return bifastName.abbreviation.toUpperCase()
+        }
+    })?.abbreviation ?? ""
+}

@@ -1,12 +1,14 @@
 import axios from "axios"
 import { Logger } from "winston"
+import { resultAxiosElastic1 } from "../../../config/bifastlist"
 
 type MetricSample = {
+    source: string
+    bankName?: string
+    avgRespTime: number
+    u173Count: number
     timestamp: number
     timestampString: string
-    avgRespTime: number
-    u173Count: number,
-    bankName?: string
 }
 
 type AnalyzeTrend = {
@@ -32,6 +34,7 @@ export interface MetricConfig {
 }
 
 export interface MetricTrendResult {
+    key: string,
     source: string
     trend: AnalyzeTrend | null
 }
@@ -55,62 +58,70 @@ export class ElasticMetricService {
     async fetch(source: string,entity: string): Promise<MetricFetchResult> {
         const signals: MetricTrendResult[] = []
         for (const config of this.metricConfigs) {
-            const metric = await this.fetchFromElastic(entity, config)
-            const key = `${source}:${entity}:${config.name}`
-
-            if (!this.samples[key]) this.samples[key] = []
-            this.recordSample(key, metric)
-            const trend = this.analyzeTrend(key, config.threshold)
-            signals.push({
-                source: config.name,
-                trend
-            })
+            const samples = await this.fetchFromElastic(entity, config)
+            for (const sample of samples) {
+                const key = `${source}:${entity}:${sample.source}`
+                if (!this.samples[key]) this.samples[key] = []
+                this.recordSample(key, sample)
+                const trend = this.analyzeTrend(key, config.threshold)
+                if (trend) {
+                    signals.push({
+                        key,
+                        source: sample.source,
+                        trend
+                    })
+                }
+            }
         }
+        this.logger.info("======= signals")
+        this.logger.info(signals)
 
         return {
-            overallLevel: this.aggregateLevel(signals), // minimal satu signal yang CRITICAL
+            overallLevel: this.aggregateLevel(signals),
             signals
         }
     }
 
-    private async fetchFromElastic(entity: string, config: MetricConfig): Promise<MetricSample> {
-        /**
-         * TODO: 
-         * Ini harus diubah sesuai dengan result / response callElastic()
-         */
-        const data = await this.callElastic(config.urlCrawling, config.reqBody)
-        const buckets = data.rawResponse.aggregations["0"].buckets
-        const latestBucket = buckets[buckets.length - 1]
-        const bankBuckets = latestBucket["1"].buckets
-        const bankEntry = Object.entries(bankBuckets).find((bankName) => {
-            return bankName[0].toUpperCase() === entity
-        })
-        const bankData = bankEntry?.[1] as BankData | undefined
-        this.logger.info(bankData)
-        if (!bankData) {
-            this.logger.info("This bank is not included in the Bank BUKU 4")
-            return {
-                avgRespTime: 0,
-                u173Count: 0,
-                timestamp: 0,
-                bankName: "",
-                timestampString: ""
+    private async fetchFromElastic(entity: string, config: MetricConfig): Promise<MetricSample[]> {
+        // const data = await this.callElastic(config.urlCrawling, config.reqBody)
+        const data = resultAxiosElastic1;
+        const samples: MetricSample[] = []
+        const tables = data.data.chart_extracts ?? []
+
+        for (const table of tables) {
+            for (const row of table.table) {
+                if (row["Filters"]?.toUpperCase() !== entity.toUpperCase()) continue
+                const timestampString = row["creationDate per minute"]
+                const avgRespTime = Number(row["Average totalTime"] ?? 0)
+
+                samples.push({
+                    source: table.title,
+                    bankName: entity,
+                    avgRespTime,
+                    u173Count: 0, // kalau belum ada, isi 0 dulu
+                    timestamp: this.parseMinute(timestampString),
+                    timestampString
+                })
             }
         }
-
-        return {
-            avgRespTime: bankData["2"].value,
-            u173Count: bankData.doc_count,
-            timestamp: new Date(latestBucket.key_as_string).getTime(),
-            timestampString: latestBucket.key_as_string,
-            bankName: entity
-        }
+        this.logger.info("fetchFromElastic - " + entity)
+        this.logger.info(samples)
+        return samples
     }
     
+    private parseMinute(minute:string): number {
+        const now = new Date();
+        const [h,m] = minute.split(":").map(Number)
+        now.setHours(h,m,0,0);
+        return now.getTime()
+    }
+
     private recordSample(key: string, metric: MetricSample) {
         const eventTime = metric.timestamp
 
         this.samples[key].push({
+            source: metric.source,
+            bankName: metric.bankName,
             timestamp: eventTime,
             avgRespTime: metric.avgRespTime,
             u173Count: metric.u173Count,
@@ -155,9 +166,7 @@ export class ElasticMetricService {
             level
         };
     }
-    private aggregateLevel(
-        signals: MetricTrendResult[]
-    ): "CRITICAL" | "WARNING" | "NORMAL" {
+    private aggregateLevel(signals: MetricTrendResult[]): "CRITICAL" | "WARNING" | "NORMAL" {
         if (signals.some(s => s.trend?.level === "CRITICAL")) return "CRITICAL"
         if (signals.some(s => s.trend?.level === "WARNING")) return "WARNING"
         return "NORMAL"

@@ -46,6 +46,8 @@ export class BifastConsumer {
                 status: parsed.status,
                 occurredAt: msg.timestamp ?? Date.now(),
             };
+            console.log(dto.status);
+            
             if (dto.status === "CLOSED") {
                 const prevState = await this.stateStore.get(
                     dto.source,
