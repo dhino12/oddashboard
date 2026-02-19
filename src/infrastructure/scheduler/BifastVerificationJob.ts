@@ -37,8 +37,9 @@ export class BifastVerificationJob {
                 this.logger.info(`RUNNING JOB BIFAST_VERIFICATION`);
                 const callBiFastASPChecking = await this.healthChecker.callBiFastASP("")
                 const isOpen = false
+                // const isOpen = await this.healthChecker.isServiceOpenV2(entity, callBiFastASPChecking)
                 if (isOpen) {
-                    this.logger.info(`Service ${key} already OPEN → stop verification`);
+                    this.logger.info(`Service ${key} already 🛑 STOP Verification`);
                     this.stop(source, entity);
                     return;
                 }
@@ -47,9 +48,8 @@ export class BifastVerificationJob {
                 if (!session) return;
                 session.lastResult = result;
                 const elapsed = Date.now() - session.startedAt;
-                this.logger.info(
-                    `Verification running ${key} → ${result}, elapsed ${elapsed}ms`
-                );
+                this.logger.info(`Verification running ${key} → ${result}, elapsed ${elapsed}ms`);
+                console.log(`time to break ? `, elapsed < this.observationMs);
 
                 if (elapsed < this.observationMs) return;
                 if (
@@ -57,6 +57,7 @@ export class BifastVerificationJob {
                     session.lastResult === "FALSE_POSITIVE"
                 ) {
                     this.logger.info(`Final decision for ${key}: ${session.lastResult}`);
+                    this.logger.info(`🛑 STOP JOB BiFAST_VERIFICATION`);
                     this.stop(source, entity);
                 }
             } catch (err) {

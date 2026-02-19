@@ -25,10 +25,11 @@ import { BiFastHealthChecker } from "../external/healthcheck/BiFastHealthChecker
 import { MonitoringStateStore } from "../../application/ports/MonitoringStateStore";
 import { BifastVerificationJob } from "../scheduler/BifastVerificationJob";
 import { AdvancedBifastVerifier } from "../../application/usecases/AdvancedBifastVerifier/AdvancedBifastVerifier";
-import { ElasticMetricService, MetricConfig } from "../external/elastic/ElasticMetricService";
-import { BIFAST_METRIC_CONFIGS } from "../../config/bifastlist";
+import { ElasticMetricService } from "../external/elastic/ElasticMetricService";
+import { BIFAST_ELASTIC_CLIENT_CRAWLING } from "../../config/bifastlist";
 import { WagHelpdeskService } from "../external/elastic/WagHelpdeskService";
 import { InMemoryWagComplaintStore } from "../persistence/memory/InMemoryWagComplaint";
+import { avgRespTimeConfig, inquiryDanaErrorConfig, MetricConfig } from "../external/elastic/MetricConfig";
 
 export async function registerConsumers(logger: Logger) {
     // instantiate infra implementations
@@ -49,7 +50,10 @@ export async function registerConsumers(logger: Logger) {
         ENV.BROADCAST_WHATSAPP_GROUP_PTR_BROADCAST,
     ])
     const inMemoryWagComplaint = new InMemoryWagComplaintStore();
-    const elasticMatricService = new ElasticMetricService(logger, BIFAST_METRIC_CONFIGS as MetricConfig[]);
+    const elasticMatricService = new ElasticMetricService(logger, [
+        avgRespTimeConfig,
+        inquiryDanaErrorConfig
+    ], BIFAST_ELASTIC_CLIENT_CRAWLING);
     const wagHelpDeskService = new WagHelpdeskService(inMemoryWagComplaint);
 
     // WhatsApp setup

@@ -19,10 +19,10 @@ export class AdvancedBifastVerifier {
             return "FALSE_POSITIVE"
         }
 
-        const hasComplaint = await this.wagSvc.hasComplaint(entity);
-        if (!hasComplaint) {
-            return "WAIT"
-        }
+        // const hasComplaint = await this.wagSvc.hasComplaint(entity);
+        // if (!hasComplaint) {
+        //     return "WAIT"
+        // }
 
         const hasOpen = await this.incidentRepo.hasOpenIncident(source, entity);
         if (hasOpen) {
@@ -31,6 +31,8 @@ export class AdvancedBifastVerifier {
         
         // contoh policy rule eksplisit
         const criticalSignals = metrics.signals.filter(s => s.trend?.level === "CRITICAL")
+        console.log(criticalSignals.length);
+        
         if (
             criticalSignals.some(s => s.source === "BIFAST_TX") &&
             criticalSignals.some(s => s.source === "BIFAST_TX_CIHUB")

@@ -74,6 +74,58 @@ function detectReason(text: string): ParsedBifastMessage["reason"] {
     return "UNKNOWN";
 }
 
+const COMPLAINT_PATTERNS = [
+    /ada kendala/i,
+    /masih terpantau/i,
+    /kenaikan (error|response)/i,
+    /apakah.*kendala/i,
+    /mohon konfirmasi/i,
+    /confirm/i,
+    /issue/i
+]
+const ERROR_CODE_PATTERN = /\bU\d{3}\b/i
+
+export function isComplaintText(text: string): boolean {
+    return COMPLAINT_PATTERNS.some(p => p.test(text))
+}
+
+export function hasErrorSignal(text: string): boolean {
+    return ERROR_CODE_PATTERN.test(text)
+}
+
+export interface ParsedWagMessage {
+    isComplaint: boolean
+    rawText: string
+}
+
+function mentionsExpectedEntity(
+    rawText: string,
+    expectedEntity: string
+): boolean {
+    const text = rawText.toLowerCase()
+    const base = expectedEntity.toLowerCase()
+
+    return [base, `@${base}`].some(token => text.includes(token))
+}
+
+export function parseWagMessage(
+        rawText: string,
+        expectedEntity: string
+    ): ParsedWagMessage {
+
+    const hasComplaintSignal =
+        isComplaintText(rawText) &&
+        hasErrorSignal(rawText)
+
+    const mentionsEntity =
+        mentionsExpectedEntity(rawText, expectedEntity)
+
+    return {
+        isComplaint: hasComplaintSignal && mentionsEntity,
+        rawText
+    }
+}
+
 export function parseBifastMessage(rawText: string): ParsedBifastMessage | null {
     if (!rawText) return null;
     rawText = rawText.replace(/^source:.*$/gim, "").trim();

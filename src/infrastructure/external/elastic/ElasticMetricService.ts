@@ -1,37 +1,27 @@
 import axios from "axios"
 import { Logger } from "winston"
 import { resultAxiosElastic1 } from "../../../config/bifastlist"
+import { MetricConfig } from "./MetricConfig"
 
-type MetricSample = {
+export type MetricSample = {
     source: string
     bankName?: string
     avgRespTime: number
     u173Count: number
+    value: number            // nilai utama (resp_time / error_count)
+    ratio?: number           // optional (error percentage)
     timestamp: number
     timestampString: string
 }
 
-type AnalyzeTrend = {
+export type AnalyzeTrend = {
+    metricName?: string
     average: number,
     percentChange: string,
     stdDeviation: number,
     trend: string,
     level: "CRITICAL" | "WARNING" | "NORMAL"
 };
-
-type BankData = {
-    "2": { value: number },
-    doc_count: number
-};
-
-export interface MetricConfig {
-    name: string
-    threshold: number
-    queryType: "INQUIRY" | "TRANSACTION"
-    channel: "BIFAST" | "CIHUB"
-    urlCrawling: string,
-    reqBody: string
-}
 
 export interface MetricTrendResult {
     key: string,
@@ -42,6 +32,7 @@ export interface MetricTrendResult {
 export interface MetricFetchResult {
     overallLevel: "CRITICAL" | "WARNING" | "NORMAL"
     signals: MetricTrendResult[]
+    relatedLevel: MetricTrendResult[]
 }
 
 export class ElasticMetricService {
@@ -52,62 +43,83 @@ export class ElasticMetricService {
     } = {}
     constructor(
         private readonly logger: Logger, 
-        private readonly metricConfigs: MetricConfig[]
+        private readonly metricConfigs: MetricConfig[],
+        private readonly apiClient: any
     ) {}
 
-    async fetch(source: string,entity: string): Promise<MetricFetchResult> {
+    async fetch(source: string, entity?: string): Promise<MetricFetchResult> {
         const signals: MetricTrendResult[] = []
+        // const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
+        const raw = resultAxiosElastic1.data.chart_extracts
+
         for (const config of this.metricConfigs) {
-            const samples = await this.fetchFromElastic(entity, config)
-            for (const sample of samples) {
-                const key = `${source}:${entity}:${sample.source}`
+            const tables = raw.filter(t => config.matchTable(t.title))
+
+            for (const table of tables) {
+                config.setName(table.title)
+                const samples = table.table
+                    .map(row => config.extractSample(row, entity))
+                    .filter(Boolean) as MetricSample[]
+                
+                this.logger.info("======samples")
+                this.logger.info(samples)
+                if (samples.length === 0) continue
+
+                const key = `${source}:${config.name}:${entity}`
                 if (!this.samples[key]) this.samples[key] = []
-                this.recordSample(key, sample)
-                const trend = this.analyzeTrend(key, config.threshold)
+
+                this.samples[key].push(...samples)
+                this.samples[key] = this.samples[key].filter(
+                    s => Date.now() - s.timestamp <= this.windowMs
+                )
+                const trend = config.analyze(this.samples[key], this.windowMs)
+                this.logger.info("======trend==== " + key + " ===")
+                this.logger.info(trend)
+                this.logger.info("🚩 =============")
                 if (trend) {
                     signals.push({
                         key,
-                        source: sample.source,
+                        source: table.title,
                         trend
                     })
                 }
             }
         }
-        this.logger.info("======= signals")
-        this.logger.info(signals)
 
         return {
             overallLevel: this.aggregateLevel(signals),
+            relatedLevel: signals.filter(signal => signal.trend?.level == this.aggregateLevel(signals)),
             signals
         }
     }
 
-    private async fetchFromElastic(entity: string, config: MetricConfig): Promise<MetricSample[]> {
-        // const data = await this.callElastic(config.urlCrawling, config.reqBody)
-        const data = resultAxiosElastic1;
-        const samples: MetricSample[] = []
-        const tables = data.data.chart_extracts ?? []
 
-        for (const table of tables) {
-            for (const row of table.table) {
-                if (row["Filters"]?.toUpperCase() !== entity.toUpperCase()) continue
-                const timestampString = row["creationDate per minute"]
-                const avgRespTime = Number(row["Average totalTime"] ?? 0)
+    // private async fetchFromElastic(entity: string, dataRespTime: any): Promise<MetricSample[]> {
+    //     const data = resultAxiosElastic1;
+    //     const samples: MetricSample[] = []
+    //     const tables = data.data.chart_extracts ?? []
 
-                samples.push({
-                    source: table.title,
-                    bankName: entity,
-                    avgRespTime,
-                    u173Count: 0, // kalau belum ada, isi 0 dulu
-                    timestamp: this.parseMinute(timestampString),
-                    timestampString
-                })
-            }
-        }
-        this.logger.info("fetchFromElastic - " + entity)
-        this.logger.info(samples)
-        return samples
-    }
+    //     for (const table of tables) {
+    //         for (const row of table.table) {
+    //             console.log(table.table.length, row.Filters, entity);
+    //             if (row["Filters"]?.toUpperCase() !== entity.toUpperCase()) continue
+    //             const timestampString = row["creationDate per minute"]
+    //             const avgRespTime = Number(row["Average totalTime"] ?? 0)
+
+    //             samples.push({
+    //                 source: table.title,
+    //                 bankName: entity,
+    //                 avgRespTime,
+    //                 u173Count: 0, // kalau belum ada, isi 0 dulu
+    //                 timestamp: this.parseMinute(timestampString),
+    //                 timestampString
+    //             })
+    //         }
+    //     }
+    //     this.logger.info("fetchFromElastic - " + entity)
+    //     this.logger.info(samples)
+    //     return samples
+    // }
     
     private parseMinute(minute:string): number {
         const now = new Date();
@@ -116,23 +128,23 @@ export class ElasticMetricService {
         return now.getTime()
     }
 
-    private recordSample(key: string, metric: MetricSample) {
-        const eventTime = metric.timestamp
+    // private recordSample(key: string, metric: MetricSample) {
+    //     const eventTime = metric.timestamp
 
-        this.samples[key].push({
-            source: metric.source,
-            bankName: metric.bankName,
-            timestamp: eventTime,
-            avgRespTime: metric.avgRespTime,
-            u173Count: metric.u173Count,
-            timestampString: metric.timestampString
-        })
-        console.log("================= SAMPLE RESP_TIME");
-        this.logger.info(this.samples)
+    //     this.samples[key].push({
+    //         source: metric.source,
+    //         bankName: metric.bankName,
+    //         timestamp: eventTime,
+    //         avgRespTime: metric.avgRespTime,
+    //         u173Count: metric.u173Count,
+    //         timestampString: metric.timestampString
+    //     })
+    //     console.log("================= SAMPLE RESP_TIME");
+    //     this.logger.info(this.samples)
 
-        // sliding window cleanup berdasarkan event time
-        this.samples[key] = this.samples[key].filter(s => eventTime - s.timestamp <= this.windowMs)
-    }
+    //     // sliding window cleanup berdasarkan event time
+    //     this.samples[key] = this.samples[key].filter(s => eventTime - s.timestamp <= this.windowMs)
+    // }
     
     private analyzeTrend(key: string, threshold = 2000): AnalyzeTrend | null {
         const data = this.samples[key] ?? [];
@@ -173,7 +185,7 @@ export class ElasticMetricService {
     }
 
     private async callElastic(url: string, reqBody: {}): Promise<any> {
-        const res = axios.post(url, reqBody);
+        const res = await axios.post(url, reqBody);
         const rawData = (await res).data
         return rawData.data
     }

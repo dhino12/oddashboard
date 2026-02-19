@@ -317,7 +317,7 @@ export const resultAxiosRequest = {
                     {
                         "BANK NAME": "Bank Mega Syariah",
                         "ABBREVIATION": "Mega Sy",
-                        "UPDATED TIME": "2026-01-02 09:11:53.860",
+                        "UPDATED TIME": "2026-01-02 13:11:53.860",
                         "STATUS": "OPEN",
                         "UPDATED BY": "BERKAT PUTRAKHIR HAREFA"
                     },
@@ -639,7 +639,7 @@ export const resultAxiosRequest = {
                     {
                         "BANK NAME": "BPD Jatim",
                         "ABBREVIATION": "Jatim",
-                        "UPDATED TIME": "2026-02-07 03:09:03.190",
+                        "UPDATED TIME": "2026-02-07 03:13:03.190",
                         "STATUS": "OPEN",
                         "UPDATED BY": "HERY WINANTO"
                     },
@@ -772,7 +772,7 @@ export const resultAxiosRequest = {
                     {
                         "BANK NAME": "MUFG Bank",
                         "ABBREVIATION": "MUFG",
-                        "UPDATED TIME": "2025-12-25 02:09:45.597",
+                        "UPDATED TIME": "2025-12-25 02:13:45.597",
                         "STATUS": "OPEN",
                         "UPDATED BY": "ERWAN SETIAWAN"
                     },
@@ -840,42 +840,111 @@ export const resultAxiosElastic1 = {
             {
                 "title": "Avg Inquiry BIFAST",
                 "table": [
-                    {
-                        "#": "1",
-                        "creationDate per minute": "15:39",
-                        "Filters": "BCA",
-                        "Average totalTime": "777"
-                    },
-                    {
-                        "#": "2",
-                        "creationDate per minute": "15:39",
-                        "Filters": "BRI",
-                        "Average totalTime": "712"
-                    },
-                    {
-                        "#": "3",
-                        "creationDate per minute": "15:39",
-                        "Filters": "BNI",
-                        "Average totalTime": "777"
-                    },
-                    {
-                        "#": "4",
-                        "creationDate per minute": "15:39",
-                        "Filters": "BSI",
-                        "Average totalTime": "711"
-                    },
-                    {
-                        "#": "3",
-                        "creationDate per minute": "15:39",
-                        "Filters": "DANA",
-                        "Average totalTime": "934"
-                    },
-                    {
-                        "#": "4",
-                        "creationDate per minute": "15:39",
-                        "Filters": "Sea Bank",
-                        "Average totalTime": "880"
-                    },
+                    { "#": "1", "creationDate per minute": "13:00", "Filters": "BCA", "Average totalTime": "650" },
+                    { "#": "2", "creationDate per minute": "13:01", "Filters": "BRI", "Average totalTime": "720" },
+                    { "#": "3", "creationDate per minute": "13:02", "Filters": "BNI", "Average totalTime": "810" },
+                    { "#": "4", "creationDate per minute": "13:03", "Filters": "BSI", "Average totalTime": "900" },
+                    { "#": "5", "creationDate per minute": "13:04", "Filters": "DANA", "Average totalTime": "2500" },
+                    { "#": "6", "creationDate per minute": "13:05", "Filters": "Sea Bank", "Average totalTime": "1100" }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    { "#": "1", "creationDate per minute": "13:06", "Filters": "BCA", "Average totalTime": "1200" },
+                    { "#": "2", "creationDate per minute": "13:07", "Filters": "BRI", "Average totalTime": "1500" },
+                    { "#": "3", "creationDate per minute": "13:08", "Filters": "BNI", "Average totalTime": "1750" },
+                    { "#": "4", "creationDate per minute": "13:09", "Filters": "BSI", "Average totalTime": "980" },
+                    { "#": "5", "creationDate per minute": "13:10", "Filters": "DANA", "Average totalTime": "1000" },
+                    { "#": "6", "creationDate per minute": "13:11", "Filters": "Sea Bank", "Average totalTime": "2100" }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    { "#": "1", "creationDate per minute": "13:12", "Filters": "BCA", "Average totalTime": "500" },
+                    { "#": "2", "creationDate per minute": "13:13", "Filters": "BRI", "Average totalTime": "2300" },
+                    { "#": "3", "creationDate per minute": "13:14", "Filters": "BNI", "Average totalTime": "2700" },
+                    { "#": "4", "creationDate per minute": "13:15", "Filters": "BSI", "Average totalTime": "3100" },
+                    { "#": "5", "creationDate per minute": "13:16", "Filters": "DANA", "Average totalTime": "1500" },
+                    { "#": "6", "creationDate per minute": "13:17", "Filters": "Sea Bank", "Average totalTime": "3900" }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    { "#": "1", "creationDate per minute": "13:18", "Filters": "BCA", "Average totalTime": "4200" },
+                    { "#": "2", "creationDate per minute": "13:19", "Filters": "BRI", "Average totalTime": "5100" },
+                    { "#": "3", "creationDate per minute": "13:20", "Filters": "BNI", "Average totalTime": "6000" },
+                    { "#": "4", "creationDate per minute": "13:21", "Filters": "BSI", "Average totalTime": "7000" },
+                    { "#": "5", "creationDate per minute": "13:22", "Filters": "DANA", "Average totalTime": "500" },
+                    { "#": "6", "creationDate per minute": "13:23", "Filters": "Sea Bank", "Average totalTime": "9200" }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    { "#": "1", "creationDate per minute": "13:24", "Filters": "BCA", "Average totalTime": "10000" },
+                    { "#": "2", "creationDate per minute": "13:25", "Filters": "BRI", "Average totalTime": "8700" },
+                    { "#": "3", "creationDate per minute": "13:26", "Filters": "BNI", "Average totalTime": "7600" },
+                    { "#": "4", "creationDate per minute": "13:27", "Filters": "BSI", "Average totalTime": "6400" },
+                    { "#": "5", "creationDate per minute": "13:28", "Filters": "DANA", "Average totalTime": "400" },
+                    { "#": "6", "creationDate per minute": "13:29", "Filters": "Sea Bank", "Average totalTime": "4800" }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    { "#": "1", "creationDate per minute": "13:30", "Filters": "BCA", "Average totalTime": "560" },
+                    { "#": "2", "creationDate per minute": "13:31", "Filters": "BRI", "Average totalTime": "890" },
+                    { "#": "3", "creationDate per minute": "13:32", "Filters": "BNI", "Average totalTime": "1300" },
+                    { "#": "4", "creationDate per minute": "13:33", "Filters": "BSI", "Average totalTime": "1700" },
+                    { "#": "5", "creationDate per minute": "13:34", "Filters": "DANA", "Average totalTime": "700" },
+                    { "#": "6", "creationDate per minute": "13:35", "Filters": "Sea Bank", "Average totalTime": "3100" }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    { "#": "1", "creationDate per minute": "13:36", "Filters": "BCA", "Average totalTime": "3500" },
+                    { "#": "2", "creationDate per minute": "13:37", "Filters": "BRI", "Average totalTime": "4200" },
+                    { "#": "3", "creationDate per minute": "13:38", "Filters": "BNI", "Average totalTime": "4800" },
+                    { "#": "4", "creationDate per minute": "13:39", "Filters": "BSI", "Average totalTime": "5300" },
+                    { "#": "5", "creationDate per minute": "13:40", "Filters": "DANA", "Average totalTime": "2000" },
+                    { "#": "6", "creationDate per minute": "13:41", "Filters": "Sea Bank", "Average totalTime": "7200" }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    { "#": "1", "creationDate per minute": "13:42", "Filters": "BCA", "Average totalTime": "8000" },
+                    { "#": "2", "creationDate per minute": "13:43", "Filters": "BRI", "Average totalTime": "9000" },
+                    { "#": "3", "creationDate per minute": "13:44", "Filters": "BNI", "Average totalTime": "9500" },
+                    { "#": "4", "creationDate per minute": "13:45", "Filters": "BSI", "Average totalTime": "6700" },
+                    { "#": "5", "creationDate per minute": "13:46", "Filters": "DANA", "Average totalTime": "2500" },
+                    { "#": "6", "creationDate per minute": "13:47", "Filters": "Sea Bank", "Average totalTime": "8200" }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    { "#": "1", "creationDate per minute": "13:48", "Filters": "BCA", "Average totalTime": "510" },
+                    { "#": "2", "creationDate per minute": "13:49", "Filters": "BRI", "Average totalTime": "1400" },
+                    { "#": "3", "creationDate per minute": "13:50", "Filters": "BNI", "Average totalTime": "2600" },
+                    { "#": "4", "creationDate per minute": "13:51", "Filters": "BSI", "Average totalTime": "3800" },
+                    { "#": "5", "creationDate per minute": "13:52", "Filters": "DANA", "Average totalTime": "1500" },
+                    { "#": "6", "creationDate per minute": "13:53", "Filters": "Sea Bank", "Average totalTime": "6100" }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    { "#": "1", "creationDate per minute": "13:54", "Filters": "BCA", "Average totalTime": "7300" },
+                    { "#": "2", "creationDate per minute": "13:55", "Filters": "BRI", "Average totalTime": "8400" },
+                    { "#": "3", "creationDate per minute": "13:56", "Filters": "BNI", "Average totalTime": "9100" },
+                    { "#": "4", "creationDate per minute": "13:57", "Filters": "BSI", "Average totalTime": "10000" },
+                    { "#": "5", "creationDate per minute": "13:58", "Filters": "DANA", "Average totalTime": "1300" },
+                    { "#": "6", "creationDate per minute": "13:59", "Filters": "Sea Bank", "Average totalTime": "5800" }
                 ]
             },
             {
@@ -906,16 +975,39 @@ export const resultAxiosElastic1 = {
                         "Average totalTime": "711"
                     },
                     {
-                        "#": "3",
+                        "#": "5",
                         "creationDate per minute": "15:39",
                         "Filters": "DANA",
                         "Average totalTime": "934"
                     },
                     {
-                        "#": "4",
+                        "#": "6",
                         "creationDate per minute": "15:39",
                         "Filters": "Sea Bank",
                         "Average totalTime": "880"
+                    },
+                ]
+            },
+            {
+                "title": "Inquiry Dana",
+                "table": [
+                    {
+                        "#": "1",
+                        "filters": "U000",
+                        "Count": "2,957",
+                        "Count Percentages": "94.5%"
+                    },
+                    {
+                        "#": "2",
+                        "filters": "U173",
+                        "Count": "172",
+                        "Count Percentages": "5.5%"
+                    },
+                    {
+                        "#": "2",
+                        "filters": "U170",
+                        "Count": "322",
+                        "Count Percentages": "6.5%"
                     },
                 ]
             }
@@ -930,16 +1022,14 @@ export const resultAxiosElastic1 = {
     }
 }
 
-export const BIFAST_METRIC_CONFIGS = [
-    {
-        name: "BIFAST_INQUIRY",
-        threshold: 2000,
-        queryType: "INQUIRY",
-        urlCrawling: "",
-        reqBody: "",
-        channel: "BIFAST"
-    },
-]
+export const BIFAST_ELASTIC_CLIENT_CRAWLING = {
+    name: "BIFAST_INQUIRY",
+    threshold: 2000,
+    queryType: "INQUIRY",
+    urlCrawling: "",
+    reqBody: "",
+    channel: "BIFAST"
+}
 
 export default function findBiFastAbbreviationByBankName(bankName:string): string {
     const entity: string = bankName.toUpperCase();
