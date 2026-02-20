@@ -1,6 +1,6 @@
 // src/infrastructure/consumers/whatsapp/BifastConsumer.ts
 import { WhatsAppClient, RawWhatsAppMessage } from "./WhatsappClient";
-import { parseBifastMessage } from "./MessageParser";
+import { detectGangguanWithEntities, parseBifastMessage } from "./MessageParser";
 import { ProcessMonitoringEvent } from "../../../application/usecases/ProcessMonitoringEvent/ProcessMonitoringEvent";
 import { uuid } from "../../../utils/UUID";
 import { CloseRecoveryScheduler } from "../../scheduler/CloseRecoveryBiFastScheduler";
@@ -28,12 +28,20 @@ export class BifastConsumer {
             ) return
             
             const parsed = parseBifastMessage(msg.body || "");
-            // if (parsed.isComplaint && parsed.entity) {
-            //     wagComplaintStore.record(
-            //         parsed.entity,
-            //         parsed.text
-            //     )
-            // }
+            if (msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST) {
+                const parsedCompaint = detectGangguanWithEntities(msg.body)
+                if (parsedCompaint.complainerEntity == null || parsedCompaint.reportedBank == null ) return
+                const prevState = await this.stateStore.get(
+                    "BIFAST",
+                    parsedCompaint.complainerEntity?.toUpperCase() ?? ""
+                )
+                if (prevState) {
+                    // wagComplaintStore.record(
+                    //     parsed.entity,
+                    //     parsed.text
+                    // )
+                }
+            }
             if (!parsed) return;
 
             // Build DTO for ProcessMonitoringEvent

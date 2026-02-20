@@ -11,6 +11,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@nlpjs/basic": "^4.27.0",
+    "@nlpjs/lang-id": "^5.0.0-alpha.5",
     "@prisma/adapter-mariadb": "^7.3.0",
     "@prisma/client": "^7.3.0",
     "@whiskeysockets/baileys": "^7.0.0-rc.9",

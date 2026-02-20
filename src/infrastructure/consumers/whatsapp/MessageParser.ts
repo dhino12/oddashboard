@@ -74,56 +74,104 @@ function detectReason(text: string): ParsedBifastMessage["reason"] {
     return "UNKNOWN";
 }
 
-const COMPLAINT_PATTERNS = [
-    /ada kendala/i,
-    /masih terpantau/i,
-    /kenaikan (error|response)/i,
-    /apakah.*kendala/i,
-    /mohon konfirmasi/i,
-    /confirm/i,
-    /issue/i
-]
-const ERROR_CODE_PATTERN = /\bU\d{3}\b/i
-
-export function isComplaintText(text: string): boolean {
-    return COMPLAINT_PATTERNS.some(p => p.test(text))
+interface GangguanDetection {
+    complainerEntity: string | null;    // lawan bicara / yang complain (misal "BTN", "BANK MEGA")
+    reportedBank: string | null;        // bank yang dikeluhkan (misal "MANDIRI", "Bank Cimbniaga")
+    message: string | null;
 }
 
-export function hasErrorSignal(text: string): boolean {
-    return ERROR_CODE_PATTERN.test(text)
-}
+export function detectGangguanWithEntities(text: string): GangguanDetection {
+    // Keyword gangguan
+    const gangguanKeywords = [
+        'kendala', 'gangguan', 'u173', 'kenaikan response', 'gagal login','ada kendala'
+    ];
 
-export interface ParsedWagMessage {
-    isComplaint: boolean
-    rawText: string
-}
+    // Pola untuk reportedBank (yang dikeluhkan)
+    const reportedBankPattern = /dari\s+([A-Z][a-zA-Z\s]+?)(?=\s*,|\s*\.|$|\s+apakah|\s+dari|\s+BTN|\s+mandiri|\s+bni|\s+bri)/i;
 
-function mentionsExpectedEntity(
-    rawText: string,
-    expectedEntity: string
-): boolean {
-    const text = rawText.toLowerCase()
-    const base = expectedEntity.toLowerCase()
+    // Pola untuk complainerEntity (lawan bicara / pengirim keluhan)
+    const complainerPatterns = [
+        /kami\s+dari\s+([A-Z][a-zA-Z\s]+?)(?:\s*,|\s+ mengalami|\s+mengalami|\s*$)/i,           // "Kami dari BTN"
+        /\b(?:IT|Service\s+Desk|Recovery|HelpDesk|TIM|BIFAST|NationalNobu|Tbk)\s+([A-Z][a-zA-Z\s]+?)\b/i,  // "IT Service Desk BRI", "IT RECOVERY BANK MEGA"
+        /@([A-Z][^@\n]{3,30}?)(?:\s+Technical|\s+Support|\s*-\s*\d|\s*@|\n|$)/i,                 // "@TIM BIFAST BI", "@NationalNobu"
+        /\b(BTN|BNI|BRI|MANDIRI|MEGA|CIMB|(?:Bank\s+[A-Za-z]+))\b(?=.*mengalami|.*kendala)/i     // fallback nama bank sebelum kata keluhan
+    ];
 
-    return [base, `@${base}`].some(token => text.includes(token))
-}
+    // Split pesan (sama seperti sebelumnya)
+    const messageSplitter = /(?:\n|^)(?=\d{1,2}[.:]\d{2}|\bRekan\b|\b[A-Z]{3,}\b\s*(?:@|\s|$)|^\s*[A-Z][a-zA-Z\s]+(?:\s+Support|\s+Desk|\s+Recovery|\s+IT))/gm;
+    const rawParts = text.split(messageSplitter).filter(p => p.trim());
+    const messages: string[] = [];
+    let current = '';
 
-export function parseWagMessage(
-        rawText: string,
-        expectedEntity: string
-    ): ParsedWagMessage {
+    for (const part of rawParts) {
+        const trimmed = part.trim();
+        if (!trimmed) continue;
 
-    const hasComplaintSignal =
-        isComplaintText(rawText) &&
-        hasErrorSignal(rawText)
-
-    const mentionsEntity =
-        mentionsExpectedEntity(rawText, expectedEntity)
-
-    return {
-        isComplaint: hasComplaintSignal && mentionsEntity,
-        rawText
+        if (trimmed.match(/^\d{1,2}[.:]\d{2}$/) || trimmed.match(/^\b(Rekan|IT|Technical|DANA|BNI|BRI|MANDIRI|MEGA|BTN)\b/)) {
+        if (current) {
+            messages.push(current.trim());
+            current = '';
+        }
+        }
+        current += trimmed + ' ';
     }
+    if (current) messages.push(current.trim());
+
+    // Proses setiap pesan
+    for (const msg of messages) {
+        const lowerMsg = msg.toLowerCase();
+        if (lowerMsg.length < 30) continue;
+
+        const hasGangguan = gangguanKeywords.some(kw => lowerMsg.includes(kw));
+        if (!hasGangguan) continue;
+
+        let complainer: string | null = null;
+        let reported: string | null = null;
+
+        // 1. Ekstrak complainerEntity (lawan bicara)
+        for (const pattern of complainerPatterns) {
+            const match = msg.match(pattern);
+            if (match && match[1]) {
+                complainer = match[1].trim();
+                break;
+            }
+        }
+
+        // Fallback: jika tidak ketemu pola spesifik, ambil nama bank/instansi di awal pesan (3-20 karakter pertama setelah @ atau kata awal)
+        if (!complainer) {
+            const awalMatch = msg.match(/^.{0,60}(?:@|\bKami dari\b|\bIT\b|\bTIM\b|\bRecovery\b|\bService Desk\b)([^@\n]{3,25})/i);
+            if (awalMatch && awalMatch[1]) {
+                complainer = awalMatch[1].trim().replace(/Technical Support.*$/i, '').trim();
+            }
+        }
+
+        // 2. Ekstrak reportedBank
+        const reportedMatch = msg.match(reportedBankPattern);
+        if (reportedMatch && reportedMatch[1]) {
+            reported = reportedMatch[1].trim();
+        } else {
+            // Fallback: cari nama bank lain yang muncul (bukan DANA)
+            const possibleBanks = ['MANDIRI', 'BNI', 'BRI', 'MEGA', 'BTN', 'CIMB', 'CIMB NIAGA', 'BCA', 'NOBU'];
+            for (const bank of possibleBanks) {
+                if (lowerMsg.includes(bank.toLowerCase()) && !lowerMsg.includes('dana')) {
+                    reported = bank;
+                    break;
+                }
+            }
+        }
+
+        // Jika keduanya ketemu (atau minimal reported ketemu), return
+        if (reported || complainer) {
+            const cleanedMsg = msg.replace(/^\d{1,2}[.:]\d{2}\s*/, '').trim();
+            return {
+                complainerEntity: complainer || "Tidak terdeteksi",
+                reportedBank: reported || "Tidak terdeteksi",
+                message: cleanedMsg
+            };
+        }
+    }
+
+    return { complainerEntity: null, reportedBank: null, message: null };
 }
 
 export function parseBifastMessage(rawText: string): ParsedBifastMessage | null {
