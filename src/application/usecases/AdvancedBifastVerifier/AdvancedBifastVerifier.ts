@@ -47,7 +47,7 @@ export class AdvancedBifastVerifier {
         ) {
             // benar-benar incident berat
         }
-        this.logger.info("AdvancedBifastVerify_INCIDENT_CREATED: ", criticalSignals)
+        this.logger.info("AdvancedBifastVerify_INCIDENT_CREATED 📝: ", criticalSignals)
         
         const currentTime = now()
         const idDraft = uuidv4()
