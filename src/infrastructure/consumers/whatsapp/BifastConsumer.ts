@@ -8,6 +8,7 @@ import { ENV } from "../../../config/env";
 import { MonitoringStateStore } from "../../../application/ports/MonitoringStateStore";
 import { BifastVerificationJob } from "../../scheduler/BifastVerificationJob";
 import { InMemoryWagComplaintStore } from "../../persistence/memory/InMemoryWagComplaint";
+import { detectGangguan } from "./ComplaintMessageParser";
 
 export class BifastConsumer {
     constructor(
@@ -28,18 +29,18 @@ export class BifastConsumer {
             ) return
             
             const parsed = parseBifastMessage(msg.body || "");
-            if (msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST) {
-                const parsedCompaint = detectGangguanWithEntities(msg.body)
-                if (parsedCompaint.complainerEntity == null || parsedCompaint.reportedBank == null ) return
+            if (msg.from == ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST) {
+                const parsedCompaint = detectGangguan(msg.body)
+                if (parsedCompaint.complainerEntity == null && parsedCompaint.reportedBank == null ) return
                 const prevState = await this.stateStore.get(
                     "BIFAST",
                     parsedCompaint.complainerEntity?.toUpperCase() ?? ""
                 )
-                if (prevState) {
-                    // wagComplaintStore.record(
-                    //     parsed.entity,
-                    //     parsed.text
-                    // )
+                if (prevState?.entity?.toUpperCase() == parsedCompaint.complainerEntity?.toUpperCase()) {
+                    this.wagCompaint.record(
+                        parsedCompaint.complainerEntity ?? "",
+                        parsedCompaint.message ?? ""
+                    )
                 }
             }
             if (!parsed) return;

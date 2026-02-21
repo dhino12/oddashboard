@@ -45,9 +45,9 @@ export async function registerConsumers(logger: Logger) {
     const remedyGateway: IncidentGateway = new RemedyIncidentClient();
     const nauraGateway: NauraGateway = new NauraClient(logger, [
         ENV.BROADCAST_WHATSAPP_GROUP_APPIUM,
-        ENV.BROADCAST_WHATSAPP_GROUP_COMCEN,
-        ENV.BROADCAST_WHATSAPP_GROUP_MANDIRI_CARE,
-        ENV.BROADCAST_WHATSAPP_GROUP_PTR_BROADCAST,
+        // ENV.BROADCAST_WHATSAPP_GROUP_COMCEN,
+        // ENV.BROADCAST_WHATSAPP_GROUP_MANDIRI_CARE,
+        // ENV.BROADCAST_WHATSAPP_GROUP_PTR_BROADCAST,
     ])
     const inMemoryWagComplaint = new InMemoryWagComplaintStore();
     const elasticMatricService = new ElasticMetricService(logger, [
@@ -61,7 +61,13 @@ export async function registerConsumers(logger: Logger) {
     const whatsappNotify = new WhatsAppNotificationGateway(waClient, ENV.ALERT_WA_NUMBER)
 
     // create the main usecase
-    const advancedBifastVerify = new AdvancedBifastVerifier(elasticMatricService, wagHelpDeskService, incidentRepo)
+    const advancedBifastVerify = new AdvancedBifastVerifier(
+        elasticMatricService, 
+        wagHelpDeskService, 
+        nauraGateway,
+        incidentRepo,
+        logger,
+    )
     const processMonitoringEvent = new ProcessMonitoringEvent(
         eventStore,
         stateStore,

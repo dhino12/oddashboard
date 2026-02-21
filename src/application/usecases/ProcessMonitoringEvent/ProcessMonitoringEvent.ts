@@ -192,11 +192,11 @@ export class ProcessMonitoringEvent {
         );
         // await this.incidentRepo.create(incident);
 
-        await this.notificationGateway.notifyIncident({
-            source: event.source,
-            entity: event.entity,
-            message: null
-        });
+        // await this.notificationGateway.notifyIncident({
+        //     source: event.source,
+        //     entity: event.entity,
+        //     message: null
+        // });
 
         /**
          * 10 Best-effort call external system (Remedy)

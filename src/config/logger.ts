@@ -13,7 +13,8 @@ export function initLogger() {
             json()
         ),
         transports: [
-            new transports.Console()
+            new transports.Console(),
+            new transports.File({ filename: "open_incident.log" })
         ],
     })
     return logger

@@ -49,7 +49,7 @@ export class BifastVerificationJob {
                 session.lastResult = result;
                 const elapsed = Date.now() - session.startedAt;
                 this.logger.info(`Verification running ${key} → ${result}, elapsed ${elapsed}ms`);
-                console.log(`time to break ? `, elapsed < this.observationMs);
+                console.log(`time to break ? `, !(elapsed < this.observationMs));
 
                 if (elapsed < this.observationMs) return;
                 if (

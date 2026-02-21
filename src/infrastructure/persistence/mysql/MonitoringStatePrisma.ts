@@ -17,7 +17,7 @@ export class MonitoringStatePrisma implements MonitoringStateStore {
         })
         if (!row) return null;
         return new MonitoringState(
-            row.last_status, Number(row.last_changed_at)
+            row.last_status, Number(row.last_changed_at), row.entity
         )
     }
     async set(source: Source, entity: string, state: MonitoringState): Promise<void> {

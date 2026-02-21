@@ -180,8 +180,6 @@ export const inquiryDanaErrorConfig: MetricConfig = {
             const rb = samples.find(s => s.bankName === b.metricName)?.ratio ?? 0
             return rb - ra
         })
-        console.log(results);
-        
         return results[0]
     }
 }
