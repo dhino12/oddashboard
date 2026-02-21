@@ -36,8 +36,8 @@ export class BifastVerificationJob {
             try {
                 this.logger.info(`RUNNING JOB BIFAST_VERIFICATION`);
                 const callBiFastASPChecking = await this.healthChecker.callBiFastASP("")
-                const isOpen = false
-                // const isOpen = await this.healthChecker.isServiceOpenV2(entity, callBiFastASPChecking)
+                // const isOpen = false
+                const isOpen = await this.healthChecker.isServiceOpenV2(entity, callBiFastASPChecking)
                 if (isOpen) {
                     this.logger.info(`Service ${key} already 🛑 STOP Verification`);
                     this.stop(source, entity);
