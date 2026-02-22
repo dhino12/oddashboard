@@ -2,6 +2,7 @@ import axios from "axios"
 import { Logger } from "winston"
 import { resultAxiosElastic1 } from "../../../config/bifastlist"
 import { MetricConfig } from "./MetricConfig"
+import { stripKeyPrefix } from "../../../utils/RemoveStringNoise"
 
 export type MetricSample = {
     source: string
@@ -20,7 +21,9 @@ export type AnalyzeTrend = {
     percentChange: string,
     stdDeviation: number,
     trend: string,
-    level: "CRITICAL" | "WARNING" | "NORMAL"
+    level: "CRITICAL" | "WARNING" | "NORMAL" | "UNKNOWN",
+    relativeSlopePercent?: string,
+    dataPoints ?: number
 };
 
 export interface MetricTrendResult {
@@ -49,16 +52,17 @@ export class ElasticMetricService {
 
     async fetch(source: string, entity?: string): Promise<MetricFetchResult> {
         const signals: MetricTrendResult[] = []
-        // const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
-        const raw = resultAxiosElastic1.data.chart_extracts
+        const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
+        // const raw = resultAxiosElastic1.data.chart_extracts
+        const resultRaw = raw.chart_extracts
 
         for (const config of this.metricConfigs) {
-            const tables = raw.filter(t => config.matchTable(t.title))
+            const tables = resultRaw.filter((t:any) => config.matchTable(t.title))
 
             for (const table of tables) {
                 config.setName(table.title)
                 const samples = table.table
-                    .map(row => config.extractSample(row, entity))
+                    .map((row:any) => config.extractSample(row, entity))
                     .filter(Boolean) as MetricSample[]
                 
                 this.logger.info("======samples")
@@ -72,7 +76,12 @@ export class ElasticMetricService {
                 this.samples[key] = this.samples[key].filter(
                     s => Date.now() - s.timestamp <= this.windowMs
                 )
-                const trend = config.analyze(this.samples[key], this.windowMs)
+                const trend = config.analyze(this.samples[key], {
+                    trendThreshold: 6,       // >6% per langkah → dianggap tren
+                    stabilityStdDev: 0.18,   // CV >18% → unstable kalau tidak ada tren jelas
+                    critical: 4000,
+                    warning: 2000
+                },this.windowMs)
                 this.logger.info("======trend==== " + key + " ===")
                 this.logger.info(trend)
                 this.logger.info("🚩 =============")
@@ -185,8 +194,22 @@ export class ElasticMetricService {
     }
 
     private async callElastic(url: string, reqBody: {}): Promise<any> {
-        const res = await axios.post(url, reqBody);
-        const rawData = (await res).data
-        return rawData.data
+        // const res = await axios.post(url, reqBody);
+        // const rawData = (await res).data
+        
+        const dataTable = resultAxiosElastic1.data.chart_extracts.map(chart => ({
+            title: chart.title,
+            table: chart.table.map(row =>
+                Object.fromEntries(
+                    Object.entries(row).map(([key, value]) => [
+                        key,
+                        stripKeyPrefix(key, value)
+                    ])
+                )
+            )
+        }))
+        return {chart_extracts: dataTable}
+        // return rawData.data
     }
 }
+

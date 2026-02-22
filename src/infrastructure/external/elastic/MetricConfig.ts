@@ -7,6 +7,13 @@ function parseMinute(minute:string): number {
     return now.getTime()
 }
 
+type ConfigAnalyze = {
+    trendThreshold: number,       // >6% per langkah → dianggap tren
+    stabilityStdDev: number,   // CV >18% → unstable kalau tidak ada tren jelas
+    critical: number,
+    warning: number
+}
+
 export interface MetricConfig {
     name: string
     tableTitle: string
@@ -21,6 +28,7 @@ export interface MetricConfig {
 
     analyze: (
         samples: MetricSample[],
+        config: ConfigAnalyze,
         windowMs: number
     ) => AnalyzeTrend | null
 }
@@ -28,7 +36,7 @@ export interface MetricConfig {
 export const avgRespTimeConfig: MetricConfig = {
     name: "AVG_RESP_TIME_BIFAST",
     tableTitle: "Avg Inquiry BIFAST",
-    threshold: 2000,
+    threshold: 4000,
 
     matchTable: (title) =>
         title.startsWith("Avg") && title.includes("BIFAST"),
@@ -40,60 +48,86 @@ export const avgRespTimeConfig: MetricConfig = {
             source: avgRespTimeConfig.name,
             bankName: row.Filters.toUpperCase(),
             value: Number(row["Average totalTime"]),
-            timestampString: row["creationDate per minute"],
-            timestamp: parseMinute(row["creationDate per minute"]),
+            timestampString: row["creationDate per minute"] || row["creationDate per 30 seconds"],
+            timestamp: parseMinute(row["creationDate per minute"] || row["creationDate per 30 seconds"]),
             avgRespTime: Number(row["Average totalTime"]),
             u173Count: 0
         }
     },
 
-    analyze: (samples) => {
+    analyze: (samples: MetricSample[], config: ConfigAnalyze, windowMs: number) => {
         const data = samples ?? [];
-        if (!data || data.length < 2) return null;
+        const insufficientResult: AnalyzeTrend = {
+            average: 0,
+            percentChange: "0%",
+            stdDeviation: 0,
+            trend: "insufficient_data",
+            level: "UNKNOWN",
+        };
+        if (!data || data.length < 3) {  // minimal 3 titik biar tren bermakna
+            return insufficientResult;
+        }
 
-        const values = data.map(d => Number(d.avgRespTime));
-        const first = values[0];
-        const last = values[values.length - 1];
-        const avg = values.reduce((a, b) => a + b, 0) / values.length;
-        const percentChange = first !== 0 ? ((last - first) / first) * 100 : 0;
-        const variance = values.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0) / values.length;
+        // Asumsi data sudah diurutkan berdasarkan timestamp (jika belum, sort dulu di luar fungsi)
+        const values = data.map(d => Number(d.avgRespTime)).filter(v => !isNaN(v));
+        if (values.length < 3) {
+            return insufficientResult;
+        }
+
+        const n = values.length;
+        const avg = values.reduce((a, b) => a + b, 0) / n;
+
+        // --- Hitung simple linear regression slope ---
+        const x = Array.from({ length: n }, (_, i) => i); // indeks 0 sampai n-1
+        const sumX = (n * (n - 1)) / 2;
+        const sumX2 = (n * (n - 1) * (2 * n - 1)) / 6;
+        const sumY = values.reduce((a, b) => a + b, 0);
+        const sumXY = x.reduce((sum, xi, i) => sum + xi * values[i], 0);
+
+        const numerator = n * sumXY - sumX * sumY;
+        const denominator = n * sumX2 - sumX * sumX;
+        const slope = denominator !== 0 ? numerator / denominator : 0;
+
+        // Slope relatif terhadap rata-rata (dalam % per langkah waktu)
+        const relativeSlopePercent = avg !== 0 ? (slope / avg) * 100 : 0;
+
+        // --- Variance & Std Deviation (pakai populasi biar konsisten dengan kode asli) ---
+        const variance = values.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0) / n;
         const stdDev = Math.sqrt(variance);
 
-        let trend: "stable" | "increasing" | "decreasing" = "stable";
+        // --- Tentukan trend ---
+        let trend = "stable";
+        const trendThreshold = config.trendThreshold || 5;     // % per langkah, bisa disesuaikan
+        const stabilityThreshold = config.stabilityStdDev || 0.15; // stdDev < 15% dari avg → stabil
 
-        if (percentChange > 10) trend = "increasing";
-        else if (percentChange < -10) trend = "decreasing";
+        if (Math.abs(relativeSlopePercent) > trendThreshold) {
+            trend = relativeSlopePercent > 0 ? "increasing" : "decreasing";
+        }
 
-        let level: "CRITICAL" | "WARNING" | "NORMAL" = "NORMAL";
+        // Tambahan: kalau fluktuasi terlalu besar → beri label oscillating / unstable
+        const cv = avg !== 0 ? stdDev / avg : 0; // coefficient of variation
+        if (cv > stabilityThreshold && Math.abs(relativeSlopePercent) < trendThreshold / 2) {
+            trend = "unstable";  // naik-turun acak, bukan tren jelas
+        }
 
-        if (avg > avgRespTimeConfig.threshold) level = "CRITICAL";
-        else if (avg >= 1500) level = "WARNING";
+        // --- Level berdasarkan average ---
+        let level: "NORMAL" | "WARNING" | "CRITICAL" | "UNKNOWN" = "NORMAL";
+        const criticalThreshold = config.critical || avgRespTimeConfig?.threshold || 5000;
+        const warningThreshold  = config.warning  || 1500;
+
+        if (avg > criticalThreshold) level = "CRITICAL";
+        else if (avg >= warningThreshold) level = "WARNING";
 
         return {
             average: Math.round(avg),
-            percentChange: percentChange.toFixed(2) + "%",
             stdDeviation: Math.round(stdDev),
+            percentChange: (cv * 100).toFixed(1) + "%",           // coefficient of variation
+            relativeSlopePercent: relativeSlopePercent.toFixed(2) + "%",
             trend,
-            level
+            level,
+            dataPoints: values.length,
+            // opsional: tambah confidence atau detail lain kalau perlu
         };
-
-
-        // if (samples.length < 2) return null
-
-        // const values = samples.map(s => s.value)
-        // const avg = values.reduce((a,b)=>a+b,0) / values.length
-
-        // let level: AnalyzeTrend["level"] = "NORMAL"
-        // if (avg > 2000) level = "CRITICAL"
-        // else if (avg > 1500) level = "WARNING"
-
-        // return {
-        //     average: Math.round(avg),
-        //     percentChange: "N/A",
-        //     stdDeviation: 0,
-        //     trend: "stable",
-        //     level
-        // }
     }
 }
 export const inquiryDanaErrorConfig: MetricConfig = {
@@ -120,7 +154,7 @@ export const inquiryDanaErrorConfig: MetricConfig = {
         }
     },
 
-    analyze: (samples, windowMs) => {
+    analyze: (samples, config, windowMs) => {
         const windowSamples = samples.filter(
             s => samples[samples.length - 1].timestamp - s.timestamp <= windowMs
         )

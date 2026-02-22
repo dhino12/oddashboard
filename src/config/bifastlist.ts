@@ -926,178 +926,165 @@ export const resultAxiosElastic1 = {
     "data": {
         "action": "scrape",
         "chart_extracts": [
+            
             {
                 "title": "Avg Inquiry BIFAST",
                 "table": [
-                    { "#": "1", "creationDate per minute": "13:00", "Filters": "BCA", "Average totalTime": "650" },
-                    { "#": "2", "creationDate per minute": "13:01", "Filters": "BRI", "Average totalTime": "720" },
-                    { "#": "3", "creationDate per minute": "13:02", "Filters": "BNI", "Average totalTime": "810" },
-                    { "#": "4", "creationDate per minute": "13:03", "Filters": "BSI", "Average totalTime": "900" },
-                    { "#": "5", "creationDate per minute": "13:04", "Filters": "DANA", "Average totalTime": "2500" },
-                    { "#": "6", "creationDate per minute": "13:05", "Filters": "Sea Bank", "Average totalTime": "1100" }
-                ]
-            },
-            {
-                "title": "Avg Inquiry BIFAST",
-                "table": [
-                    { "#": "1", "creationDate per minute": "13:06", "Filters": "BCA", "Average totalTime": "1200" },
-                    { "#": "2", "creationDate per minute": "13:07", "Filters": "BRI", "Average totalTime": "1500" },
-                    { "#": "3", "creationDate per minute": "13:08", "Filters": "BNI", "Average totalTime": "1750" },
-                    { "#": "4", "creationDate per minute": "13:09", "Filters": "BSI", "Average totalTime": "980" },
-                    { "#": "5", "creationDate per minute": "13:10", "Filters": "DANA", "Average totalTime": "1000" },
-                    { "#": "6", "creationDate per minute": "13:11", "Filters": "Sea Bank", "Average totalTime": "2100" }
-                ]
-            },
-            {
-                "title": "Avg Inquiry BIFAST",
-                "table": [
-                    { "#": "1", "creationDate per minute": "13:12", "Filters": "BCA", "Average totalTime": "500" },
-                    { "#": "2", "creationDate per minute": "13:13", "Filters": "BRI", "Average totalTime": "2300" },
-                    { "#": "3", "creationDate per minute": "13:14", "Filters": "BNI", "Average totalTime": "2700" },
-                    { "#": "4", "creationDate per minute": "13:15", "Filters": "BSI", "Average totalTime": "3100" },
-                    { "#": "5", "creationDate per minute": "13:16", "Filters": "DANA", "Average totalTime": "1500" },
-                    { "#": "6", "creationDate per minute": "13:17", "Filters": "Sea Bank", "Average totalTime": "3900" }
-                ]
-            },
-            {
-                "title": "Avg Inquiry BIFAST",
-                "table": [
-                    { "#": "1", "creationDate per minute": "13:18", "Filters": "BCA", "Average totalTime": "4200" },
-                    { "#": "2", "creationDate per minute": "13:19", "Filters": "BRI", "Average totalTime": "5100" },
-                    { "#": "3", "creationDate per minute": "13:20", "Filters": "BNI", "Average totalTime": "6000" },
-                    { "#": "4", "creationDate per minute": "13:21", "Filters": "BSI", "Average totalTime": "7000" },
-                    { "#": "5", "creationDate per minute": "13:22", "Filters": "DANA", "Average totalTime": "500" },
-                    { "#": "6", "creationDate per minute": "13:23", "Filters": "Sea Bank", "Average totalTime": "9200" }
-                ]
-            },
-            {
-                "title": "Avg Inquiry BIFAST",
-                "table": [
-                    { "#": "1", "creationDate per minute": "13:24", "Filters": "BCA", "Average totalTime": "10000" },
-                    { "#": "2", "creationDate per minute": "13:25", "Filters": "BRI", "Average totalTime": "8700" },
-                    { "#": "3", "creationDate per minute": "13:26", "Filters": "BNI", "Average totalTime": "7600" },
-                    { "#": "4", "creationDate per minute": "13:27", "Filters": "BSI", "Average totalTime": "6400" },
-                    { "#": "5", "creationDate per minute": "13:28", "Filters": "DANA", "Average totalTime": "400" },
-                    { "#": "6", "creationDate per minute": "13:29", "Filters": "Sea Bank", "Average totalTime": "4800" }
-                ]
-            },
-            {
-                "title": "Avg Inquiry BIFAST",
-                "table": [
-                    { "#": "1", "creationDate per minute": "13:30", "Filters": "BCA", "Average totalTime": "560" },
-                    { "#": "2", "creationDate per minute": "13:31", "Filters": "BRI", "Average totalTime": "890" },
-                    { "#": "3", "creationDate per minute": "13:32", "Filters": "BNI", "Average totalTime": "1300" },
-                    { "#": "4", "creationDate per minute": "13:33", "Filters": "BSI", "Average totalTime": "1700" },
-                    { "#": "5", "creationDate per minute": "13:34", "Filters": "DANA", "Average totalTime": "700" },
-                    { "#": "6", "creationDate per minute": "13:35", "Filters": "Sea Bank", "Average totalTime": "3100" }
-                ]
-            },
-            {
-                "title": "Avg Inquiry BIFAST",
-                "table": [
-                    { "#": "1", "creationDate per minute": "13:36", "Filters": "BCA", "Average totalTime": "3500" },
-                    { "#": "2", "creationDate per minute": "13:37", "Filters": "BRI", "Average totalTime": "4200" },
-                    { "#": "3", "creationDate per minute": "13:38", "Filters": "BNI", "Average totalTime": "4800" },
-                    { "#": "4", "creationDate per minute": "13:39", "Filters": "BSI", "Average totalTime": "5300" },
-                    { "#": "5", "creationDate per minute": "13:40", "Filters": "DANA", "Average totalTime": "2000" },
-                    { "#": "6", "creationDate per minute": "13:41", "Filters": "Sea Bank", "Average totalTime": "7200" }
-                ]
-            },
-            {
-                "title": "Avg Inquiry BIFAST",
-                "table": [
-                    { "#": "1", "creationDate per minute": "13:42", "Filters": "BCA", "Average totalTime": "8000" },
-                    { "#": "2", "creationDate per minute": "13:43", "Filters": "BRI", "Average totalTime": "9000" },
-                    { "#": "3", "creationDate per minute": "13:44", "Filters": "BNI", "Average totalTime": "9500" },
-                    { "#": "4", "creationDate per minute": "13:45", "Filters": "BSI", "Average totalTime": "6700" },
-                    { "#": "5", "creationDate per minute": "13:46", "Filters": "DANA", "Average totalTime": "2500" },
-                    { "#": "6", "creationDate per minute": "13:47", "Filters": "Sea Bank", "Average totalTime": "8200" }
-                ]
-            },
-            {
-                "title": "Avg Inquiry BIFAST",
-                "table": [
-                    { "#": "1", "creationDate per minute": "13:48", "Filters": "BCA", "Average totalTime": "510" },
-                    { "#": "2", "creationDate per minute": "13:49", "Filters": "BRI", "Average totalTime": "1400" },
-                    { "#": "3", "creationDate per minute": "13:50", "Filters": "BNI", "Average totalTime": "2600" },
-                    { "#": "4", "creationDate per minute": "13:51", "Filters": "BSI", "Average totalTime": "3800" },
-                    { "#": "5", "creationDate per minute": "13:52", "Filters": "DANA", "Average totalTime": "1500" },
-                    { "#": "6", "creationDate per minute": "13:53", "Filters": "Sea Bank", "Average totalTime": "6100" }
-                ]
-            },
-            {
-                "title": "Avg Inquiry BIFAST",
-                "table": [
-                    { "#": "1", "creationDate per minute": "13:54", "Filters": "BCA", "Average totalTime": "7300" },
-                    { "#": "2", "creationDate per minute": "13:55", "Filters": "BRI", "Average totalTime": "8400" },
-                    { "#": "3", "creationDate per minute": "13:56", "Filters": "BNI", "Average totalTime": "9100" },
-                    { "#": "4", "creationDate per minute": "13:57", "Filters": "BSI", "Average totalTime": "10000" },
-                    { "#": "5", "creationDate per minute": "13:58", "Filters": "DANA", "Average totalTime": "1300" },
-                    { "#": "6", "creationDate per minute": "13:59", "Filters": "Sea Bank", "Average totalTime": "5800" }
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime761"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime614"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime686"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime755"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,290"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTimenull"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime709"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime789"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime660"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime740"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime705"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTimenull"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime725"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime598"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime705"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime904"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime753"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTimenull"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime717"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime610"
+                    },
                 ]
             },
             {
                 "title": "Avg Transaction BIFAST",
                 "table": [
                     {
-                        "#": "1",
-                        "creationDate per minute": "15:39",
-                        "Filters": "BCA",
-                        "Average totalTime": "777"
+                        "creationDate per minute": "creationDate per minute15:39",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime777"
                     },
                     {
-                        "#": "2",
-                        "creationDate per minute": "15:39",
-                        "Filters": "BRI",
-                        "Average totalTime": "712"
+                        "creationDate per minute": "creationDate per minute15:39",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime712"
                     },
                     {
-                        "#": "3",
-                        "creationDate per minute": "15:39",
-                        "Filters": "BNI",
-                        "Average totalTime": "777"
+                        "creationDate per minute": "creationDate per minute15:39",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime777"
                     },
                     {
-                        "#": "4",
-                        "creationDate per minute": "15:39",
-                        "Filters": "BSI",
-                        "Average totalTime": "711"
+                        "creationDate per minute": "creationDate per minute15:39",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime711"
                     },
                     {
-                        "#": "5",
-                        "creationDate per minute": "15:39",
-                        "Filters": "DANA",
-                        "Average totalTime": "934"
+                        "creationDate per minute": "creationDate per minute15:39",
+                        "Filters": "FiltersDANA",
+                        "Average totalTime": "Average totalTime934"
                     },
                     {
-                        "#": "6",
-                        "creationDate per minute": "15:39",
-                        "Filters": "Sea Bank",
-                        "Average totalTime": "880"
-                    },
+                        "creationDate per minute": "creationDate per minute15:39",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime880"
+                    }
                 ]
             },
             {
                 "title": "Inquiry Dana",
                 "table": [
                     {
-                        "#": "1",
-                        "filters": "U000",
-                        "Count": "2,957",
-                        "Count Percentages": "94.5%"
+                        "filters": "filtersU000",
+                        "Count": "Count2,957",
+                        "Count Percentages": "Count Percentages94.5%"
                     },
                     {
-                        "#": "2",
-                        "filters": "U173",
-                        "Count": "172",
-                        "Count Percentages": "5.5%"
+                        "filters": "filtersU173",
+                        "Count": "Count172",
+                        "Count Percentages": "Count Percentages5.5%"
                     },
                     {
-                        "#": "2",
-                        "filters": "U170",
-                        "Count": "322",
-                        "Count Percentages": "6.5%"
-                    },
+                        "filters": "filtersU170",
+                        "Count": "Count322",
+                        "Count Percentages": "Count Percentages6.5%"
+                    }
                 ]
             }
         ],
@@ -1108,6 +1095,382 @@ export const resultAxiosElastic1 = {
             "executionTime": "9.12s",
             "timestamp": "2026-02-15T01:34:52.707Z"
         }
+    }
+}
+
+export const requestElasticBifastOutgoingV3 = {
+    "action": "scrape",
+    "url": "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-15m,to:now))",
+    "viewport": {
+        "width": 1920,
+        "height": 900
+    },
+    "steps": [
+        {
+            "type": "form",
+            "selectors": {
+                "username": "input[data-test-subj='loginUsername']",
+                "password": "input[data-test-subj='loginPassword']",
+                "submit": "button[data-test-subj='loginSubmit']"
+            },
+            "values": {
+                "username": "mdr.monitoring",
+                "password": "Mandiri123"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Options for panel 6']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Options for panel 4']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Options for panel 8']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Options for panel 10']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Inquiry BCA']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Inquiry BRI']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Inquiry BNI']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Transfer Sea Bank']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        }
+    ],
+    "screenshot": {
+        "enabled": true,
+        "options": [
+            {
+                "selector": "",
+                "fullPage": false
+            }
+        ]
     }
 }
 

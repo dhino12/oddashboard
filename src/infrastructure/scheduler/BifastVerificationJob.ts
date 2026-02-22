@@ -3,6 +3,7 @@ import { AdvancedBifastVerifier } from "../../application/usecases/AdvancedBifas
 import { ENV } from "../../config/env";
 import { HealthChecker } from "../external/healthcheck/BiFastHealthChecker";
 import findBiFastAbbreviationByBankName from "../../config/bifastlist";
+import { VerifyBifastIncidentUseCase } from "../../application/usecases/AdvancedBifastVerifier/VerifyBifastIncidentUseCase";
 type VerificationSession = {
     startedAt: number;
     lastResult: "WAIT" | "CONFIRMED_INCIDENT" | "FALSE_POSITIVE";
@@ -15,7 +16,7 @@ export class BifastVerificationJob {
     private readonly observationMs = 5 * 60 * 1000;
 
     constructor(
-        private readonly verifier: AdvancedBifastVerifier,
+        private readonly verifier: VerifyBifastIncidentUseCase,
         private readonly healthChecker: HealthChecker,
         private readonly logger: Logger
     ) {}
@@ -43,7 +44,7 @@ export class BifastVerificationJob {
                     this.stop(source, entity);
                     return;
                 }
-                const result = await this.verifier.verfiy(source, findBiFastAbbreviationByBankName(entity));
+                const result = await this.verifier.execute(source, findBiFastAbbreviationByBankName(entity));
                 const session = this.sessions.get(key);
                 if (!session) return;
                 session.lastResult = result;

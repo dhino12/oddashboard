@@ -29,9 +29,14 @@ import { ElasticMetricService } from "../external/elastic/ElasticMetricService";
 import { BIFAST_ELASTIC_CLIENT_CRAWLING } from "../../config/bifastlist";
 import { WagHelpdeskService } from "../external/elastic/WagHelpdeskService";
 import { InMemoryWagComplaintStore } from "../persistence/memory/InMemoryWagComplaint";
-import { avgRespTimeConfig, inquiryDanaErrorConfig, MetricConfig } from "../external/elastic/MetricConfig";
+import { avgRespTimeConfig, inquiryDanaErrorConfig } from "../external/elastic/MetricConfig";
+import { VerifyBifastIncidentUseCase } from "../../application/usecases/AdvancedBifastVerifier/VerifyBifastIncidentUseCase";
 
 export async function registerConsumers(logger: Logger) {
+    // Domain
+    // const bifastAdvancedPolicy = new AdvancedBifastPolicy();
+    // const incidentPolicy = new IncidentPolicy()
+
     // instantiate infra implementations
     const eventStore: EventStore = new EventStorePrisma();
     const dedupLock: DedupLockDb = new DedupLockDb();
@@ -64,9 +69,13 @@ export async function registerConsumers(logger: Logger) {
     const advancedBifastVerify = new AdvancedBifastVerifier(
         elasticMatricService, 
         wagHelpDeskService, 
-        nauraGateway,
         incidentRepo,
         logger,
+    )
+    const verifyBifastIncidentUseCase = new VerifyBifastIncidentUseCase(
+        advancedBifastVerify, 
+        nauraGateway,
+        incidentRepo
     )
     const processMonitoringEvent = new ProcessMonitoringEvent(
         eventStore,
@@ -89,7 +98,7 @@ export async function registerConsumers(logger: Logger) {
         logger
     )
     const bifastVerificationJob = new BifastVerificationJob(
-        advancedBifastVerify, 
+        verifyBifastIncidentUseCase, 
         biFastHealthChecker,
         logger
     );
