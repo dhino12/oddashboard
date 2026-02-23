@@ -16,6 +16,7 @@ import { ENV } from "../../../config/env";
 import { NotificationGateway } from "../../ports/NotificationGateway";
 import { NauraGateway } from "../../ports/NauraGateway";
 import { now, timeFormatDraft, timeFormatStatusUpdate } from "../../../utils/Time";
+import { VerifyBifastIncidentUseCase } from "../AdvancedBifastVerifier/VerifyBifastIncidentUseCase";
 
 export class ProcessMonitoringEvent {
     constructor(
@@ -27,6 +28,7 @@ export class ProcessMonitoringEvent {
         private readonly nauraGateway: NauraGateway,
         private readonly notificationGateway: NotificationGateway,
         private readonly incidentRepo: IncidentRepository,
+        private readonly verifyBifastIncident: VerifyBifastIncidentUseCase,
         private readonly threshold: number = 3
     ) {}
 
@@ -116,11 +118,20 @@ export class ProcessMonitoringEvent {
             this.threshold
         );
         console.log(exceeded, occurredAt, this.threshold, " - ", await this.eventStore.countInWindow(event.source, event.entity, 60 * 60 * 1000));
-        
         if (!exceeded) {
             return;
         }
         console.log(`✅ Treshold tercapai`);
+
+        const decision = await this.verifyBifastIncident.execute(event.source, event.entity);
+        if (decision === "WAIT") {
+            return;
+        }
+
+        if (decision === "FALSE_POSITIVE") {
+            // optional: mark / log false positive
+            return;
+        }
 
         /**
          * 🔁 Recovery signal

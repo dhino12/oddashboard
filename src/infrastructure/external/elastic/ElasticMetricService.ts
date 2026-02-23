@@ -38,6 +38,10 @@ export interface MetricFetchResult {
     relatedLevel: MetricTrendResult[]
 }
 
+type Options = {
+    interval: number
+}
+
 export class ElasticMetricService {
     private readonly windowMs = 5 * 60 * 1000
 
@@ -50,8 +54,13 @@ export class ElasticMetricService {
         private readonly apiClient: any
     ) {}
 
-    async fetch(source: string, entity?: string): Promise<MetricFetchResult> {
+    async fetch(source: string, entity?: string, option?: Options): Promise<MetricFetchResult> {
         const signals: MetricTrendResult[] = []
+        if (option?.interval == 1) {
+            this.apiClient.reqBody.url = "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-5m,to:now))"
+        } else {
+            this.apiClient.reqBody.url = "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-1m,to:now))"
+        }
         const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
         // const raw = resultAxiosElastic1.data.chart_extracts
         const resultRaw = raw.chart_extracts
@@ -64,7 +73,7 @@ export class ElasticMetricService {
                 const samples = table.table
                     .map((row:any) => config.extractSample(row, entity))
                     .filter(Boolean) as MetricSample[]
-                
+
                 this.logger.info("======samples")
                 this.logger.info(samples)
                 if (samples.length === 0) continue
@@ -81,7 +90,7 @@ export class ElasticMetricService {
                     stabilityStdDev: 0.18,   // CV >18% → unstable kalau tidak ada tren jelas
                     critical: 4000,
                     warning: 2000
-                },this.windowMs)
+                }, this.windowMs)
                 this.logger.info("======trend==== " + key + " ===")
                 this.logger.info(trend)
                 this.logger.info("🚩 =============")

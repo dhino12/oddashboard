@@ -926,174 +926,1453 @@ export const resultAxiosElastic1 = {
     "data": {
         "action": "scrape",
         "chart_extracts": [
-            
             {
                 "title": "Avg Inquiry BIFAST",
                 "table": [
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersBCA",
-                        "Average totalTime": "Average totalTime761"
+                        "Average totalTime": "Average totalTime669"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersBRI",
-                        "Average totalTime": "Average totalTime614"
+                        "Average totalTime": "Average totalTime597"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersBNI",
-                        "Average totalTime": "Average totalTime686"
+                        "Average totalTime": "Average totalTime421"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime755"
+                        "Average totalTime": "Average totalTime565"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersDana",
-                        "Average totalTime": "Average totalTime1,290"
+                        "Average totalTime": "Average totalTime837"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersSea Bank",
-                        "Average totalTime": "Average totalTimenull"
+                        "Average totalTime": "Average totalTime425"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
                         "Filters": "FiltersBCA",
-                        "Average totalTime": "Average totalTime709"
+                        "Average totalTime": "Average totalTime424"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
                         "Filters": "FiltersBRI",
-                        "Average totalTime": "Average totalTime789"
+                        "Average totalTime": "Average totalTime812"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
                         "Filters": "FiltersBNI",
-                        "Average totalTime": "Average totalTime660"
+                        "Average totalTime": "Average totalTime426"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime740"
+                        "Average totalTime": "Average totalTime583"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
                         "Filters": "FiltersDana",
-                        "Average totalTime": "Average totalTime705"
+                        "Average totalTime": "Average totalTime1,755"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:45:30",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
                         "Filters": "FiltersSea Bank",
-                        "Average totalTime": "Average totalTimenull"
+                        "Average totalTime": "Average totalTime465"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
                         "Filters": "FiltersBCA",
-                        "Average totalTime": "Average totalTime725"
+                        "Average totalTime": "Average totalTime431"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
                         "Filters": "FiltersBRI",
-                        "Average totalTime": "Average totalTime598"
+                        "Average totalTime": "Average totalTime651"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
                         "Filters": "FiltersBNI",
-                        "Average totalTime": "Average totalTime705"
+                        "Average totalTime": "Average totalTime427"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime904"
+                        "Average totalTime": "Average totalTime595"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
                         "Filters": "FiltersDana",
-                        "Average totalTime": "Average totalTime753"
+                        "Average totalTime": "Average totalTime915"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:00",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
                         "Filters": "FiltersSea Bank",
-                        "Average totalTime": "Average totalTimenull"
+                        "Average totalTime": "Average totalTime449"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:30",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
                         "Filters": "FiltersBCA",
-                        "Average totalTime": "Average totalTime717"
+                        "Average totalTime": "Average totalTime461"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds22:46:30",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
                         "Filters": "FiltersBRI",
-                        "Average totalTime": "Average totalTime610"
+                        "Average totalTime": "Average totalTime829"
+                    }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime669"
                     },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime597"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime421"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime565"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime837"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime425"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime424"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime812"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime426"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime583"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,755"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime465"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime431"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime651"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime427"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime595"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime915"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime449"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime461"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime829"
+                    }
+                ]
+            },
+            {
+                "title": "Avg Inquiry CIHUB",
+                "table": [
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime656"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime559"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime386"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime532"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime803"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime392"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime390"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime780"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime393"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime549"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,810"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime432"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime402"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime617"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime392"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime584"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime865"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime415"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:05:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime420"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:05:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime792"
+                    }
+                ]
+            },
+            {
+                "title": "Avg Inquiry CIHUB",
+                "table": [
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime656"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime559"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime386"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime532"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime803"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:03:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime392"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime390"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime780"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime393"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime549"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,810"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime432"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime402"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime617"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime392"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime584"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime865"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:04:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime415"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:05:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime420"
+                    },
+                    {
+                        "per 30 seconds": "per 30 seconds23:05:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime792"
+                    }
                 ]
             },
             {
                 "title": "Avg Transaction BIFAST",
                 "table": [
                     {
-                        "creationDate per minute": "creationDate per minute15:39",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersBCA",
-                        "Average totalTime": "Average totalTime777"
+                        "Average totalTime": "Average totalTime1,276"
                     },
                     {
-                        "creationDate per minute": "creationDate per minute15:39",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersBRI",
-                        "Average totalTime": "Average totalTime712"
+                        "Average totalTime": "Average totalTime798"
                     },
                     {
-                        "creationDate per minute": "creationDate per minute15:39",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersBNI",
-                        "Average totalTime": "Average totalTime777"
+                        "Average totalTime": "Average totalTime584"
                     },
                     {
-                        "creationDate per minute": "creationDate per minute15:39",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime711"
+                        "Average totalTime": "Average totalTime643"
                     },
                     {
-                        "creationDate per minute": "creationDate per minute15:39",
-                        "Filters": "FiltersDANA",
-                        "Average totalTime": "Average totalTime934"
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,013"
                     },
                     {
-                        "creationDate per minute": "creationDate per minute15:39",
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersSea Bank",
-                        "Average totalTime": "Average totalTime880"
+                        "Average totalTime": "Average totalTime587"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime622"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime1,011"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime673"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime730"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,721"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime661"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime675"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime861"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime690"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime782"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime987"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime686"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime645"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime1,028"
                     }
                 ]
             },
             {
-                "title": "Inquiry Dana",
+                "title": "Avg Transaction BIFAST",
+                "table": [
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime1,276"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime798"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime584"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime643"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,013"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime587"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime622"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime1,011"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime673"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime730"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,721"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime661"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime675"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime861"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime690"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime782"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime987"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime686"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime645"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime1,028"
+                    }
+                ]
+            },
+            {
+                "title": "Avg Transaction CIHUB",
+                "table": [
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime1,091"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime624"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime446"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime517"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,004"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTimenull"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime459"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime865"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime478"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime585"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,795"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTimenull"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime497"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime692"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime511"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime573"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime886"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTimenull"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime489"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime864"
+                    }
+                ]
+            },
+            {
+                "title": "Avg Transaction CIHUB",
+                "table": [
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime1,091"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime624"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime446"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime517"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,004"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTimenull"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime459"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime865"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime478"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime585"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime1,795"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTimenull"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime497"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime692"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime511"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime573"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime886"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTimenull"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime489"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime864"
+                    }
+                ]
+            },
+            {
+                "title": "BCA Error Inquiry",
                 "table": [
                     {
                         "filters": "filtersU000",
-                        "Count": "Count2,957",
-                        "Count Percentages": "Count Percentages94.5%"
-                    },
-                    {
-                        "filters": "filtersU173",
-                        "Count": "Count172",
-                        "Count Percentages": "Count Percentages5.5%"
+                        "Count": "Count4,617",
+                        "Count percentages": "Count percentages100%"
                     },
                     {
                         "filters": "filtersU170",
-                        "Count": "Count322",
-                        "Count Percentages": "Count Percentages6.5%"
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BCA Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count4,617",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BRI Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count3,223",
+                        "Count percentages": "Count percentages99.91%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count3",
+                        "Count percentages": "Count percentages0.09%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BRI Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count3,223",
+                        "Count percentages": "Count percentages99.91%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count3",
+                        "Count percentages": "Count percentages0.09%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BNI Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count1,120",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BNI Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count1,120",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BSI Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count319",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BSI Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count319",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "Dana Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count1,292",
+                        "Count percentages": "Count percentages98.33%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count22",
+                        "Count percentages": "Count percentages1.67%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "Dana Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count1,292",
+                        "Count percentages": "Count percentages98.33%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count22",
+                        "Count percentages": "Count percentages1.67%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "Sea Bank Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count1,439",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "Sea Bank Error Inquiry",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count1,439",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BCA Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count4,112",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BCA Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count4,112",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BRI Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count2,850",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BRI Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count2,850",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BNI Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count972",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BNI Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count972",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BSI Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count294",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BSI Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count294",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "Dana Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count1,090",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "Dana Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count1,090",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "Sea Bank Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count1,232",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "Sea Bank Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count1,232",
+                        "Count percentages": "Count percentages100%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
                     }
                 ]
             }
         ],
         "screenshots": [],
         "metadata": {
-            "web_name": "Token_Tracker_-_Etherscan",
-            "url": "https://etherscan.io/tokens?ps=10",
-            "executionTime": "9.12s",
-            "timestamp": "2026-02-15T01:34:52.707Z"
+            "web_name": "Elastic",
+            "url": "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-15m,to:now))",
+            "executionTime": "41.17s",
+            "timestamp": "2026-02-22T16:19:26.607Z"
         }
     }
 }
@@ -1124,49 +2403,6 @@ export const requestElasticBifastOutgoingV3 = {
                 {
                     "type": "click",
                     "selector": {
-                        "buttonDetail": "button[aria-label='Options for panel 6']"
-                    }
-                },
-                {
-                    "type": "click",
-                    "selector": {
-                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
-                    }
-                },
-                {
-                    "type": "wait",
-                    "selector": {
-                        "table": "div[data-test-subj='inspectorTable'] table"
-                    }
-                }
-            ]
-        },
-        {
-            "type": "extract-table",
-            "selectors": {
-                "table": "div[data-test-subj='inspectorTable']"
-            },
-            "pagination": {
-                "nextButton": "button[data-test-subj='pagination-button-next']"
-            }
-        },
-        {
-            "type": "interaction",
-            "actions": [
-                {
-                    "type": "click",
-                    "selector": {
-                        "buttonDetail": "button[aria-label='Close Inspector']"
-                    }
-                }
-            ]
-        },
-        {
-            "type": "interaction",
-            "actions": [
-                {
-                    "type": "click",
-                    "selector": {
                         "buttonDetail": "button[aria-label='Options for panel 4']"
                     }
                 },
@@ -1187,6 +2423,7 @@ export const requestElasticBifastOutgoingV3 = {
         {
             "type": "extract-table",
             "selectors": {
+                "title": "#panel-6a2c585b-fc86-4887-a7ec-3295d5707d15 div[data-test-subj='metric_label']",
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
@@ -1230,6 +2467,51 @@ export const requestElasticBifastOutgoingV3 = {
         {
             "type": "extract-table",
             "selectors": {
+                "title": "#panel-c9bf0a7f-fa65-4df9-ba41-05e29a163c00 div[data-test-subj='metric_label']",
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Options for panel 6']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "title": "#panel-4d1bd161-0850-49f1-8062-96b6f97e8815 div[data-test-subj='metric_label']",
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
@@ -1273,6 +2555,7 @@ export const requestElasticBifastOutgoingV3 = {
         {
             "type": "extract-table",
             "selectors": {
+                "title": "#panel-4957b37e-6779-4ba6-b790-da67bef95386 div[data-test-subj='metric_label']",
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
@@ -1296,7 +2579,7 @@ export const requestElasticBifastOutgoingV3 = {
                 {
                     "type": "click",
                     "selector": {
-                        "buttonDetail": "button[aria-label='Panel options for Inquiry BCA']"
+                        "buttonDetail": "button[aria-label='Panel options for Inquiry BCA ']"
                     }
                 },
                 {
@@ -1316,6 +2599,7 @@ export const requestElasticBifastOutgoingV3 = {
         {
             "type": "extract-table",
             "selectors": {
+                "title": "#panel-c3c55300-34c3-4a68-88b1-d7ed98aefccb div[data-test-subj='metric_label']",
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
@@ -1359,6 +2643,7 @@ export const requestElasticBifastOutgoingV3 = {
         {
             "type": "extract-table",
             "selectors": {
+                "title": "#panel-2b0ef9b7-0c9c-4cbb-b9a5-f6d1d91ef96e div[data-test-subj='metric_label']",
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
@@ -1402,6 +2687,359 @@ export const requestElasticBifastOutgoingV3 = {
         {
             "type": "extract-table",
             "selectors": {
+                "title": "#panel-c7a9c81f-8edc-4006-b051-b01dd011c427 div[data-test-subj='metric_label']",
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Inquiry BSI']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "title": "#panel-76006221-5d56-431e-ad64-75de1357d598 div[data-test-subj='metric_label']",
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Inquiry Dana']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "title": "#panel-c4cbd9df-6d55-4b65-a830-d82f6c3407c8 div[data-test-subj='metric_label']",
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Inquiry Sea Bank']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "title": "#panel-3d51c89e-2606-4056-b11f-701f0b2b7634 div[data-test-subj='metric_label']",
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Transfer BCA']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "title": "#panel-b56149b8-4256-48b1-a97b-2d385012b5ac div[data-test-subj='metric_label']",
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Transfer BRI']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "title": "#panel-e51ca229-acf8-482f-a29f-9b356ca2250c div[data-test-subj='metric_label']",
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Transfer BNI']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "title": "#panel-5b3a52d7-7e6d-4afc-8f72-2929cb20f4fa div[data-test-subj='metric_label']",
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Transfer BSI']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "title": "#panel-88467fc3-9623-4a8a-a0f2-98b16b9b86dd div[data-test-subj='metric_label']",
+                "table": "div[data-test-subj='inspectorTable']"
+            },
+            "pagination": {
+                "nextButton": "button[data-test-subj='pagination-button-next']"
+            }
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Close Inspector']"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "interaction",
+            "actions": [
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[aria-label='Panel options for Transfer Dana']"
+                    }
+                },
+                {
+                    "type": "click",
+                    "selector": {
+                        "buttonDetail": "button[data-test-subj='embeddablePanelAction-openInspector']"
+                    }
+                },
+                {
+                    "type": "wait",
+                    "selector": {
+                        "table": "div[data-test-subj='inspectorTable'] table"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extract-table",
+            "selectors": {
+                "title": "#panel-4da9beab-afb5-4fc5-8d7b-0b0023b5a9af div[data-test-subj='metric_label']",
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
@@ -1445,6 +3083,7 @@ export const requestElasticBifastOutgoingV3 = {
         {
             "type": "extract-table",
             "selectors": {
+                "title": "#panel-7422e76f-bb16-4b8e-8fd5-ab09241c3b6c div[data-test-subj='metric_label']",
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
@@ -1479,7 +3118,7 @@ export const BIFAST_ELASTIC_CLIENT_CRAWLING = {
     threshold: 2000,
     queryType: "INQUIRY",
     urlCrawling: "",
-    reqBody: "",
+    reqBody: requestElasticBifastOutgoingV3,
     channel: "BIFAST"
 }
 

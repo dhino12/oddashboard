@@ -17,7 +17,15 @@ async function bootstrap() {
     const prisma = await initPrisma();
     setPrismaClient(prisma);
 
-    prisma.$executeRaw`DELETE FROM monitoring_state,monitoring_events,incidents`
+    try {
+        await prisma.$executeRaw`DELETE FROM incidents`
+        await prisma.$executeRaw`DELETE FROM monitoring_state`
+        await prisma.$executeRaw`DELETE FROM monitoring_events`
+        const result = await prisma.$queryRaw`SELECT * FROM monitoring_state`
+        console.log(result);
+    } catch (error) {
+        console.error(error);
+    }
 
     const app = createApp();
     const port = Number(process.env.PORT || 3000);

@@ -13,8 +13,8 @@ export class AdvancedBifastVerifier {
         private readonly incidentRepo: IncidentRepository,
         private readonly logger: Logger,
     ) {}
-    async verfiy (source: string, entity: string): Promise<{decision: "WAIT" | "FALSE_POSITIVE" | "CONFIRMED_INCIDENT", metrics: MetricFetchResult}> {
-        const metrics = await this.elasticSvc.fetch(source, entity);
+    async verfiy (source: string, entity: string, options?: {interval: number}): Promise<{decision: "WAIT" | "FALSE_POSITIVE" | "CONFIRMED_INCIDENT", metrics: MetricFetchResult}> {
+        const metrics = await this.elasticSvc.fetch(source, entity, options);
         const hasComplaint = await this.wagSvc.hasComplaint(entity);
         const hasOpen = await this.incidentRepo.hasOpenIncident(source, entity);
         const decisionPolicy = AdvancedBifastPolicy.decide({
@@ -24,7 +24,7 @@ export class AdvancedBifastVerifier {
             criticalSource: metrics.signals
                 .filter(s => s.trend?.level === "CRITICAL")
                 .map(s => s.source)
-        })
+        }, this.logger)
         this.logger.info(decisionPolicy, metrics)
         return {decision: decisionPolicy, metrics}
     }

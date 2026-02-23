@@ -25,11 +25,15 @@ export class BifastConsumer {
         try {
             if (
                 msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST &&
-                msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_MONITORING
+                msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_MONITORING && 
+                msg.from != ENV.ALERT_WA_NUMBER
             ) return
             
             const parsed = parseBifastMessage(msg.body || "");
-            if (msg.from == ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST) {
+            if (
+                msg.from == ENV.LISTEN_GROUP_CHAT_BIFAST_HELPDESK || 
+                msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST
+            ) {
                 const parsedCompaint = detectGangguan(msg.body)
                 if (parsedCompaint.complainerEntity == null && parsedCompaint.reportedBank == null ) return
                 const prevState = await this.stateStore.get(

@@ -4,6 +4,7 @@ import { ENV } from "../../config/env";
 import { HealthChecker } from "../external/healthcheck/BiFastHealthChecker";
 import findBiFastAbbreviationByBankName from "../../config/bifastlist";
 import { VerifyBifastIncidentUseCase } from "../../application/usecases/AdvancedBifastVerifier/VerifyBifastIncidentUseCase";
+
 type VerificationSession = {
     startedAt: number;
     lastResult: "WAIT" | "CONFIRMED_INCIDENT" | "FALSE_POSITIVE";
@@ -23,7 +24,7 @@ export class BifastVerificationJob {
 
     start(source: string, entity: string) {
         const key = `${source}:${entity}`;
-
+        let intervalCount = 0
         this.logger.info(`RUNNING JOB BIFAST_VERIFICATION BEFORE IF`);
         if (this.jobs.has(key)) return;
         this.logger.info(`RUNNING JOB BIFAST_VERIFICATION AFTER IF`);
@@ -34,6 +35,7 @@ export class BifastVerificationJob {
         });
 
         const timer = setInterval(async () => {
+            intervalCount++
             try {
                 this.logger.info(`RUNNING JOB BIFAST_VERIFICATION`);
                 const callBiFastASPChecking = await this.healthChecker.callBiFastASP("")
@@ -42,9 +44,10 @@ export class BifastVerificationJob {
                 if (isOpen) {
                     this.logger.info(`Service ${key} already 🛑 STOP Verification`);
                     this.stop(source, entity);
+                    intervalCount = 0
                     return;
                 }
-                const result = await this.verifier.execute(source, findBiFastAbbreviationByBankName(entity));
+                const result = await this.verifier.execute(source, findBiFastAbbreviationByBankName(entity), {interval: intervalCount});
                 const session = this.sessions.get(key);
                 if (!session) return;
                 session.lastResult = result;
@@ -60,6 +63,7 @@ export class BifastVerificationJob {
                     this.logger.info(`Final decision for ${key}: ${session.lastResult}`);
                     this.logger.info(`🛑 STOP JOB BiFAST_VERIFICATION`);
                     this.stop(source, entity);
+                    intervalCount = 0
                 }
             } catch (err) {
                 this.logger.error(err);

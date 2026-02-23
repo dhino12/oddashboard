@@ -17,7 +17,8 @@ export const ENV = {
     BROADCAST_WHATSAPP_GROUP_MANDIRI_CARE:"mandiri_operational_care",
     BROADCAST_WHATSAPP_GROUP_COMCEN:"com_cen",
     LISTEN_GROUP_CHAT_TEST_BROADCAST: "120363424819385538@g.us",
-    LISTEN_GROUP_CHAT_BIFAST_MONITORING: "null",
+    LISTEN_GROUP_CHAT_BIFAST_MONITORING: "120363041988450487@g.us",
+    LISTEN_GROUP_CHAT_BIFAST_HELPDESK: null,
     MESSAGE_NOTIFY_BIFAST_OPENED_NAURA: (source: SourceHealthCheck, entity: string, sourceWaNumber: string) => {
         return `✅ Transaksi ${source} kearah ${entity} sudah dibuka kembali\n\ncc: @${sourceWaNumber}`
     }
