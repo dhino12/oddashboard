@@ -155,65 +155,115 @@ export const inquiryDanaErrorConfig: MetricConfig = {
     },
 
     analyze: (samples, config, windowMs) => {
+        const now = samples[samples.length - 1]?.timestamp ?? Date.now();
         const windowSamples = samples.filter(
-            s => samples[samples.length - 1].timestamp - s.timestamp <= windowMs
-        )
-        const results: AnalyzeTrend[] = []
-        const grouped: Record<string, MetricSample[]> = {}
+            s => now - s.timestamp <= windowMs
+        );
 
-        for (const s of windowSamples) {
-            if (!s.bankName) continue
-            if (!grouped[s.bankName]) grouped[s.bankName] = []
-            grouped[s.bankName].push(s)
-        }
-
-        for (const [bank, bankSamples] of Object.entries(grouped)) {
-            if (bankSamples.length < 3) continue
-
-            const values = bankSamples.map(s => s.value)
-            const ratios = bankSamples.map(s => s.ratio ?? 0)
-
-            let inc = 0
-            let dec = 0
-
-            for (let i = 1; i < values.length; i++) {
-                if (values[i] > values[i - 1]) inc++
-                if (values[i] < values[i - 1]) dec++
-            }
-
-            const first = values[0]
-            const last = values[values.length - 1]
-            const avgRatio = ratios.reduce((a, b) => a + b, 0) / ratios.length
-            let trend: "increasing" | "decreasing" | "stable" = "stable"
-
-            if (last > first && inc >= values.length / 2) {
-                trend = "increasing"
-            } else if (last < first && dec >= values.length / 2) {
-                trend = "decreasing"
-            }
-            let level: "NORMAL" | "WARNING" | "CRITICAL" = "NORMAL"
-            if (trend !== "decreasing") {
-                if (avgRatio > 2.5) level = "CRITICAL"
-                else if (avgRatio >= 1.5) level = "WARNING"
-            } else {
-                if (avgRatio >= 1.5) level = "WARNING"
-                else level = "NORMAL"
-            }
-            results.push({
-                metricName: bank,
-                average: Math.round(values.reduce((a, b) => a + b, 0) / values.length),
-                percentChange:
-                    (((last - first) / Math.max(first, 1)) * 100).toFixed(2) + "%",
+        if (!windowSamples || windowSamples.length === 0) {
+            return {
+                average: 0,
+                percentChange: "0%",
                 stdDeviation: 0,
-                trend,
-                level
-            })
+                trend: "no_data",
+                level: "UNKNOWN",
+                relativeSlopePercent: "0%",
+                dataPoints: 0
+            };
         }
-        results.sort((a, b) => {
-            const ra = samples.find(s => s.bankName === a.metricName)?.ratio ?? 0
-            const rb = samples.find(s => s.bankName === b.metricName)?.ratio ?? 0
-            return rb - ra
-        })
-        return results[0]
+
+        // Group by bankName (karena sample campur bank)
+        const grouped: Record<string, MetricSample[]> = {};
+        for (const s of windowSamples) {
+            const bank = s.bankName || "unknown";
+            if (!grouped[bank]) grouped[bank] = [];
+            grouped[bank].push(s);
+        }
+
+        // Karena kamu ingin return SATU objek AnalyzeTrend (bukan array)
+        // → kita ambil bank dengan avgRatio TERBURUK (paling tinggi) sebagai representasi
+        let worstResult: AnalyzeTrend = {
+            metricName: "no_valid_bank",
+            average: 0,
+            percentChange: "0%",
+            stdDeviation: 0,
+            trend: "insufficient_data",
+            level: "UNKNOWN",
+            relativeSlopePercent: "0%",
+            dataPoints: 0
+        };
+
+        let maxAvgRatio = -1;
+
+        for (const [bankName, bankSamples] of Object.entries(grouped)) {
+            // Urutkan berdasarkan waktu (penting untuk slope)
+            bankSamples.sort((a, b) => a.timestamp - b.timestamp);
+
+            const ratios = bankSamples
+                .map(s => Number(s.ratio ?? 0))
+                .filter(r => !isNaN(r));
+
+            if (ratios.length < 2) continue; // minimal 2 titik untuk deteksi tren
+
+            const n = ratios.length;
+            const avgRatio = ratios.reduce((a, b) => a + b, 0) / n;
+
+            // Hitung std deviasi
+            const variance = ratios.reduce((sum, r) => sum + (r - avgRatio) ** 2, 0) / n;
+            const stdDev = Math.sqrt(variance);
+
+            // Hitung simple linear regression slope
+            const x = Array.from({ length: n }, (_, i) => i);
+            const sumX = (n * (n - 1)) / 2;
+            const sumX2 = (n * (n - 1) * (2 * n - 1)) / 6;
+            const sumY = ratios.reduce((a, b) => a + b, 0);
+            const sumXY = x.reduce((sum, xi, i) => sum + xi * ratios[i], 0);
+
+            const numerator = n * sumXY - sumX * sumY;
+            const denominator = n * sumX2 - sumX ** 2;
+            const slope = denominator !== 0 ? numerator / denominator : 0;
+
+            const relativeSlopePercent = avgRatio !== 0 ? (slope / avgRatio) * 100 : 0;
+
+            // Tentukan trend berdasarkan slope + stabilitas
+            let trend = "stable";
+            const trendThreshold = 4;      // % per langkah, bisa dari config
+            const cv = avgRatio !== 0 ? stdDev / avgRatio : 0;
+            const cvHigh = cv > 0.25;      // fluktuasi besar → kemungkinan spike
+
+            if (Math.abs(relativeSlopePercent) > trendThreshold) {
+                trend = relativeSlopePercent > 0 ? "increasing" : "decreasing";
+            } else if (cvHigh && n >= 4) {
+                // fluktuasi tinggi tapi slope kecil → kemungkinan hanya spike/noise
+                trend = "spike_or_noise";
+            }
+
+            // Level berdasarkan avgRatio (max threshold 2.5)
+            let level: "CRITICAL" | "WARNING" | "NORMAL" | "UNKNOWN" = "NORMAL";
+            if (avgRatio > 2.5) {
+                level = "CRITICAL";
+            } else if (avgRatio >= 1.5) {
+                level = "WARNING";
+            }
+
+            const result: AnalyzeTrend = {
+                metricName: bankName,
+                average: Number(avgRatio.toFixed(2)),
+                percentChange: "n/a",               // tidak dipakai lagi, bisa dihapus atau tetap untuk backward compat
+                stdDeviation: Number(stdDev.toFixed(2)),
+                trend,
+                level,
+                relativeSlopePercent: relativeSlopePercent.toFixed(2) + "%",
+                dataPoints: n
+            };
+
+            // Pilih yang paling buruk (avgRatio tertinggi)
+            if (avgRatio > maxAvgRatio) {
+                maxAvgRatio = avgRatio;
+                worstResult = result;
+            }
+        }
+
+        return worstResult;
     }
 }

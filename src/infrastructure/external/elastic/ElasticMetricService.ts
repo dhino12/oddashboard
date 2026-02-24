@@ -205,6 +205,8 @@ export class ElasticMetricService {
     private async callElastic(url: string, reqBody: {}): Promise<any> {
         // const res = await axios.post(url, reqBody);
         // const rawData = (await res).data
+        console.log(reqBody);
+        
         
         const dataTable = resultAxiosElastic1.data.chart_extracts.map(chart => ({
             title: chart.title,

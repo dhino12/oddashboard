@@ -86,6 +86,7 @@ export async function registerConsumers(logger: Logger) {
         nauraGateway,
         whatsappNotify,
         incidentRepo, //incidentRepo,
+        verifyBifastIncidentUseCase,
         Number(process.env.FLAP_THRESHOLD ?? 3)
     );
 

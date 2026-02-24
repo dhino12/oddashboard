@@ -57,17 +57,17 @@ export class NauraClient implements NauraGateway {
             }
             try {
                 response = await axios.post(
-                    // "http://naura.corp.bankmandiri.co.id/api/receiver/index.php",
-                    "",
+                    "http://naura.corp.bankmandiri.co.id/api/receiver/index.php",
                     parsedPayload
                 );
                 const responseJson = await response.data
-                this.logger.info(`❌ naura - ${responseJson?.message} - sent_to_group: ${group}`, {
+                this.logger.info(`✅ NAURA - ${responseJson?.message} - sent_to_group: ${group}`, {
                     statusCode: response.status,
                     url: response.config.baseURL,
                     respBody: responseJson
                 })
             } catch (error) {
+                this.logger.info(`❌ naura - ${message} - sent_to_group: ${group}`, error)
                 this.logger.error(error)
             }
         }
