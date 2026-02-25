@@ -11,11 +11,13 @@ export type MetricSample = {
     u173Count: number
     value: number            // nilai utama (resp_time / error_count)
     ratio?: number           // optional (error percentage)
+    codeError?: string
     timestamp: number
     timestampString: string
 }
 
 export type AnalyzeTrend = {
+    codeError ?:string,
     metricName?: string
     average: number,
     percentChange: string,
@@ -42,6 +44,48 @@ type Options = {
     interval: number
 }
 
+// helpers.ts (bisa taruh di same file atau utils/)
+function normalizeFilterValue(raw?: any): string | null {
+    if (!raw && raw !== 0) return null;
+    const s = String(raw).trim();
+    // Some rows have "FiltersBCA", "Filters BCA", "FiltersDana", "DANA", "FiltersSea Bank"
+    // Try to extract the bank/label token (letters, numbers, spaces)
+    // Remove a leading "Filters" (case-insensitive) and other prefixes
+    const stripped = s.replace(/^filters[:\s-]*/i, "")
+                        .replace(/^filter[:\s-]*/i, "")
+                        .replace(/^creationDate.*$/i, "")
+                        .trim();
+    // also remove any non-printable or newlines
+    const cleaned = stripped.replace(/\s+/g, " ").trim();
+    return cleaned.length ? cleaned : null;
+}
+
+function parseAvgTotalTime(raw?: any): number {
+    if (raw == null) return 0;
+    // raw examples: "Average totalTime669", "Average totalTime1,755", "Average totalTime null"
+    // We remove non-digit characters except comma then parse
+    const s = String(raw);
+    // Extract digits and commas
+    const digits = s.replace(/[^\d,.-]/g, "");
+    // remove commas then parse
+    const plain = digits.replace(/,/g, "");
+    const v = Number(plain);
+    return Number.isFinite(v) ? v : 0;
+}
+function isErrorTable(title: string): boolean {
+    return /error inquiry|error transfer/i.test(title);
+}
+function tableBelongsToEntity(title: string, entity?: string): boolean {
+    if (!entity) return true;
+
+    // Error tables → entity ada di title
+    if (/error inquiry|error transfer/i.test(title)) {
+        return title.toLowerCase().includes(entity.toLowerCase());
+    }
+
+    // Avg / normal tables → boleh lanjut (difilter di row)
+    return true;
+}
 export class ElasticMetricService {
     private readonly windowMs = 5 * 60 * 1000
 
@@ -54,52 +98,100 @@ export class ElasticMetricService {
         private readonly apiClient: any
     ) {}
 
+    // modified fetch in ElasticMetricService (replace inner part)
     async fetch(source: string, entity?: string, option?: Options): Promise<MetricFetchResult> {
-        const signals: MetricTrendResult[] = []
+        const signals: MetricTrendResult[] = [];
         if (option?.interval == 1) {
-            this.apiClient.reqBody.url = "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-5m,to:now))"
+            this.apiClient.reqBody.url = "http://...time:(from:now-5m,to:now))";
         } else {
-            this.apiClient.reqBody.url = "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-1m,to:now))"
+            this.apiClient.reqBody.url = "http://...time:(from:now-1m,to:now))";
         }
-        const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
-        // const raw = resultAxiosElastic1.data.chart_extracts
-        const resultRaw = raw.chart_extracts
+
+        // const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
+        const raw = resultAxiosElastic1.data;
+        const resultRaw = raw.chart_extracts ?? [];
 
         for (const config of this.metricConfigs) {
-            const tables = resultRaw.filter((t:any) => config.matchTable(t.title))
+            // find tables that match this config (could be multiple)
+            const tables = resultRaw.filter((t: any) =>
+                    config.matchTable(t.title)&&
+                    tableBelongsToEntity(t.title, entity)
+                );
+            if (!tables.length) continue;
 
             for (const table of tables) {
-                config.setName(table.title)
-                const samples = table.table
-                    .map((row:any) => config.extractSample(row, entity))
-                    .filter(Boolean) as MetricSample[]
+                // --- STEP A: pre-filter rows by entity (normalize Filter value) ---
+                const rows = Array.isArray(table.table) ? table.table : [];
+                const filteredRows =
+                    entity && entity.length && !isErrorTable(table.title)
+                        ? rows.filter((row: any) => {
+                            const rawFilter =
+                                row["Filters"] ??
+                                row["filters"] ??
+                                row["Filters "];
+                            const normalized = normalizeFilterValue(rawFilter);
+                            if (!normalized) return false;
 
-                this.logger.info("======samples")
-                this.logger.info(samples)
-                if (samples.length === 0) continue
+                            return normalized
+                                .toLowerCase()
+                                .includes(entity.toLowerCase());
+                        }) : rows; // ❗ error table atau entity kosong → ambil semua
+                console.log(table.title, filteredRows);
+                // if nothing matches for this entity on this table -> skip
+                if (!filteredRows.length) continue;
 
-                const key = `${source}:${config.name}:${entity}`
-                if (!this.samples[key]) this.samples[key] = []
+                // --- STEP B: build MetricSample[] using config.extractSample (unchanged) ---
+                const samples = filteredRows
+                    .map((row: any) => {
+                        // We pass cleaned/normalized fields to extractSample so config doesn't need to hack
+                        // Build a small normalized row object for config.extractSample to consume:
+                        const normalizedFilter = normalizeFilterValue(row["Filters"] ?? row["filters"]);
+                        const normalizedRow = {
+                            ...row,
+                            Filters: normalizedFilter,
+                            "Average totalTime": row["Average totalTime"] ?? row["Average totalTime "],
+                            // preserve other keys as-is
+                        };
+                        // If your extractSample expects raw kibana row, it's still okay because we didn't remove fields
+                        return config.extractSample(normalizedRow, entity, table.title);
+                    })
+                    .filter(Boolean) as MetricSample[];
 
-                this.samples[key].push(...samples)
-                this.samples[key] = this.samples[key].filter(
-                    s => Date.now() - s.timestamp <= this.windowMs
-                )
+                if (samples.length === 0) continue;
+
+                // --- STEP C: append into samples store per source:table:entity (no mixing) ---
+                const key = `${source}:${table.title}:${entity ?? "ALL"}`;
+                if (!this.samples[key]) this.samples[key] = [];
+
+                // push new samples (they already contain timestamp from extractSample)
+                this.samples[key].push(...samples);
+
+                // keep sliding window based on sample.timestamp (extractSample should set timestamp)
+                // this.samples[key] = this.samples[key].filter(
+                //     s => Date.now() - (s.timestamp ?? Date.now()) <= this.windowMs
+                // );
+
+                this.logger.info("======samples==== " + key + " === "); 
+                this.logger.info(this.samples[key]);
+
+                // --- STEP D: analyze using config-specific analyzer ---
                 const trend = config.analyze(this.samples[key], {
-                    trendThreshold: 6,       // >6% per langkah → dianggap tren
-                    stabilityStdDev: 0.18,   // CV >18% → unstable kalau tidak ada tren jelas
+                    trendThreshold: 6,
+                    stabilityStdDev: 0.18,
                     critical: 4000,
                     warning: 2000
-                }, this.windowMs)
-                this.logger.info("======trend==== " + key + " ===")
-                this.logger.info(trend)
-                this.logger.info("🚩 =============")
+                }, this.windowMs);
+
+                this.logger.info("======trend==== " + key + " ===");
+                this.logger.info(trend);
+                this.logger.info("🚩 =============");
+
                 if (trend) {
                     signals.push({
                         key,
                         source: table.title,
                         trend
-                    })
+                    });
                 }
             }
         }
@@ -108,10 +200,8 @@ export class ElasticMetricService {
             overallLevel: this.aggregateLevel(signals),
             relatedLevel: signals.filter(signal => signal.trend?.level == this.aggregateLevel(signals)),
             signals
-        }
+        };
     }
-
-
     // private async fetchFromElastic(entity: string, dataRespTime: any): Promise<MetricSample[]> {
     //     const data = resultAxiosElastic1;
     //     const samples: MetricSample[] = []

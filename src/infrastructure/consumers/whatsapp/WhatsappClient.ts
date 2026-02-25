@@ -55,7 +55,7 @@ export class WhatsAppClient extends EventEmitter {
             auth: {
                 creds: state.creds,
                 keys: makeCacheableSignalKeyStore(state.keys),
-            },logger: pino({level: "fatal"}),
+            },logger: pino({level: "silent"}),
             msgRetryCounterCache: this.msgRetryCounterCache,
         });
 

@@ -19,7 +19,7 @@ export function startWhatsApp(logger: Logger) {
     });
 
     wa.on("message", (msg) => {
-        logger.info("Incoming WA message", msg);
+        logger.info("Incoming WA message");
 
         // forward ke application layer
         // example: commandHandler.handle(msg)

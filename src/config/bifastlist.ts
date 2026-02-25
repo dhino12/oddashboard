@@ -39,7 +39,6 @@ export const bifastList = [
     { "id_bank": "IBBKIDJA", "nama_bank": "Bank Maybank Indonesia", "abbreviation": "Maybank", "kode": 489 },
     { "id_bank": "MAYBIDJ1", "nama_bank": "Bank Maybank UUS", "abbreviation": "MaybankUUS", "kode": 752 },
     { "id_bank": "MEGAIDJA", "nama_bank": "Bank Mega", "abbreviation": "Mega", "kode": 438 },
-    { "id_bank": "BSMDIDJA", "nama_bank": "Bank Mega Syariah", "abbreviation": "Mega Sy", "kode": 165 },
     { "id_bank": "MESTIDJA", "nama_bank": "Bank Mestika Dharma", "abbreviation": "Mestika", "kode": 927 },
     { "id_bank": "MHCCIDJA", "nama_bank": "Bank Mizuho Indonesia", "abbreviation": "Mizuho", "kode": 604 },
     { "id_bank": "MNCIIDJA", "nama_bank": "Bank MNC Internasional", "abbreviation": "MNC", "kode": 371 },
@@ -1157,7 +1156,7 @@ export const resultAxiosElastic1 = {
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime643"
+                        "Average totalTime": "Average totalTime4500"
                     },
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
@@ -1187,7 +1186,7 @@ export const resultAxiosElastic1 = {
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime730"
+                        "Average totalTime": "Average totalTime2730"
                     },
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
@@ -1586,8 +1585,8 @@ export const resultAxiosElastic1 = {
                     },
                     {
                         "filters": "filtersU173",
-                        "Count": "Count211",
-                        "Count percentages": "Count percentages30%"
+                        "Count": "Count91",
+                        "Count percentages": "Count percentages2.50%"
                     },
                     {
                         "filters": "filtersU992",
@@ -1638,6 +1637,31 @@ export const resultAxiosElastic1 = {
                         "filters": "filtersU173",
                         "Count": "Count0",
                         "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU992",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    }
+                ]
+            },
+            {
+                "title": "BSI Error Transfer",
+                "table": [
+                    {
+                        "filters": "filtersU000",
+                        "Count": "Count294",
+                        "Count percentages": "Count percentages70%"
+                    },
+                    {
+                        "filters": "filtersU170",
+                        "Count": "Count0",
+                        "Count percentages": "Count percentages0%"
+                    },
+                    {
+                        "filters": "filtersU173",
+                        "Count": "Count91",
+                        "Count percentages": "Count percentages3.50%"
                     },
                     {
                         "filters": "filtersU992",
