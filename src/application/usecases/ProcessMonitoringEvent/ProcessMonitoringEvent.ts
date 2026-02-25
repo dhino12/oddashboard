@@ -160,11 +160,11 @@ export class ProcessMonitoringEvent {
         /**
          * 8 Dedup lock (race condition protection)
          */
-        // const locked = await this.dedup.acquireIncidentLock(event.source,event.entity,ENV.DEDUP_LOCK_TTL_MS);
+        const locked = await this.dedup.acquireIncidentLock(event.source,event.entity,ENV.DEDUP_LOCK_TTL_MS);
 
-        // if (!locked) {
-        //     return;
-        // }
+        if (!locked) {
+            return;
+        }
 
         /**
          * 9 Create incident (DB = source of truth)
