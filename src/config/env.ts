@@ -3,7 +3,7 @@ import { SourceHealthCheck } from "../infrastructure/scheduler/CloseRecoveryBiFa
 export const ENV = {
     REDIS_URL: process.env.REDIS_URL || "redis://127.0.0.1:6379",
     DATABASE_URL: process.env.DATABASE_URL || "mysql://user:pass@localhost:3306/db",
-    SLIDING_WINDOW_MS: Number(process.env.SLIDING_WINDOW_MS) || 60 * 1000,
+    SLIDING_WINDOW_MS: Number(process.env.SLIDING_WINDOW_MS) || 15 * 60 * 1000,
     STABLE_OPEN_MS: Number(process.env.STABLE_OPEN_MS) || 60 * 1000,
     INTERVAL_HEALTHCHECK: Number(process.env.STABLE_OPEN_MS) || 60 * 1000,
     MASSIVE_INTERVAL_HEALTHCHECK: Number(process.env.STABLE_OPEN_MS) || 5 * 1000,
