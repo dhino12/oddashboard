@@ -21,21 +21,21 @@ export class BiFastHealthChecker implements HealthChecker {
         return true
     }
     async callBiFastASP(url: string): Promise<any> {
-        // const res = await axios.post(`http://localhost:4000/api/v1/run`, {
-        //     "action": "scrape",
-        //     "url": "https://monitoringtools.corp.bankmandiri.co.id/asp/channel/everest/bifast-livin",
-        //     "viewport": { "width": 1600, "height": 900 },
-        //     "steps": [
-        //         {
-        //             "type": "extract-table",
-        //             "selectors": { "table": "#DataTables_Table_0_wrapper" },
-        //             "pagination": { "nextButton": "#DataTables_Table_0_paginate li:nth-child(9) a" }
-        //         }
-        //     ],
-        //     "screenshot": { "enabled": true, "options": [{ "selector": "", "fullPage": false }] }
-        // })
-        // const resultJson = await res.data;
-        const resultJson = resultAxiosRequest;
+        const res = await axios.post(`http://localhost:4000/api/v1/run`, {
+            "action": "scrape",
+            "url": "https://monitoringtools.corp.bankmandiri.co.id/asp/channel/everest/bifast-livin",
+            "viewport": { "width": 1600, "height": 900 },
+            "steps": [
+                {
+                    "type": "extract-table",
+                    "selectors": { "table": "#DataTables_Table_0_wrapper" },
+                    "pagination": { "nextButton": "#DataTables_Table_0_paginate li:nth-child(9) a" }
+                }
+            ],
+            "screenshot": { "enabled": true, "options": [{ "selector": "", "fullPage": false }] }
+        })
+        const resultJson = await res.data;
+        // const resultJson = resultAxiosRequest;
         return resultJson
     }
     async isServiceOpenV2(entity: string, resultJson: any): Promise<boolean> {
@@ -47,21 +47,21 @@ export class BiFastHealthChecker implements HealthChecker {
         return false
     }
     async isServiceOpen(source: string, entity: string): Promise<boolean> { 
-        // const res = await axios.post(`http://localhost:4000/api/v1/run`, {
-        //     "action": "scrape",
-        //     "url": "https://monitoringtools.corp.bankmandiri.co.id/asp/channel/everest/bifast-livin",
-        //     "viewport": { "width": 1600, "height": 900 },
-        //     "steps": [
-        //         {
-        //             "type": "extract-table",
-        //             "selectors": { "table": "#DataTables_Table_0_wrapper" },
-        //             "pagination": { "nextButton": "#DataTables_Table_0_paginate li:nth-child(9) a" }
-        //         }
-        //     ],
-        //     "screenshot": { "enabled": true, "options": [{ "selector": "", "fullPage": false }] }
-        // })
-        // const resultJson = await res.data;
-        const resultJson = resultAxiosRequest;
+        const res = await axios.post(`http://localhost:4000/api/v1/run`, {
+            "action": "scrape",
+            "url": "https://monitoringtools.corp.bankmandiri.co.id/asp/channel/everest/bifast-livin",
+            "viewport": { "width": 1600, "height": 900 },
+            "steps": [
+                {
+                    "type": "extract-table",
+                    "selectors": { "table": "#DataTables_Table_0_wrapper" },
+                    "pagination": { "nextButton": "#DataTables_Table_0_paginate li:nth-child(9) a" }
+                }
+            ],
+            "screenshot": { "enabled": true, "options": [{ "selector": "", "fullPage": false }] }
+        })
+        const resultJson = await res.data;
+        // const resultJson = resultAxiosRequest;
         const entityUpperCase = entity.toUpperCase()
         const findStatusBank = resultJson.data.chart_extracts[0].table.find((item: any) => item["BANK NAME"].toUpperCase() == entityUpperCase || item["ABBREVIATION"].toUpperCase() == entityUpperCase);
         if (findStatusBank?.STATUS.toUpperCase() == "OPEN") {
