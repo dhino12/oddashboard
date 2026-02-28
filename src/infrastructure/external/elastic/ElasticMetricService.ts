@@ -102,9 +102,9 @@ export class ElasticMetricService {
     async fetch(source: string, entity?: string, option?: Options): Promise<MetricFetchResult> {
         const signals: MetricTrendResult[] = [];
         if (option?.interval == 1) {
-            this.apiClient.reqBody.url = "http://...time:(from:now-5m,to:now))";
+            this.apiClient.reqBody.url = "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-5m,to:now))";
         } else {
-            this.apiClient.reqBody.url = "http://...time:(from:now-1m,to:now))";
+            this.apiClient.reqBody.url = "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-1m,to:now))";
         }
 
         // const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
@@ -136,7 +136,7 @@ export class ElasticMetricService {
                                 .toLowerCase()
                                 .includes(entity.toLowerCase());
                         }) : rows; // ❗ error table atau entity kosong → ambil semua
-                console.log(table.title, filteredRows);
+                // console.log(table.title, filteredRows);
                 // if nothing matches for this entity on this table -> skip
                 if (!filteredRows.length) continue;
 
@@ -172,7 +172,7 @@ export class ElasticMetricService {
                 // );
 
                 this.logger.info("======samples==== " + key + " === "); 
-                this.logger.info(this.samples[key]);
+                // this.logger.info(this.samples[key]);
 
                 // --- STEP D: analyze using config-specific analyzer ---
                 const trend = config.analyze(this.samples[key], {

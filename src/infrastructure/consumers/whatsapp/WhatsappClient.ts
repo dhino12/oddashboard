@@ -8,7 +8,8 @@ import {
     makeCacheableSignalKeyStore,
     CacheStore,
     DEFAULT_CONNECTION_CONFIG,
-    generateMessageIDV2
+    generateMessageIDV2,
+    jidNormalizedUser
 } from "@whiskeysockets/baileys";
 import { Boom } from "@hapi/boom";
 import { EventEmitter } from "events";
@@ -111,12 +112,14 @@ export class WhatsAppClient extends EventEmitter {
                         timestamp: Number(msg.messageTimestamp) * 1000,
                         raw: msg,
                     };
-                    this.logger.info(`ℹ️ ${raw.from}: ${raw.body.trim().replace("\n", "")}`);
+                    if (raw.from == "120363042758870105@g.us") {
+                        this.logger.info(`ℹ️ ${raw.from}: ${raw.body.trim().replace("\n", "")}`);
+                    }
                     
-                    if (body.toLowerCase().includes("ping")) {
+                    if (body.toLowerCase().includes("/ping")) {
                         await this.sendMessage(raw.from, "pong!");
                     }
-                    if (body.toLowerCase().includes("getinfogroup")) {
+                    if (body.toLowerCase().includes("/getinfogroup")) {
                         if (this.socket == null) return
                         const groups = await this.socket?.groupFetchAllParticipating();
                         const groupIdKeys = Object.keys(groups)

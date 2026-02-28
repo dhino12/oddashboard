@@ -9,6 +9,7 @@ import { MonitoringStateStore } from "../../../application/ports/MonitoringState
 import { BifastVerificationJob } from "../../scheduler/BifastVerificationJob";
 import { InMemoryWagComplaintStore } from "../../persistence/memory/InMemoryWagComplaint";
 import { detectGangguan } from "./ComplaintMessageParser";
+import findBiFastAbbreviationByBankName, { findBifastBankNameByAbbreviation } from "../../../config/bifastlist";
 
 export class BifastConsumer {
     constructor(
@@ -26,25 +27,32 @@ export class BifastConsumer {
             if (
                 msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST &&
                 msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_MONITORING && 
-                msg.from != ENV.ALERT_WA_NUMBER
+                msg.from != ENV.ALERT_WA_NUMBER &&
+                msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_HELPDESK
             ) return
             
             const parsed = parseBifastMessage(msg.body || "");
             if (
                 msg.from == ENV.LISTEN_GROUP_CHAT_BIFAST_HELPDESK || 
-                msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST
+                msg.from == ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST
             ) {
                 const parsedCompaint = detectGangguan(msg.body)
-                if (parsedCompaint.complainerEntity == null && parsedCompaint.reportedBank == null ) return
-                const prevState = await this.stateStore.get(
-                    "BIFAST",
-                    parsedCompaint.complainerEntity?.toUpperCase() ?? ""
-                )
-                if (prevState?.entity?.toUpperCase() == parsedCompaint.complainerEntity?.toUpperCase()) {
-                    this.wagCompaint.record(
-                        parsedCompaint.complainerEntity ?? "",
-                        parsedCompaint.message ?? ""
+                const detectMandiri = parsedCompaint.complainerEntity?.toLowerCase() == "mandiri" ? parsedCompaint.reportedBank : parsedCompaint.complainerEntity
+                console.log(parsedCompaint, detectMandiri);
+                if (detectMandiri) {
+                    const prevState = await this.stateStore.get(
+                        "BIFAST",
+                        findBifastBankNameByAbbreviation(detectMandiri?.toUpperCase() ?? "") ?? ""
                     )
+                    console.log(prevState);
+                    
+                    if (findBiFastAbbreviationByBankName(prevState?.entity?.toUpperCase() ?? "") == detectMandiri?.toUpperCase()) {
+                        console.log("masuk if 2");
+                        this.wagCompaint.record(
+                            detectMandiri?.toUpperCase() ?? "",
+                            parsedCompaint.message ?? ""
+                        )
+                    }
                 }
             }
             if (!parsed) return;

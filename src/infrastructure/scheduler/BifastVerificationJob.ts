@@ -42,7 +42,7 @@ export class BifastVerificationJob {
                 // const isOpen = false
                 const isOpen = await this.healthChecker.isServiceOpenV2(entity, callBiFastASPChecking)
                 if (isOpen) {
-                    this.logger.info(`Service ${key} already 🛑 STOP Verification`);
+                    this.logger.info(`[BiFASTVerificationJob] - 🛑 STOP Service ${key} already ${isOpen}`);
                     this.stop(source, entity);
                     intervalCount = 0
                     return;
@@ -52,16 +52,20 @@ export class BifastVerificationJob {
                 if (!session) return;
                 session.lastResult = result;
                 const elapsed = Date.now() - session.startedAt;
-                this.logger.info(`Verification running ${key} → ${result}, elapsed ${elapsed}ms`);
+                const duration = new Date(elapsed).toISOString().substr(11, 8)
+                this.logger.info(`Verification running ${key} → ${result}, elapsed ${duration}ms`);
                 console.log(`time to break ? `, !(elapsed < this.observationMs));
-
-                if (elapsed < this.observationMs) return;
+                if (
+                    elapsed < this.observationMs && 
+                    result !== "CONFIRMED_INCIDENT" && 
+                    result !== "FALSE_POSITIVE"
+                ) return;
                 if (
                     session.lastResult === "CONFIRMED_INCIDENT" ||
                     session.lastResult === "FALSE_POSITIVE"
                 ) {
                     this.logger.info(`Final decision for ${key}: ${session.lastResult}`);
-                    this.logger.info(`🛑 STOP JOB BiFAST_VERIFICATION`);
+                    this.logger.info(`[BiFASTVerificationJob] - 🛑 STOP JOB ${key} after ${duration}`);
                     this.stop(source, entity);
                     intervalCount = 0
                 }

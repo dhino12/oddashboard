@@ -177,8 +177,7 @@ export const inquiryDanaErrorConfig: MetricConfig = {
     threshold: 2.5,
 
     matchTable: (title) => {
-        console.log(title, title.includes("Error Inquiry") || title.includes("Error Transfer"));
-        
+        // console.log(title, title.includes("Error Inquiry") || title.includes("Error Transfer"));
         return title.includes("Error Inquiry") || title.includes("Error Transfer")
     },
 
@@ -188,8 +187,6 @@ export const inquiryDanaErrorConfig: MetricConfig = {
     if (!entity) return null;
 
     const code = String(row["Filters"] ?? row["filters"] ?? "").toUpperCase();
-
-    // 🚫 U000 = SUCCESS → jangan dihitung sebagai error sample
     if (code === "U000") return null;
 
     const percentageStr =

@@ -26,7 +26,7 @@ export class NauraClient implements NauraGateway {
                     parsedPayload
                 );
                 const responseJson = await response.data
-                this.logger.info(`naura - ${responseJson?.message} - sent_to_group: ${group}`, {
+                this.logger.info(`✅ NAURA - ${responseJson?.message} - sent_to_group: ${group}`, {
                     statusCode: response.status,
                     url: response.config.baseURL,
                     respBody: responseJson
@@ -35,7 +35,7 @@ export class NauraClient implements NauraGateway {
                 const resTmp = error.response;
                 console.log(resTmp);
                 
-                this.logger.error(`naura - ${resTmp?.message} - sent_to_group: ${group}`, {
+                this.logger.error(`❌ NAURA - ${resTmp?.message} - sent_to_group: ${group}`, {
                     statusCode: resTmp?.status,
                     url: response?.config?.url ?? "/remedy/naura/index.php",
                     respBody: await response?.data ?? resTmp?.data 

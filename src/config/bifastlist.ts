@@ -114,7 +114,7 @@ export const bifastList = [
 ]
 
 
-export const resultAxiosRequest = {
+export let resultAxiosRequest = {
     "code": 200,
     "status": "success",
     "data": {
@@ -637,7 +637,7 @@ export const resultAxiosRequest = {
                         "BANK NAME": "Bank Syariah Indonesia",
                         "ABBREVIATION": "BSI",
                         "UPDATED TIME": "2026-02-07 12:49:43.163",
-                        "STATUS": "OPEN",
+                        "STATUS": "CLOSE",
                         "UPDATED BY": "ANGGORO WAKHID SUBKHAN HAMID"
                     },
                     {
@@ -2433,4 +2433,13 @@ export default function findBiFastAbbreviationByBankName(bankName:string): strin
             return bifastName.abbreviation.toUpperCase()
         }
     })?.abbreviation ?? ""
+}
+
+export function findBifastBankNameByAbbreviation(bankName:string): string {
+    const entity: string = bankName.toUpperCase();
+    return bifastList.find(bifastName => {
+        if (entity == bifastName.abbreviation.toUpperCase()) {
+            return bifastName.nama_bank.toUpperCase()
+        }
+    })?.nama_bank ?? ""
 }

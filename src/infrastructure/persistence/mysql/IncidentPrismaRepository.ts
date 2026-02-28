@@ -15,16 +15,24 @@ export class IncidentPrismaRepository implements IncidentRepository {
         return !!row;
     }
     async create(inc: Incident) {
-        await this.prisma.incidents.create({
-            data: {
+        await this.prisma.incidents.upsert({
+            where: {
+                id: inc.id
+            },
+            create: {
                 id: inc.id,
-                incNumber: inc.metadata.incidentNumber ?? "INC_TEST",
+                incNumber: inc.metadata?.incidentNumber ?? "INC_TEST",
                 source: inc.source,
                 entity: inc.entity,
                 reason: inc.reason,
                 status: inc.status,
                 incTimestamp: new Date(inc.metadata.incTimestamps),
                 created_at: new Date(inc.openedAt),
+            },
+            update: {
+                status: inc.status,
+                reason: inc.reason,
+                incTimestamp: new Date(inc.metadata.incTimestamps),
             },
         });
     }

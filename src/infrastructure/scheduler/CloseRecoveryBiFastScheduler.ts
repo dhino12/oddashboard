@@ -26,7 +26,7 @@ export class CloseRecoveryScheduler {
                     this.processMonitoringEvent.execute({
                         source, entity, status: "OPEN"
                     })
-                    console.log(`${key} recoverd via health API`);
+                    this.logger.info(`[CloseRecoveryScheduler] - 🛑 STOP ${key} recoverd via health API `)
                     this.stop(source, entity)
                 }
             } catch (error) {
@@ -39,7 +39,7 @@ export class CloseRecoveryScheduler {
     stop(source: SourceHealthCheck, entity: string) {
         const key = `${source}:${entity}`;
         const timer = this.timers.get(key);
-        this.logger.info("STOP HEALTHCHECK STATUS " + timer)
+        this.logger.info("[CloseRecoveryScheduler] - 🛑 STOP " + timer)
         if (timer) {
             clearInterval(timer);
             this.timers.delete(key)

@@ -25,7 +25,7 @@ export class AdvancedBifastVerifier {
                 .filter(s => s.trend?.level === "CRITICAL")
                 .map(s => s.source)
         }, this.logger)
-        this.logger.info(decisionPolicy, metrics)
+        this.logger.info(decisionPolicy, metrics.signals.filter(s => s.trend?.level === "CRITICAL"))
         return {decision: decisionPolicy, metrics}
     }
 }

@@ -11,14 +11,14 @@ export const ENV = {
     REMEDY_BASE: process.env.REMEDY_BASE || "https://10.254.152.105:8443/remedy",
     REMEDY_USER: process.env.REMEDY_USER || "user",
     REMEDY_PASS: process.env.REMEDY_PASS || "pass",
-    ALERT_WA_NUMBER: process.env.ALERT_WA_NUMBER || "6282191029737@s.whatsapp.net",
+    ALERT_WA_NUMBER: process.env.ALERT_WA_NUMBER || "43190325350482@lid",
     BROADCAST_WHATSAPP_GROUP_APPIUM:"appium",
     BROADCAST_WHATSAPP_GROUP_PTR_BROADCAST:"ptr_broadcast",
     BROADCAST_WHATSAPP_GROUP_MANDIRI_CARE:"mandiri_operational_care",
     BROADCAST_WHATSAPP_GROUP_COMCEN:"com_cen",
     LISTEN_GROUP_CHAT_TEST_BROADCAST: "120363424819385538@g.us",
     LISTEN_GROUP_CHAT_BIFAST_MONITORING: "120363041988450487@g.us",
-    LISTEN_GROUP_CHAT_BIFAST_HELPDESK: null,
+    LISTEN_GROUP_CHAT_BIFAST_HELPDESK: "120363042758870105@g.us",
     MESSAGE_NOTIFY_BIFAST_OPENED_NAURA: (source: SourceHealthCheck, entity: string, sourceWaNumber: string) => {
         return `✅ Transaksi ${source} kearah ${entity} sudah dibuka kembali\n\ncc: @${sourceWaNumber}`
     }
