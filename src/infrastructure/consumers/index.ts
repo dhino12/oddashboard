@@ -31,6 +31,8 @@ import { WagHelpdeskService } from "../external/elastic/WagHelpdeskService";
 import { InMemoryWagComplaintStore } from "../persistence/memory/InMemoryWagComplaint";
 import { avgRespTimeConfig, inquiryDanaErrorConfig } from "../external/elastic/MetricConfig";
 import { VerifyBifastIncidentUseCase } from "../../application/usecases/AdvancedBifastVerifier/VerifyBifastIncidentUseCase";
+import { WuzApiWsClient } from "./whatsapp/WuzApiClient";
+import { WhatsAppClientV2 } from "./whatsapp/WhatsappClientv2";
 
 export async function registerConsumers(logger: Logger) {
     // Domain
@@ -62,7 +64,12 @@ export async function registerConsumers(logger: Logger) {
     const wagHelpDeskService = new WagHelpdeskService(inMemoryWagComplaint);
 
     // WhatsApp setup
-    const waClient = startWhatsApp(logger);
+    const waWs = new WuzApiWsClient("http://localhost:8080");
+    waWs.start();
+
+    const waClient = new WhatsAppClientV2("", logger);
+    waClient.start();
+    // const waClient = startWhatsApp(logger);
     const whatsappNotify = new WhatsAppNotificationGateway(waClient, ENV.ALERT_WA_NUMBER)
 
     // create the main usecase

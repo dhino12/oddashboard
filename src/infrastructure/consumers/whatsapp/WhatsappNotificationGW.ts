@@ -1,9 +1,10 @@
 import { NotificationGateway } from "../../../application/ports/NotificationGateway";
 import { WhatsAppClient } from "./WhatsappClient";
+import { WhatsAppClientV2 } from "./WhatsappClientv2";
 
 export class WhatsAppNotificationGateway implements NotificationGateway {
     constructor(
-        private wa: WhatsAppClient,
+        private wa: WhatsAppClient | WhatsAppClientV2,
         private targetWA: string | []
     ) {}
     async notifyIncident(payload: { source: string; entity: string; message: string; }): Promise<void> {

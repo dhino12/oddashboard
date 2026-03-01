@@ -10,10 +10,11 @@ import { BifastVerificationJob } from "../../scheduler/BifastVerificationJob";
 import { InMemoryWagComplaintStore } from "../../persistence/memory/InMemoryWagComplaint";
 import { detectGangguan } from "./ComplaintMessageParser";
 import findBiFastAbbreviationByBankName, { findBifastBankNameByAbbreviation } from "../../../config/bifastlist";
+import { WhatsAppClientV2 } from "./WhatsappClientv2";
 
 export class BifastConsumer {
     constructor(
-        private wa: WhatsAppClient, 
+        private wa: WhatsAppClient | WhatsAppClientV2,
         private processor: ProcessMonitoringEvent,
         private closeRecoveryScheduler: CloseRecoveryScheduler,
         private closeBiFastVerifyScheduler: BifastVerificationJob,
@@ -100,11 +101,11 @@ export class BifastConsumer {
         this.wa.start();
     }
 
-    stop() {
-        try {
-        this.wa.stop();
-        } catch (err) {
-        // ignore
-        }
-    }
+    // stop() {
+    //     try {
+    //     this.wa.stop();
+    //     } catch (err) {
+    //     // ignore
+    //     }
+    // }
 }
