@@ -5,6 +5,8 @@ import { initRedis } from "./config/redis";
 import { registerConsumers } from "./infrastructure/consumers";
 import { setPrismaClient } from "./infrastructure/persistence/mysql/PrismaClient";
 import { setRedisClient } from "./infrastructure/persistence/redis/RedisClient";
+import { createServer } from "http";
+import { initWS } from "./infrastructure/ws/websocket";
 
 async function bootstrap() {
     const logger = initLogger();
@@ -29,7 +31,9 @@ async function bootstrap() {
 
     const app = createApp();
     const port = Number(process.env.PORT || 3000);
-    app.listen(port, () => logger.info(`listening ${port}`));
+    const server = createServer(app);
+    server.listen(port, () => logger.info(`listening ${port}`));
+    initWS(server, logger) // webhook
 
     // wire consumers (whatsapp, fetch jobs) after infra init
     await registerConsumers(

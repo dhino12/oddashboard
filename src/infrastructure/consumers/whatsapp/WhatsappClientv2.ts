@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 import { Logger } from "winston";
 import WebSocket from "ws";
 import { MessageBus } from "../ws/MessageBus";
+import { io, Socket } from "socket.io-client";
 
 export type RawWhatsAppMessage = {
     id?: string;
@@ -24,42 +25,59 @@ type WuzApiMessagePayload = {
 };
 
 export class WhatsAppClientV2 extends EventEmitter {
-    private ws ?: WebSocket
+    private socket: Socket
     private connected: boolean = false;
 
     constructor(
-        private readonly url = "wss://10.113.88.171",
+        private readonly wsUrl = "",
         private readonly logger: Logger
-    ) {
-        super();
-    }
-
-    adapterWuzApiMessage(payload: WuzApiMessagePayload) {
-        const msg = {
-            key: {
-                id: payload.data.id,
-                fromMe: false,
-                remoteJid: payload.data.from,
-                participant: payload.data.participant,
-            },
-            message: {
-                conversation: payload.data.text,
-                extendedTextMessage: {
-                    text: ""
-                }
-            },
-            messageTimestamp: payload.data.timestamp,
-        };
-
-        return msg;
-    }
-
-    async start() {
-        if (this.connected) return
-        this.ws = new WebSocket(this.url);
-        MessageBus.on("whatsapp.message", async (raw) => {
-            console.log(raw);
+    ) { 
+        super()
+        this.socket = io(wsUrl, {
+            transports: ["websocket"],
+            reconnection: true
         })
+    }
+
+    // adapterWuzApiMessage(payload: WuzApiMessagePayload) {
+    //     const msg = {
+    //         key: {
+    //             id: payload.data.id,
+    //             fromMe: false,
+    //             remoteJid: payload.data.from,
+    //             participant: payload.data.participant,
+    //         },
+    //         message: {
+    //             conversation: payload.data.text,
+    //             extendedTextMessage: {
+    //                 text: ""
+    //             }
+    //         },
+    //         messageTimestamp: payload.data.timestamp,
+    //     };
+
+    //     return msg;
+    // }
+
+    start() {
+        this.socket.on("connect", () => {
+            console.log("🔌 Connected to ingress")
+        })
+
+        // 🔥 INI PENGGANTI BAILEYS LISTENER
+        this.socket.on("whatsapp.message", (msg) => {
+            console.log('whatsapp.message', msg);
+            
+            this.emit("message", msg)
+        })
+    }
+
+    // async start() {
+    //     if (this.connected) return
+    //     this.ws = new WebSocket(this.url);
+    //     MessageBus.on("whatsapp.message", async (raw) => {
+    //         console.log(raw);
+    //     })
         // this.ws.on("message", async (data) => {
         //     try {
         //         const payload = JSON.parse(data.toString()) as WuzApiMessagePayload;
@@ -97,19 +115,21 @@ export class WhatsAppClientV2 extends EventEmitter {
                 
         //     }
         // })
-    }
+    // }
+
     async sendMessage(jid: string, text: string) {
-        await this.send({
-            type: "SEND_MESSAGE",
-            jid,
-            text
-        });
-    }
-    private send(payload: any) {
-        if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
-            throw new Error("WebSocket not connected");
+        if (!this.connected) {
+            throw new Error("WebSocket not connected")
         }
 
-        this.ws.send(JSON.stringify(payload));
+        return new Promise((resolve, reject) => {
+            this.socket.emit("whatsapp.send", { jid, text }, (ack: any) => {
+                if (ack?.success) {
+                    resolve(ack)
+                } else {
+                    reject(new Error(ack?.error || "Send failed"))
+                }
+            })
+        })
     }
 }

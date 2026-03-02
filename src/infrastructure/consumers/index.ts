@@ -64,7 +64,7 @@ export async function registerConsumers(logger: Logger) {
     const wagHelpDeskService = new WagHelpdeskService(inMemoryWagComplaint);
 
     // WhatsApp setup
-    const waWs = new WuzApiWsClient("http://localhost:8080");
+    const waWs = new WuzApiWsClient("http://localhost:3000");
     waWs.start();
 
     const waClient = new WhatsAppClientV2("", logger);
