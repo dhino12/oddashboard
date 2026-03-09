@@ -1435,8 +1435,8 @@ export const resultAxiosElastic1 = {
                     },
                     {
                         "filters": "filtersU173",
-                        "Count": "Count0",
-                        "Count percentages": "Count percentages0%"
+                        "Count": "Count232",
+                        "Count percentages": "Count percentages5.6%"
                     },
                     {
                         "filters": "filtersU992",
@@ -1536,7 +1536,7 @@ export const resultAxiosElastic1 = {
                     {
                         "filters": "filtersU173",
                         "Count": "Count122",
-                        "Count percentages": "Count percentages20%"
+                        "Count percentages": "Count percentages5.5%"
                     },
                     {
                         "filters": "filtersU992",
@@ -2442,4 +2442,34 @@ export function findBifastBankNameByAbbreviation(bankName:string): string {
             return bifastName.nama_bank.toUpperCase()
         }
     })?.nama_bank ?? ""
+}
+
+export function setAxiosRequestOpenClose(indikator: string) {
+    const data = resultAxiosRequest.data.chart_extracts[0].table.filter(data => data.ABBREVIATION != "BSI")
+    data.push({
+        "BANK NAME": "Bank Syariah Indonesia",
+        "ABBREVIATION": "BSI",
+        "UPDATED TIME": "2026-02-07 12:49:43.163",
+        "STATUS": indikator,
+        "UPDATED BY": "ANGGORO WAKHID SUBKHAN HAMID"
+    })
+    resultAxiosRequest = {
+        code: 200,
+        status: "success",
+        data: {
+            chart_extracts: [
+                {
+                    table: data
+                }
+            ],
+            action: "",
+            screenshots: [],
+            metadata: {
+                web_name: "",
+                url: "",
+                executionTime: "",
+                timestamp: ""
+            }
+        }
+    }
 }

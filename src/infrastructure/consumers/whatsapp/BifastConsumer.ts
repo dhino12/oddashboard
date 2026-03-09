@@ -47,7 +47,10 @@ export class BifastConsumer {
                     )
                     console.log(prevState);
                     
-                    if (findBiFastAbbreviationByBankName(prevState?.entity?.toUpperCase() ?? "") == detectMandiri?.toUpperCase()) {
+                    if (
+                        findBiFastAbbreviationByBankName(prevState?.entity?.toUpperCase() ?? "") == detectMandiri?.toUpperCase() &&
+                        prevState?.lastStatus == "CLOSED"
+                    ) {
                         console.log("masuk if 2");
                         this.wagCompaint.record(
                             detectMandiri?.toUpperCase() ?? "",

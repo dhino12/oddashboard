@@ -10,22 +10,24 @@ import { initWS } from "./infrastructure/ws/websocket";
 
 async function bootstrap() {
     const logger = initLogger();
-    const redis = await initRedis();
-    if (redis != undefined) {
-        logger.info('Redis initialized')
-        setRedisClient(redis);
-    }
+    // const redis = await initRedis();
+    // if (redis != undefined) {
+    //     logger.info('Redis initialized')
+    //     setRedisClient(redis);
+    // }
 
     const prisma = await initPrisma();
     setPrismaClient(prisma);
 
     try {
+        await prisma.$connect()
         await prisma.$executeRaw`DELETE FROM incidents`
         await prisma.$executeRaw`DELETE FROM monitoring_state`
         await prisma.$executeRaw`DELETE FROM monitoring_events`
         const result = await prisma.$queryRaw`SELECT * FROM monitoring_state`
         console.log(result);
     } catch (error) {
+        await prisma.$disconnect()
         console.error(error);
     }
 

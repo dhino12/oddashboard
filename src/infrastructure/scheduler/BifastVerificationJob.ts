@@ -25,10 +25,7 @@ export class BifastVerificationJob {
     start(source: string, entity: string) {
         const key = `${source}:${entity}`;
         let intervalCount = 0
-        this.logger.info(`RUNNING JOB BIFAST_VERIFICATION BEFORE IF`);
         if (this.jobs.has(key)) return;
-        this.logger.info(`RUNNING JOB BIFAST_VERIFICATION AFTER IF`);
-
         this.sessions.set(key, {
             startedAt: Date.now(),
             lastResult: "WAIT"
@@ -37,7 +34,7 @@ export class BifastVerificationJob {
         const timer = setInterval(async () => {
             intervalCount++
             try {
-                this.logger.info(`RUNNING JOB BIFAST_VERIFICATION`);
+                this.logger.info(`[BiFASTVerificationJob] - ⏳ RUNNING JOB`);
                 const callBiFastASPChecking = await this.healthChecker.callBiFastASP("")
                 // const isOpen = false
                 const isOpen = await this.healthChecker.isServiceOpenV2(entity, callBiFastASPChecking)

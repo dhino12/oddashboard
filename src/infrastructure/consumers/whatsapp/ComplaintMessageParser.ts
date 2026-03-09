@@ -1,9 +1,16 @@
 import { bifastList } from "../../../config/bifastlist";
 
 const mentionedWhatsappMap: Record<string, string> = {
-    "TOKEN_MENTIONED_WHATSAPP": "BSI",
-    "12112131": "BSI",
-    "312131121": "BCA"
+    "137499116617867": "Bank DKI",
+    "77296744530170": "DANA",
+    "73848187789454": "DANA",
+    "104063265955982": "BNI",
+    "274963906961642": "BPD Jateng",
+    "270978395459734": "BSI",
+    "51664480415995": "BPD Jatim",
+    "77000240853224": "BI",
+    "277892990783613": "Mandiri",
+    "251174099902576": "BRI"
 };
 
 function extractMentionTokens(text: string): string[] {
@@ -28,14 +35,14 @@ type EntityCandidate = {
 const entityLookup = new Map<string, string>();
 
 bifastList.forEach(bank => {
-    const abbr = bank.abbreviation.toLowerCase();
-    const name = bank.nama_bank.toLowerCase();
+    const abbr = bank.abbreviation?.toLowerCase();
+    const name = bank.nama_bank?.toLowerCase();
     const cleanName = name.replace(/^bank\s+/i, '').trim();
 
     [
-        abbr,
-        name,
-        cleanName,
+        `abbr`,
+        `name`,
+        `cleanName`,
         `bank ${abbr}`,
         `bank ${cleanName}`,
         `bpd ${abbr}`,
@@ -54,7 +61,7 @@ bifastList.forEach(bank => {
 
 function normalizeText(text: string): string {
     return text
-        .toLowerCase()
+        ?.toLowerCase()
         .replace(/[^a-z0-9@ ]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();

@@ -101,14 +101,15 @@ export class ElasticMetricService {
     // modified fetch in ElasticMetricService (replace inner part)
     async fetch(source: string, entity?: string, option?: Options): Promise<MetricFetchResult> {
         const signals: MetricTrendResult[] = [];
+        this.logger.info("🧲 FETCH ElasticMetricService")
         if (option?.interval == 1) {
             this.apiClient.reqBody.url = "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-5m,to:now))";
         } else {
             this.apiClient.reqBody.url = "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-1m,to:now))";
         }
 
-        // const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
-        const raw = resultAxiosElastic1.data;
+        const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
+        // const raw = resultAxiosElastic1.data;
         const resultRaw = raw.chart_extracts ?? [];
 
         for (const config of this.metricConfigs) {
@@ -293,24 +294,26 @@ export class ElasticMetricService {
     }
 
     private async callElastic(url: string, reqBody: {}): Promise<any> {
-        // const res = await axios.post(url, reqBody);
-        // const rawData = (await res).data
-        console.log(reqBody);
-        
-        
-        const dataTable = resultAxiosElastic1.data.chart_extracts.map(chart => ({
-            title: chart.title,
-            table: chart.table.map(row =>
-                Object.fromEntries(
-                    Object.entries(row).map(([key, value]) => [
-                        key,
-                        stripKeyPrefix(key, value)
-                    ])
+        try {
+            const res = await axios.post(url, reqBody);
+            const rawData = (await res).data    
+            console.log(reqBody);
+            const dataTable = rawData.data.chart_extracts.map((chart:any) => ({
+                title: chart.title,
+                table: chart.table.map((row:any) =>
+                    Object.fromEntries(
+                        Object.entries(row).map(([key, value]) => [
+                            key,
+                            stripKeyPrefix(key, value)
+                        ])
+                    )
                 )
-            )
-        }))
-        return {chart_extracts: dataTable}
+            }))
+            return {chart_extracts: dataTable}
+        } catch (error) {
+            console.error("ERROR ELASTIC");
+            console.error(error);
+        }
         // return rawData.data
     }
 }
-

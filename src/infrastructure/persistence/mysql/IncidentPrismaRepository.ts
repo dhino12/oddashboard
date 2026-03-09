@@ -17,7 +17,10 @@ export class IncidentPrismaRepository implements IncidentRepository {
     async create(inc: Incident) {
         await this.prisma.incidents.upsert({
             where: {
-                id: inc.id
+                source_entity: {
+                    source: inc.source,
+                    entity: inc.entity
+                }
             },
             create: {
                 id: inc.id,

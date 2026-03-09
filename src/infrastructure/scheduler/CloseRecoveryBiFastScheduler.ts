@@ -19,8 +19,8 @@ export class CloseRecoveryScheduler {
 
         const timer = setInterval(async () => {
             try {
+                this.logger.info("[CloseRecoveryScheduler] - ⏳ RUNNING JOB")
                 const isOpen = await this.healthChecker.isServiceOpen(source, entity);
-                this.logger.info("RUNNING JOB HEALTHCHECK STATUS")
                 this.logger.info(`${key} has been ${isOpen}`)
                 if (isOpen) {
                     this.processMonitoringEvent.execute({

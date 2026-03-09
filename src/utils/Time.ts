@@ -1,4 +1,6 @@
-export const now = () => new Date().toISOString();
+export const now = () => new Date().toLocaleString("sv-SE", {
+    timeZone: "Asia/Jakarta"
+}).replace(" ", "T");
 
 function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);

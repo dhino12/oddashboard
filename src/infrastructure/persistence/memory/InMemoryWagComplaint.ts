@@ -19,14 +19,16 @@ export class InMemoryWagComplaintStore {
         // sliding window cleanup after 5 minutes
         const filtered = arr.filter(r => now - r.timestamp <= this.windowMs)
         if (filtered.length == 0) {
+            console.log('IF RECORD - '  + filtered.length);
             this.data.delete(entity)
         }   else {
+            console.log('ELSE RECORD - ' + filtered.length);
             this.data.set(entity, filtered)
         }
     }
 
     hasRecent(entity: string): boolean {
         const arr = this.data.get(entity);
-        return !!arr && arr.length > 0;
+        return !!arr && arr.length > 1;
     }
 }

@@ -1,75 +1,66 @@
 import { EventEmitter } from "events";
 import { Logger } from "winston";
-import WebSocket from "ws";
 import { MessageBus } from "../ws/MessageBus";
 import { io, Socket } from "socket.io-client";
+import { setAxiosRequestOpenClose } from "../../../config/bifastlist";
 
 export type RawWhatsAppMessage = {
     id?: string;
     body: string;
     from: string;
+    participant: string | null | undefined;
     timestamp?: number;
-    participant: string | null | undefined,
+    sender: string;
     raw?: any;
-};
-type WuzApiMessagePayload = {
-    event: string;
-    data: {
-        id: string;
-        from: string;
-        participant?: string;
-        type: "text";
-        text: string;
-        timestamp: number;
-    };
-};
+}; 
 
 export class WhatsAppClientV2 extends EventEmitter {
     private socket: Socket
-    private connected: boolean = false;
+    private started: Boolean = false
 
     constructor(
         private readonly wsUrl = "",
         private readonly logger: Logger
     ) { 
         super()
-        this.socket = io(wsUrl, {
+        this.socket = io("http://localhost:3000", {
             transports: ["websocket"],
-            reconnection: true
+            reconnection: false,
+            autoConnect: false
         })
-    }
-
-    // adapterWuzApiMessage(payload: WuzApiMessagePayload) {
-    //     const msg = {
-    //         key: {
-    //             id: payload.data.id,
-    //             fromMe: false,
-    //             remoteJid: payload.data.from,
-    //             participant: payload.data.participant,
-    //         },
-    //         message: {
-    //             conversation: payload.data.text,
-    //             extendedTextMessage: {
-    //                 text: ""
-    //             }
-    //         },
-    //         messageTimestamp: payload.data.timestamp,
-    //     };
-
-    //     return msg;
-    // }
-
+    } 
     start() {
+        if (this.started) return
+        this.started = true 
+        this.socket.connect()
         this.socket.on("connect", () => {
-            console.log("🔌 Connected to ingress")
+            console.log("🔌 Connected to ingres WA Client V2 " + this.socket.connected)
         })
 
         // 🔥 INI PENGGANTI BAILEYS LISTENER
-        this.socket.on("whatsapp.message", (msg) => {
-            console.log('whatsapp.message', msg);
+        this.socket.on("whatsapp.message", async (msg: RawWhatsAppMessage) => {
+            console.log('listener whatsapp');
+            if (msg.from === "120363042758870105@g.us") {
+                this.logger.info( `ℹ️ ${msg.from}: ${msg.body?.trim().replace("\n", "")}`)
+            }
+            if (msg.body?.toLowerCase().includes("/ping")) {
+                this.logger.info("PING")
+                await this.sendMessage(msg.from, "pong!");
+            }
+            if (msg.body?.toLowerCase().includes("open")) {
+                setAxiosRequestOpenClose("OPEN")
+            }
+            if (msg.body?.toLowerCase().includes("close")) {
+                setAxiosRequestOpenClose("CLOSE")
+            }
             
             this.emit("message", msg)
         })
+    }
+
+    stop() {
+        this.started = false;
+        this.socket.disconnect()
     }
 
     // async start() {
@@ -97,7 +88,7 @@ export class WhatsAppClientV2 extends EventEmitter {
         //             raw: msg,
         //         }
         //         if (raw.from == "120363042758870105@g.us") {
-        //             this.logger.info( `ℹ️ ${raw.from}: ${raw.body.trim().replace("\n", "")}`)
+        //             this.logger.info( ℹ️ ${raw.from}: ${raw.body.trim().replace("\n", "")})
         //         }
         //         if (body.toLowerCase().includes("/ping")) {
         //             await this.sendMessage(raw.from, "pong!");
@@ -118,11 +109,13 @@ export class WhatsAppClientV2 extends EventEmitter {
     // }
 
     async sendMessage(jid: string, text: string) {
-        if (!this.connected) {
+        if (!this.started) {
             throw new Error("WebSocket not connected")
         }
 
         return new Promise((resolve, reject) => {
+            console.log('message sender = ' + text + " " + jid);
+            
             this.socket.emit("whatsapp.send", { jid, text }, (ack: any) => {
                 if (ack?.success) {
                     resolve(ack)

@@ -24,6 +24,8 @@ export class VerifyBifastIncidentUseCase {
             .join("_")
         
         const currentTime = now()
+        console.log(timeFormatDraft(`${currentTime}`.substring(0,16)));
+        
         const idDraft = uuidv4()
         const incident = new Incident(
             idDraft,

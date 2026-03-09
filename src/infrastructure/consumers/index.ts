@@ -64,12 +64,8 @@ export async function registerConsumers(logger: Logger) {
     const wagHelpDeskService = new WagHelpdeskService(inMemoryWagComplaint);
 
     // WhatsApp setup
-    const waWs = new WuzApiWsClient("http://localhost:3000");
-    waWs.start();
-
-    const waClient = new WhatsAppClientV2("", logger);
+    const waClient = new WhatsAppClientV2("http://localhost:3000", logger);
     waClient.start();
-    // const waClient = startWhatsApp(logger);
     const whatsappNotify = new WhatsAppNotificationGateway(waClient, ENV.ALERT_WA_NUMBER)
 
     // create the main usecase
