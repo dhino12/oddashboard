@@ -29,6 +29,12 @@ export class InMemoryWagComplaintStore {
 
     hasRecent(entity: string): boolean {
         const arr = this.data.get(entity);
-        return !!arr && arr.length > 1;
+        if (arr == undefined) {
+            console.log(`hasRecent InMemoryWagComplaintStore -> arr undefined`);
+            return false
+        }
+        const filtered = arr.filter(r => Date.now() - r.timestamp <= this.windowMs)
+        console.log(filtered.length);
+        return !!arr && filtered.length > 1;
     }
 }
