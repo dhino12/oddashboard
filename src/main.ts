@@ -7,6 +7,7 @@ import { setPrismaClient } from "./infrastructure/persistence/mysql/PrismaClient
 import { setRedisClient } from "./infrastructure/persistence/redis/RedisClient";
 import { createServer } from "http";
 import { initWS } from "./infrastructure/ws/websocket";
+import { bifastList } from "./config/bifastlist";
 
 async function bootstrap() {
     const logger = initLogger();
@@ -26,6 +27,9 @@ async function bootstrap() {
         await prisma.$executeRaw`DELETE FROM monitoring_events`
         const result = await prisma.$queryRaw`SELECT * FROM monitoring_state`
         console.log(result);
+        const values = bifastList.map((bank) => `('BIFAST', '${bank.nama_bank}', 'OPEN', UNIX_TIMESTAMP() * 1000)`).join(",")
+        const query = `INSERT INTO monitoring_state (source, entity, last_status, last_changed_at) VALUES ${values}`
+        await prisma.$executeRawUnsafe(query)
     } catch (error) {
         await prisma.$disconnect()
         console.error(error);

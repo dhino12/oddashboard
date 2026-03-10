@@ -87,7 +87,6 @@ export const bifastList = [
     { "id_bank": "PDJTIDJ1", "nama_bank": "BPD Jatim", "abbreviation": "Jatim", "kode": 120 },
     { "id_bank": "PDKBIDJ1", "nama_bank": "BPD Kalbar", "abbreviation": "Kalbar", "kode": 865 },
     { "id_bank": "PDKBIDJ1", "nama_bank": "BPD Kalbar UUS", "abbreviation": "Kalbar UUS", "kode": 441 },
-    { "id_bank": "PDKTIDJ1", "nama_bank": "BPD Kalimantan Tengah", "abbreviation": "Kalteng", "kode": 655 },
     { "id_bank": "PDKTIDJ1", "nama_bank": "BPD Kaltimtara", "abbreviation": "Kaltimtara", "kode": 228 },
     { "id_bank": "KLTMIDJ1", "nama_bank": "BPD Kaltimtara UUS", "abbreviation": "KLTMTR UUS", "kode": 793 },
     { "id_bank": "PDNTIDJ1", "nama_bank": "BPD NTT", "abbreviation": "NTT", "kode": 516 },
