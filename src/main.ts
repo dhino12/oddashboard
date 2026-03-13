@@ -25,8 +25,11 @@ async function bootstrap() {
         await prisma.$executeRaw`DELETE FROM incidents`
         await prisma.$executeRaw`DELETE FROM monitoring_state`
         await prisma.$executeRaw`DELETE FROM monitoring_events`
+        // await prisma.$executeRaw`CREATE TABLE test(row1 VARCHAR(255), row2 VARCHAR(255))`
         const result = await prisma.$queryRaw`SELECT * FROM monitoring_state`
         console.log(result);
+        // const describe = await prisma.$queryRaw`DESC test`
+        // console.log(describe);
         const values = bifastList.map((bank) => `('BIFAST', '${bank.nama_bank}', 'OPEN', UNIX_TIMESTAMP() * 1000)`).join(",")
         const query = `INSERT INTO monitoring_state (source, entity, last_status, last_changed_at) VALUES ${values}`
         await prisma.$executeRawUnsafe(query)

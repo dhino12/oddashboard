@@ -4,7 +4,7 @@ import { Source } from "../../../domain/monitoring/MonitoringEvent";
 import { MonitoringState } from "../../../domain/monitoring/MonitoringState";
 import { getPrismaClient } from "./PrismaClient";
 
-export class MonitoringStatePrisma implements MonitoringStateStore {
+export class MonitoringStatePrismaRepository implements MonitoringStateStore {
     private prisma: PrismaClient
     constructor () {
         this.prisma = getPrismaClient()

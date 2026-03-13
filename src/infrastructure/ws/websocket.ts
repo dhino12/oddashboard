@@ -16,14 +16,14 @@ export function initWS(server: HttpServer, logger: Logger) {
         socket.on("whatsapp.send", async (data: any, callback: any) => {
         try {
             const response = await axios.post(
-                "http://10.113.88.171:4444/chat/send/text",
+                "http://localhost:8080/chat/send/text",
                 {
                     Phone: data.jid,
                     Body: data.text
                 },
                 {
                     headers: {
-                        Token: "openincident"
+                        Token: "dhino12"
                     }
                 }
             )

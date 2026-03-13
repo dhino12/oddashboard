@@ -1,6 +1,7 @@
 export type IncidentState =
     | "NORMAL"
-    | "WAIT_VERIFICATION"
+    | "WAIT"
+    | "FALSE_POSITIVE"
     | "CONFIRMED_INCIDENT"
     | "OPEN_INCIDENT"
     | "RESOLVED";
@@ -52,14 +53,15 @@ export class InMemoryIncidentEventStore {
 }
 
 const allowedTransitions: Record<IncidentState, IncidentState[]> = {
-    NORMAL: ["WAIT_VERIFICATION"],
-    WAIT_VERIFICATION: ["CONFIRMED_INCIDENT", "NORMAL"],
+    NORMAL: ["WAIT", "FALSE_POSITIVE"],
+    FALSE_POSITIVE: ["NORMAL"],
+    WAIT: ["CONFIRMED_INCIDENT", "NORMAL"],
     CONFIRMED_INCIDENT: ["OPEN_INCIDENT", "RESOLVED"],
     OPEN_INCIDENT: ["RESOLVED"],
     RESOLVED: ["NORMAL"]
 };
 
-export class IncidentStateMachine {
+export class InMemoryIncidentStateMachine {
     constructor(
         private store: InMemoryIncidentStateStore,
         private eventStore: InMemoryIncidentEventStore
@@ -68,6 +70,10 @@ export class IncidentStateMachine {
     getCurrent(entity: string): IncidentState | null {
         const rec = this.store.get(entity);
         return rec?.state ?? null;
+    }
+
+    getTimeline(entity: string): IncidentEvent[] {
+        return this.eventStore.listByEntity(entity)
     }
 
     transition(entity: string, metricName: string | undefined, next: IncidentState, note?: string) {
@@ -87,6 +93,17 @@ export class IncidentStateMachine {
 
         this.apply(entity, metricName, next, note);
         return true;
+    }
+
+    formatMessage(entity: string, events: IncidentEvent[]): string {
+        const header = `INCIDENT BIFAST ${entity}\n`
+        const lines = events.map(e => {
+            const time = new Date(e.ts)
+                .toTimeString()
+                .slice(0,5)
+            return `[${time}] ${e.state} - ${e.note}`
+        })
+        return `${header} \n${lines.join("\n")}`
     }
 
     private apply(entity: string, metricName: string | undefined, state: IncidentState, note?: string) {

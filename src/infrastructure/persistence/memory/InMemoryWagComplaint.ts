@@ -4,7 +4,7 @@ export interface WagComplaintRecord {
     message: string
 }
 
-export class InMemoryWagComplaintStore {
+export class InMemoryWagComplaintStoreRepository {
     private readonly windowMs = 5 * 60 * 1000;
     private readonly data = new Map<string, WagComplaintRecord[]>()
     

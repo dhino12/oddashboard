@@ -1,30 +1,40 @@
 
 import { Logger } from "winston";
 import { IncidentRepository } from "../../../domain/incident/IncidentRepository";
-import { ElasticMetricService, MetricFetchResult } from "../../../infrastructure/external/elastic/ElasticMetricService";
-import { WagHelpdeskService } from "../../../infrastructure/external/elastic/WagHelpdeskService";
 import { NauraGateway } from "../../ports/NauraGateway";
 import { AdvancedBifastPolicy } from "../../../domain/policy/AdvancedBifastPolicy";
+import { ElasticMetricClient, MetricFetchResult } from "../../../infrastructure/external/elastic/ElasticMetricClient";
+import { WagHelpdeskClient } from "../../../infrastructure/external/elastic/WagHelpdeskClient";
+import { InMemoryIncidentStateMachine } from "../../../infrastructure/persistence/memory/InMemoryIncidentStateMachine";
 
 export class AdvancedBifastVerifier {
     constructor(
-        private readonly elasticSvc: ElasticMetricService,
-        private readonly wagSvc: WagHelpdeskService,
+        private readonly elasticSvc: ElasticMetricClient,
+        private readonly wagSvc: WagHelpdeskClient,
         private readonly incidentRepo: IncidentRepository,
+        private readonly stateMachineTrackerRepo: InMemoryIncidentStateMachine,
         private readonly logger: Logger,
     ) {}
     async verfiy (source: string, entity: string, options?: {interval: number}): Promise<{decision: "WAIT" | "FALSE_POSITIVE" | "CONFIRMED_INCIDENT", metrics: MetricFetchResult}> {
         const metrics = await this.elasticSvc.fetch(source, entity, options);
         const hasComplaint = await this.wagSvc.hasComplaint(entity);
         const hasOpen = await this.incidentRepo.hasOpenIncident(source, entity);
+        const criticalSource = metrics.signals
+                .filter(s => s.trend?.level === "CRITICAL")
+                .map(s => s.source)
         const decisionPolicy = AdvancedBifastPolicy.decide({
             overallLevel: metrics.overallLevel,
             hasComplaint,
             hasOpenIncident: hasOpen,
-            criticalSource: metrics.signals
-                .filter(s => s.trend?.level === "CRITICAL")
-                .map(s => s.source)
+            criticalSource
         }, this.logger)
+        if (decisionPolicy == "CONFIRMED_INCIDENT") {
+            this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), "OPEN_INCIDENT", "")
+        } else if (decisionPolicy == "FALSE_POSITIVE") {
+            this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), "NORMAL", "")
+        } else {
+            this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), "CONFIRMED_INCIDENT", "total complaint: " + 2)
+        }
         this.logger.info(decisionPolicy, metrics.signals.filter(s => s.trend?.level === "CRITICAL"))
         return {decision: decisionPolicy, metrics}
     }

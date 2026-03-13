@@ -3,7 +3,7 @@ import { EventStore } from "../../../application/ports/EventStore";
 import { MonitoringEvent } from "../../../domain/monitoring/MonitoringEvent";
 import { getPrismaClient } from "./PrismaClient";
 
-export class EventStorePrisma implements EventStore {
+export class EventStorePrismaRepository implements EventStore {
     private prisma: PrismaClient
 
     constructor () {

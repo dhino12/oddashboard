@@ -53,7 +53,6 @@ export class WhatsAppClientV2 extends EventEmitter {
             if (msg.body?.toLowerCase().includes("close")) {
                 setAxiosRequestOpenClose("CLOSE")
             }
-            
             this.emit("message", msg)
         })
     }

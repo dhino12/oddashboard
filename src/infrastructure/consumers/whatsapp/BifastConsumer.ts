@@ -1,98 +1,33 @@
 // src/infrastructure/consumers/whatsapp/BifastConsumer.ts
-import { WhatsAppClient, RawWhatsAppMessage } from "./WhatsappClient";
-import { detectGangguanWithEntities, parseBifastMessage } from "./MessageParser";
-import { ProcessMonitoringEvent } from "../../../application/usecases/ProcessMonitoringEvent/ProcessMonitoringEvent";
-import { uuid } from "../../../utils/UUID";
-import { CloseRecoveryScheduler } from "../../scheduler/CloseRecoveryBiFastScheduler";
+import { BifastMessageHandler } from "../../../application/usecases/BiFastMessageHandler/BiFastMessageHandler";
 import { ENV } from "../../../config/env";
-import { MonitoringStateStore } from "../../../application/ports/MonitoringStateStore";
-import { BifastVerificationJob } from "../../scheduler/BifastVerificationJob";
-import { InMemoryWagComplaintStore } from "../../persistence/memory/InMemoryWagComplaint";
-import { detectGangguan } from "./ComplaintMessageParser";
-import findBiFastAbbreviationByBankName, { findBifastBankNameByAbbreviation } from "../../../config/bifastlist";
-import { WhatsAppClientV2 } from "./WhatsappClientv2";
+import { RawWhatsAppMessage } from "./WhatsappClient";
+import { v4 as uuid } from "uuid";
 
 export class BifastConsumer {
     constructor(
-        private wa: WhatsAppClient | WhatsAppClientV2,
-        private processor: ProcessMonitoringEvent,
-        private closeRecoveryScheduler: CloseRecoveryScheduler,
-        private closeBiFastVerifyScheduler: BifastVerificationJob,
-        private stateStore: MonitoringStateStore,
-        private wagCompaint: InMemoryWagComplaintStore,
+        private wa: any /* WhatsAppClient | WhatsAppClientV2 */,
+        private handler: BifastMessageHandler
     ) {}
 
-    async start() {
+    start() {
         this.wa.on("message", async (msg: RawWhatsAppMessage) => {
         try {
+            // minimal validation/filtering in consumer is OK
             if (
                 msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST &&
                 msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_MONITORING && 
                 msg.from != ENV.ALERT_WA_NUMBER &&
                 msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_HELPDESK
-            ) return
-            
-            const parsed = parseBifastMessage(msg.body || "");
-            if (
-                msg.from == ENV.LISTEN_GROUP_CHAT_BIFAST_HELPDESK || 
-                msg.from == ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST
-            ) {
-                const parsedCompaint = detectGangguan(msg.body)
-                const detectMandiri = parsedCompaint.complainerEntity?.toLowerCase() == "mandiri" ? parsedCompaint.reportedBank : parsedCompaint.complainerEntity
-                console.log(parsedCompaint, detectMandiri);
-                if (detectMandiri) {
-                    const prevState = await this.stateStore.get(
-                        "BIFAST",
-                        findBifastBankNameByAbbreviation(detectMandiri?.toUpperCase() ?? "") ?? ""
-                    )
-                    console.log(prevState);
-                    
-                    if (
-                        findBiFastAbbreviationByBankName(prevState?.entity?.toUpperCase() ?? "") == detectMandiri?.toUpperCase() &&
-                        prevState?.lastStatus == "CLOSED"
-                    ) {
-                        console.log("masuk if 2");
-                        this.wagCompaint.record(
-                            detectMandiri?.toUpperCase() ?? "",
-                            parsedCompaint.message ?? ""
-                        )
-                    }
-                }
-            }
-            if (!parsed) return;
+            ) return;
 
-            // Build DTO for ProcessMonitoringEvent
-            // Use whatsapp message id if present for idempotency, else generate uuid
-            const eventId = msg.id || uuid();
-            const dto = {
-                id: eventId,
-                source: "BIFAST" as const,
-                entity: parsed.entity,
-                status: parsed.status,
-                occurredAt: msg.timestamp ?? Date.now(),
-            };
-            console.log(dto.status);
-            
-            if (dto.status === "CLOSED") {
-                const prevState = await this.stateStore.get(
-                    dto.source,
-                    dto.entity
-                );
-                if (prevState?.lastStatus != dto.status) {
-                    console.log('masuk if');
-                    
-                    this.closeRecoveryScheduler.start(dto.source, dto.entity);
-                    this.closeBiFastVerifyScheduler.start(dto.source, dto.entity)
-                }
-            }
-            if (dto.status === "OPEN") {
-                this.closeRecoveryScheduler.stop(
-                    dto.source,
-                    dto.entity
-                );
-                this.closeBiFastVerifyScheduler.stop(dto.source, dto.entity)
-            }
-            await this.processor.execute(dto);
+            // create a tiny envelope and hand off to application layer
+            await this.handler.handle({
+                id: msg.id ?? uuid(),
+                from: msg.from,
+                body: msg.body ?? "",
+                timestamp: msg.timestamp ?? Date.now(),
+            });
         } catch (err) {
             // swallow to avoid crashing the client; log instead
             // eslint-disable-next-line no-console
@@ -100,15 +35,14 @@ export class BifastConsumer {
         }
         });
 
-        // also optionally start WA client here if not started externally
         this.wa.start();
     }
 
-    // stop() {
-    //     try {
-    //     this.wa.stop();
-    //     } catch (err) {
-    //     // ignore
-    //     }
-    // }
+    stop() {
+        try {
+            this.wa.stop();
+        } catch (err) {
+            // ignore
+        }
+    }
 }

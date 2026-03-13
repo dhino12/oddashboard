@@ -4,6 +4,7 @@ import { ENV } from "../../config/env";
 import { HealthChecker } from "../external/healthcheck/BiFastHealthChecker";
 import findBiFastAbbreviationByBankName from "../../config/bifastlist";
 import { VerifyBifastIncidentUseCase } from "../../application/usecases/AdvancedBifastVerifier/VerifyBifastIncidentUseCase";
+import { SchedulerPort } from "../../application/ports/SchedulerPort";
 
 type VerificationSession = {
     startedAt: number;
@@ -11,7 +12,7 @@ type VerificationSession = {
 };
 
 // application/schedulers/BifastVerificationJob.ts
-export class BifastVerificationJob {
+export class BifastVerificationJob implements SchedulerPort {
     private readonly jobs = new Map<string, NodeJS.Timeout>();
     private sessions = new Map<string, VerificationSession>();
     private readonly observationMs = 5 * 60 * 1000;

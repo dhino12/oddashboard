@@ -1,4 +1,4 @@
-import { AnalyzeTrend, MetricSample } from "./ElasticMetricService"
+import { AnalyzeTrend, MetricSample } from "./ElasticMetricClient"
 
 function parseMinute(minute:string): number {
     const now = new Date();

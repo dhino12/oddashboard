@@ -86,7 +86,7 @@ function tableBelongsToEntity(title: string, entity?: string): boolean {
     // Avg / normal tables → boleh lanjut (difilter di row)
     return true;
 }
-export class ElasticMetricService {
+export class ElasticMetricClient {
     private readonly windowMs = 5 * 60 * 1000
 
     private samples: {
@@ -295,10 +295,10 @@ export class ElasticMetricService {
 
     private async callElastic(url: string, reqBody: {}): Promise<any> {
         try {
-            const res = await axios.post(url, reqBody);
-            const rawData = (await res).data    
-            console.log(reqBody);
-            const dataTable = rawData.data.chart_extracts.map((chart:any) => ({
+            // const res = await axios.post(url, reqBody);
+            // const rawData = (await res).data    
+            // console.log(reqBody);
+            const dataTable = resultAxiosElastic1.data.chart_extracts.map((chart:any) => ({
                 title: chart.title,
                 table: chart.table.map((row:any) =>
                     Object.fromEntries(

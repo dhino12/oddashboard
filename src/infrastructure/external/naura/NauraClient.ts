@@ -33,8 +33,6 @@ export class NauraClient implements NauraGateway {
                 })
             } catch (error: any) {
                 const resTmp = error.response;
-                console.log(resTmp);
-                
                 this.logger.error(`❌ NAURA - ${error?.message} - sent_to_group: ${group}`, {
                     statusCode: resTmp?.status,
                     url: response?.config?.url ?? "/remedy/naura/index.php",

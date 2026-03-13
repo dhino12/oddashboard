@@ -14,7 +14,7 @@ export const bifastList = [
     { "id_bank": "CENAIDJA", "nama_bank": "Bank Central Asia", "abbreviation": "BCA", "kode": 256 },
     { "id_bank": "BSYAIDJA", "nama_bank": "Bank Central Asia Syariah", "abbreviation": "BCA Sy", "kode": 519 },
     { "id_bank": "BNIAIDJA", "nama_bank": "Bank CIMB Niaga", "abbreviation": "CIMB", "kode": 764 },
-    { "id_bank": "NISPIDJA", "nama_bank": "Bank CIMB Niaga UUS", "abbreviation": "CIMB UUS", "kode": 381 },
+    { "id_bank": "BNIAIDJA", "nama_bank": "Bank CIMB Niaga UUS", "abbreviation": "CIMB UUS", "kode": 381 },
     { "id_bank": "CTBCIDJA", "nama_bank": "Bank CTBC Indonesia", "abbreviation": "CTBC", "kode": 672 },
     { "id_bank": "BDINIDJA", "nama_bank": "Bank Danamon Indonesia", "abbreviation": "Danamon", "kode": 582 },
     { "id_bank": "BDINIDJA", "nama_bank": "Bank Danamon UUS", "abbreviation": "DanamonUUS", "kode": 148 },
@@ -30,11 +30,10 @@ export const bifastList = [
     { "id_bank": "PDJBIDJ1", "nama_bank": "Bank Jabar Banten Syariah", "abbreviation": "BJB Sy", "kode": 217 },
     { "id_bank": "JAGBIDJA", "nama_bank": "Bank Jago", "abbreviation": "Jago", "kode": 777 },
     { "id_bank": "JAGBIDJ1", "nama_bank": "Bank Jago Unit Usaha Syariah", "abbreviation": "Jago UUS", "kode": 463 },
-    { "id_bank": "PDJTIDJ1", "nama_bank": "Bank Jatim UUS", "abbreviation": "Jatim UUS", "kode": 120 },
     { "id_bank": "JTRUIDJA", "nama_bank": "Bank Jtrust Indonesia", "abbreviation": "Jtrust", "kode": 658 },
     { "id_bank": "KHNAIDJA", "nama_bank": "Bank KEB Hana Indonesia", "abbreviation": "Hana", "kode": 341 },
     { "id_bank": "BMRIIDJA", "nama_bank": "Bank Mandiri", "abbreviation": "Mandiri", "kode": 901 },
-    { "id_bank": "BTPNIDJA", "nama_bank": "Bank Mandiri Taspen", "abbreviation": "Taspen", "kode": 534 },
+    { "id_bank": "564", "nama_bank": "Bank Mandiri Taspen", "abbreviation": "Taspen", "kode": 534 },
     { "id_bank": "MAYBIDJA", "nama_bank": "Bank Mayapada", "abbreviation": "Mayapada", "kode": 286 },
     { "id_bank": "IBBKIDJA", "nama_bank": "Bank Maybank Indonesia", "abbreviation": "Maybank", "kode": 489 },
     { "id_bank": "MAYBIDJ1", "nama_bank": "Bank Maybank UUS", "abbreviation": "MaybankUUS", "kode": 752 },
@@ -111,7 +110,6 @@ export const bifastList = [
     { "id_bank": "SCBLIDJA", "nama_bank": "Standard Chartered Bank", "abbreviation": "Stanchart", "kode": 456 },
     { "id_bank": "PDLPIDJ1", "nama_bank": "BPD Lampung", "abbreviation": "Lampung", "kode": 773 },
 ]
-
 
 export let resultAxiosRequest = {
     "code": 200,

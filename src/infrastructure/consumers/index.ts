@@ -10,9 +10,9 @@ import { Logger } from "winston";
 import { startWhatsApp } from "./whatsapp";
 import { IncidentGateway } from "../../application/ports/IncidentGateway";
 import { EventStore } from "../../application/ports/EventStore";
-import { EventStorePrisma } from "../persistence/mysql/EventStorePrisma";
+import { EventStorePrismaRepository } from "../persistence/mysql/EventStorePrisma";
 import { DedupLockDb } from "../persistence/mysql/DedupLockPrisma";
-import { MonitoringStatePrisma } from "../persistence/mysql/MonitoringStatePrisma";
+import { MonitoringStatePrismaRepository } from "../persistence/mysql/MonitoringStatePrisma";
 import { startResolveJob } from "../scheduler/IncidentResolveJob";
 import { ENV } from "../../config/env";
 import { WhatsAppNotificationGateway } from "./whatsapp/WhatsappNotificationGW";
@@ -25,30 +25,39 @@ import { BiFastHealthChecker } from "../external/healthcheck/BiFastHealthChecker
 import { MonitoringStateStore } from "../../application/ports/MonitoringStateStore";
 import { BifastVerificationJob } from "../scheduler/BifastVerificationJob";
 import { AdvancedBifastVerifier } from "../../application/usecases/AdvancedBifastVerifier/AdvancedBifastVerifier";
-import { ElasticMetricService } from "../external/elastic/ElasticMetricService";
-import { BIFAST_ELASTIC_CLIENT_CRAWLING } from "../../config/bifastlist";
-import { WagHelpdeskService } from "../external/elastic/WagHelpdeskService";
-import { InMemoryWagComplaintStore } from "../persistence/memory/InMemoryWagComplaint";
+import { ElasticMetricClient } from "../external/elastic/ElasticMetricClient";
+import { BIFAST_ELASTIC_CLIENT_CRAWLING } from "../../config/bifastlist"; 
+import { InMemoryWagComplaintStoreRepository } from "../persistence/memory/InMemoryWagComplaint";
 import { avgRespTimeConfig, inquiryDanaErrorConfig } from "../external/elastic/MetricConfig";
 import { VerifyBifastIncidentUseCase } from "../../application/usecases/AdvancedBifastVerifier/VerifyBifastIncidentUseCase";
 import { WuzApiWsClient } from "./whatsapp/WuzApiClient";
 import { WhatsAppClientV2 } from "./whatsapp/WhatsappClientv2";
+import { WagHelpdeskClient } from "../external/elastic/WagHelpdeskClient";
+import { BifastMessageHandler } from "../../application/usecases/BiFastMessageHandler/BiFastMessageHandler";
+import { InMemoryIncidentEventStore, InMemoryIncidentStateMachine, InMemoryIncidentStateStore } from "../persistence/memory/InMemoryIncidentStateMachine";
 
 export async function registerConsumers(logger: Logger) {
     // Domain
     // const bifastAdvancedPolicy = new AdvancedBifastPolicy();
     // const incidentPolicy = new IncidentPolicy()
-
-    // instantiate infra implementations
-    const eventStore: EventStore = new EventStorePrisma();
-    const dedupLock: DedupLockDb = new DedupLockDb();
-    const stateStore: MonitoringStateStore = new MonitoringStatePrisma();
+    // =========================== REPOSITORY ===================
     const incidentRepo = new IncidentPrismaRepository();
+    const eventStore: EventStore = new EventStorePrismaRepository();
+    const dedupLock: DedupLockDb = new DedupLockDb();
+    const stateStore: MonitoringStateStore = new MonitoringStatePrismaRepository();
+    const inMemoryWagComplaint: InMemoryWagComplaintStoreRepository = new InMemoryWagComplaintStoreRepository();
 
+    const inMemoryIncStateStore = new InMemoryIncidentStateStore();
+    const inMemoryIncEventStore = new InMemoryIncidentEventStore()
+    const inMemoryIncStateMachine = new InMemoryIncidentStateMachine(
+        inMemoryIncStateStore, inMemoryIncEventStore
+    )
+    // =========================== SERVICE ===================
     const sliding: SlidingWindowEvaluator = new SlidingWindowEvaluator(
         eventStore, Number(ENV.SLIDING_WINDOW_MS)
     );
     const dedupSvc: DeduplicationService = new DeduplicationService(dedupLock);
+    // =========================== CLIENT ===================
     const remedyGateway: IncidentGateway = new RemedyIncidentClient();
     const nauraGateway: NauraGateway = new NauraClient(logger, [
         ENV.BROADCAST_WHATSAPP_GROUP_APPIUM,
@@ -56,23 +65,21 @@ export async function registerConsumers(logger: Logger) {
         // ENV.BROADCAST_WHATSAPP_GROUP_MANDIRI_CARE,
         // ENV.BROADCAST_WHATSAPP_GROUP_PTR_BROADCAST,
     ])
-    const inMemoryWagComplaint = new InMemoryWagComplaintStore();
-    const elasticMatricService = new ElasticMetricService(logger, [
+    const elasticMatricService = new ElasticMetricClient(logger, [
         avgRespTimeConfig,
         inquiryDanaErrorConfig
     ], BIFAST_ELASTIC_CLIENT_CRAWLING);
-    const wagHelpDeskService = new WagHelpdeskService(inMemoryWagComplaint);
-
+    const wagHelpDeskService = new WagHelpdeskClient(inMemoryWagComplaint);
     // WhatsApp setup
     const waClient = new WhatsAppClientV2("http://localhost:3000", logger);
     waClient.start();
     const whatsappNotify = new WhatsAppNotificationGateway(waClient, ENV.ALERT_WA_NUMBER)
-
-    // create the main usecase
+    // =========================== USECASE ===================
     const advancedBifastVerify = new AdvancedBifastVerifier(
         elasticMatricService, 
         wagHelpDeskService, 
         incidentRepo,
+        inMemoryIncStateMachine,
         logger,
     )
     const verifyBifastIncidentUseCase = new VerifyBifastIncidentUseCase(
@@ -93,7 +100,7 @@ export async function registerConsumers(logger: Logger) {
         Number(process.env.FLAP_THRESHOLD ?? 3)
     );
 
-    // Cleanup setup
+    // =========================== SCHEDULER ===================
     const monitoringEvent = new CleanupMonitoringJob(eventStore)
     const biFastHealthChecker = new BiFastHealthChecker(nauraGateway)
     const closeRecoveryScheduler = new CloseRecoveryScheduler(
@@ -106,13 +113,13 @@ export async function registerConsumers(logger: Logger) {
         biFastHealthChecker,
         logger
     );
+    const bifastMessageHandler = new BifastMessageHandler(
+        processMonitoringEvent, closeRecoveryScheduler, bifastVerificationJob,
+        stateStore, inMemoryWagComplaint, inMemoryIncStateMachine, logger
+    )
     const bifastConsumer = new BifastConsumer(
         waClient, 
-        processMonitoringEvent,
-        closeRecoveryScheduler,
-        bifastVerificationJob,
-        stateStore,
-        inMemoryWagComplaint
+        bifastMessageHandler
     );
     bifastConsumer.start();
 

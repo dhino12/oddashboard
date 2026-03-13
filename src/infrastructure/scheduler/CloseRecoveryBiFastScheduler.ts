@@ -1,11 +1,12 @@
 import { Logger } from "winston";
 import { HealthChecker } from "../external/healthcheck/BiFastHealthChecker";
 import { ProcessMonitoringEvent } from "../../application/usecases/ProcessMonitoringEvent/ProcessMonitoringEvent";
+import { SchedulerPort } from "../../application/ports/SchedulerPort";
 
 export type SourceHealthCheck = "BIFAST" | "QRIS";
 type Key = string;
 
-export class CloseRecoveryScheduler {
+export class CloseRecoveryScheduler implements SchedulerPort {
     private timers = new Map<Key, NodeJS.Timeout>()
     constructor(
         private healthChecker: HealthChecker,
