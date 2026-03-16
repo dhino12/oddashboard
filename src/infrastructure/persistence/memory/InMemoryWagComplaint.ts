@@ -30,7 +30,7 @@ export class InMemoryWagComplaintStoreRepository {
     hasRecent(entity: string): boolean {
         const arr = this.data.get(entity);
         if (arr == undefined) {
-            console.log(`hasRecent InMemoryWagComplaintStore -> arr undefined`);
+            console.log(`hasRecent InMemoryWagComplaintStore ${entity} -> ${arr}`);
             return false
         }
         const filtered = arr.filter(r => Date.now() - r.timestamp <= this.windowMs)

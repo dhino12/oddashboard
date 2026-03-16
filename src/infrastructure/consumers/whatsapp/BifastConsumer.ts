@@ -12,27 +12,23 @@ export class BifastConsumer {
 
     start() {
         this.wa.on("message", async (msg: RawWhatsAppMessage) => {
-        try {
-            // minimal validation/filtering in consumer is OK
-            if (
-                msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST &&
-                msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_MONITORING && 
-                msg.from != ENV.ALERT_WA_NUMBER &&
-                msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_HELPDESK
-            ) return;
-
-            // create a tiny envelope and hand off to application layer
-            await this.handler.handle({
-                id: msg.id ?? uuid(),
-                from: msg.from,
-                body: msg.body ?? "",
-                timestamp: msg.timestamp ?? Date.now(),
-            });
-        } catch (err) {
-            // swallow to avoid crashing the client; log instead
-            // eslint-disable-next-line no-console
-            console.error("BifastConsumer on message error", err);
-        }
+            try {
+                // minimal validation/filtering in consumer is OK
+                if (
+                    msg.from != ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST &&
+                    msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_MONITORING && 
+                    msg.from != ENV.ALERT_WA_NUMBER &&
+                    msg.from != ENV.LISTEN_GROUP_CHAT_BIFAST_HELPDESK
+                ) return;
+                await this.handler.handle({
+                    id: msg.id ?? uuid(),
+                    from: msg.from,
+                    body: msg.body ?? "",
+                    timestamp: msg.timestamp ?? Date.now(),
+                });
+            } catch (err) {
+                console.error("BifastConsumer on message error", err);
+            }
         });
 
         this.wa.start();

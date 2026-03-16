@@ -115,7 +115,7 @@ export async function registerConsumers(logger: Logger) {
     );
     const bifastMessageHandler = new BifastMessageHandler(
         processMonitoringEvent, closeRecoveryScheduler, bifastVerificationJob,
-        stateStore, inMemoryWagComplaint, inMemoryIncStateMachine, logger
+        stateStore, inMemoryWagComplaint, whatsappNotify, inMemoryIncStateMachine, logger
     )
     const bifastConsumer = new BifastConsumer(
         waClient, 

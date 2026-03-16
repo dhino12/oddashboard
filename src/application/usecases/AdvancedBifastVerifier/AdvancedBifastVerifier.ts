@@ -29,11 +29,11 @@ export class AdvancedBifastVerifier {
             criticalSource
         }, this.logger)
         if (decisionPolicy == "CONFIRMED_INCIDENT") {
-            this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), "OPEN_INCIDENT", "")
+            this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), "CONFIRMED_INCIDENT", "")
         } else if (decisionPolicy == "FALSE_POSITIVE") {
-            this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), "NORMAL", "")
+            this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), "FALSE_POSITIVE", "")
         } else {
-            this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), "CONFIRMED_INCIDENT", "total complaint: " + 2)
+            this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), "WAIT", "total complaint: " + 2)
         }
         this.logger.info(decisionPolicy, metrics.signals.filter(s => s.trend?.level === "CRITICAL"))
         return {decision: decisionPolicy, metrics}

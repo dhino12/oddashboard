@@ -2432,6 +2432,26 @@ export default function findBiFastAbbreviationByBankName(bankName:string): strin
     })?.abbreviation ?? ""
 }
 
+export function normalizeBankEntity(entity: string): string {
+    if (!entity?.trim()) return '';
+
+    const input = entity.trim().toLowerCase();
+    const foundByAbbr = bifastList.find(
+        b => b.abbreviation?.toLowerCase() === input
+    );
+    if (foundByAbbr) {
+        return foundByAbbr.nama_bank;
+    }
+    const foundByName = bifastList.find(
+        b => b.nama_bank.toLowerCase() === input ||
+            b.nama_bank.toLowerCase().replace(/\s+/g, '') === input.replace(/\s+/g, '')
+    );
+    if (foundByName) {
+        return foundByName.nama_bank;
+    }
+    return input.length <= 6 ? '' : entity.trim();
+}
+
 export function findBifastBankNameByAbbreviation(bankName:string): string {
     const entity: string = bankName.toUpperCase();
     return bifastList.find(bifastName => {

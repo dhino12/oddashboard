@@ -1,4 +1,7 @@
+import { findBifastBankNameByAbbreviation, normalizeBankEntity } from "../../../config/bifastlist";
+
 export type IncidentState =
+    | "CLOSE"
     | "NORMAL"
     | "WAIT"
     | "FALSE_POSITIVE"
@@ -53,7 +56,8 @@ export class InMemoryIncidentEventStore {
 }
 
 const allowedTransitions: Record<IncidentState, IncidentState[]> = {
-    NORMAL: ["WAIT", "FALSE_POSITIVE"],
+    CLOSE: ["FALSE_POSITIVE", "NORMAL", "WAIT"],
+    NORMAL: ["WAIT", "FALSE_POSITIVE", "CLOSE"],
     FALSE_POSITIVE: ["NORMAL"],
     WAIT: ["CONFIRMED_INCIDENT", "NORMAL"],
     CONFIRMED_INCIDENT: ["OPEN_INCIDENT", "RESOLVED"],
@@ -77,12 +81,14 @@ export class InMemoryIncidentStateMachine {
     }
 
     transition(entity: string, metricName: string | undefined, next: IncidentState, note?: string) {
-        const currentRec = this.store.get(entity);
+        const entityBankName = normalizeBankEntity(entity).toLowerCase()
+        const currentRec = this.store.get(entityBankName);
         const current: IncidentState = currentRec?.state ?? "NORMAL";
         const allowed = allowedTransitions[current] ?? [];
+        console.log(entityBankName, next, allowed);
 
         if (next === "RESOLVED" || next === "NORMAL") {
-            this.apply(entity, metricName, next, note);
+            this.apply(entityBankName, metricName, next, note);
             return true;
         }
 
@@ -91,7 +97,8 @@ export class InMemoryIncidentStateMachine {
             return false;
         }
 
-        this.apply(entity, metricName, next, note);
+        console.log(allowed, current, entityBankName);
+        this.apply(entityBankName, metricName, next, note);
         return true;
     }
 

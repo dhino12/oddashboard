@@ -35,7 +35,7 @@ export class BifastVerificationJob implements SchedulerPort {
         const timer = setInterval(async () => {
             intervalCount++
             try {
-                this.logger.info(`[BiFASTVerificationJob] - ⏳ RUNNING JOB`);
+                this.logger.info(`[BiFASTVerificationJob] - ⏳ RUNNING JOB - ${key}`);
                 const callBiFastASPChecking = await this.healthChecker.callBiFastASP("")
                 // const isOpen = false
                 const isOpen = await this.healthChecker.isServiceOpenV2(entity, callBiFastASPChecking)

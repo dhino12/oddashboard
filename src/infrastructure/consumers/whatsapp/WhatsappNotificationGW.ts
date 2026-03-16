@@ -7,6 +7,14 @@ export class WhatsAppNotificationGateway implements NotificationGateway {
         private wa: WhatsAppClient | WhatsAppClientV2,
         private targetWA: string | []
     ) {}
+    async notifyMessage(jid: string, text: string): Promise<void> {
+        try {
+            if (jid == "") return;
+            await this.wa.sendMessage(jid, text)
+        } catch (error) {
+            console.error("BifastConsumer notifyIncident error", error);
+        }
+    }
     async notifyIncident(payload: { source: string; entity: string; message: string; }): Promise<void> {
         try {
             if (typeof this.targetWA == "string") {
