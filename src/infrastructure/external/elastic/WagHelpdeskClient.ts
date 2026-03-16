@@ -9,4 +9,8 @@ export class WagHelpdeskClient {
     async hasComplaint(entity: string): Promise<boolean> {
         return this.store.hasRecent(entity)
     }
+
+    async hasTotalComplaint(entity: string): Promise<number> {
+        return this.store.hasTotal(entity);
+    }
 }

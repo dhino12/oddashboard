@@ -45,7 +45,10 @@ export class BifastVerificationJob implements SchedulerPort {
                     intervalCount = 0
                     return;
                 }
-                const result = await this.verifier.execute(source, findBiFastAbbreviationByBankName(entity), {interval: intervalCount});
+                const result = await this.verifier.execute(source, findBiFastAbbreviationByBankName(entity), {
+                    interval: intervalCount, 
+                    isOpen
+                });
                 const session = this.sessions.get(key);
                 if (!session) return;
                 session.lastResult = result;

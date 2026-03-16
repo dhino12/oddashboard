@@ -37,4 +37,10 @@ export class InMemoryWagComplaintStoreRepository {
         console.log(filtered.length);
         return !!arr && filtered.length > 1;
     }
+
+    hasTotal(entity: string): number {
+        const arr = this.data.get(entity) ?? [];
+        const filtered = arr.filter(r => Date.now() - r.timestamp <= this.windowMs)
+        return filtered.length
+    }
 }

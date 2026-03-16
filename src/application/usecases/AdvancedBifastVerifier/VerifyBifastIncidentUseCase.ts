@@ -12,7 +12,7 @@ export class VerifyBifastIncidentUseCase {
         private readonly incidentRepo: IncidentRepository,
     ) {}
 
-    async execute(source: string, entity: string, options?: {interval: number}) {
+    async execute(source: string, entity: string, options?: {interval: number, isOpen: boolean}) {
         const resultVerify = await this.verifier.verfiy(source, entity, options);
         if (resultVerify.decision !== "CONFIRMED_INCIDENT") {
             return resultVerify.decision

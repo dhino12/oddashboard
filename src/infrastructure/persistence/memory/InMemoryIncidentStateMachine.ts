@@ -1,4 +1,4 @@
-import { findBifastBankNameByAbbreviation, normalizeBankEntity } from "../../../config/bifastlist";
+import { normalizeBankEntity } from "../../../config/bifastlist";
 
 export type IncidentState =
     | "CLOSE"
@@ -43,15 +43,22 @@ export type IncidentEvent = {
 };
 
 export class InMemoryIncidentEventStore {
-    private events: IncidentEvent[] = [];
+    // private events: IncidentEvent[] = [];
+    private events = new Map<string, IncidentEvent[]>()
+    private readonly windowMs = 60 * 60 * 1000
 
     push(evt: IncidentEvent) {
-        this.events.push(evt);
-        if (this.events.length > 2000) this.events.splice(0, this.events.length - 2000);
+        const arr = this.events.get(evt.entity) ?? [];
+        arr.push(evt)
+        const now = Date.now();
+        const filtered = arr.filter(e => now - e.ts <= this.windowMs)
+        this.events.set(evt.entity, filtered)
     }
 
     listByEntity(entity: string) {
-        return this.events.filter(e => e.entity === entity);
+        const arr = this.events.get(entity)
+        if (arr == undefined) return []
+        return arr.filter(e => e.entity === entity);
     }
 }
 
@@ -59,7 +66,7 @@ const allowedTransitions: Record<IncidentState, IncidentState[]> = {
     CLOSE: ["FALSE_POSITIVE", "NORMAL", "WAIT"],
     NORMAL: ["WAIT", "FALSE_POSITIVE", "CLOSE"],
     FALSE_POSITIVE: ["NORMAL"],
-    WAIT: ["CONFIRMED_INCIDENT", "NORMAL"],
+    WAIT: ["CONFIRMED_INCIDENT", "NORMAL", "WAIT"],
     CONFIRMED_INCIDENT: ["OPEN_INCIDENT", "RESOLVED"],
     OPEN_INCIDENT: ["RESOLVED"],
     RESOLVED: ["NORMAL"]
@@ -71,9 +78,10 @@ export class InMemoryIncidentStateMachine {
         private eventStore: InMemoryIncidentEventStore
     ) {}
 
-    getCurrent(entity: string): IncidentState | null {
-        const rec = this.store.get(entity);
-        return rec?.state ?? null;
+    getCurrentState(entity: string): IncidentState {
+        const entityBankName = normalizeBankEntity(entity).toLowerCase()
+        const rec = this.store.get(entityBankName);
+        return rec?.state ?? "NORMAL"
     }
 
     getTimeline(entity: string): IncidentEvent[] {

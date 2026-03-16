@@ -11,9 +11,7 @@ export interface HealthChecker {
 }
 
 export class BiFastHealthChecker implements HealthChecker {
-    constructor(private readonly nauraGateway: NauraGateway) {
-        
-    }
+    constructor(private readonly nauraGateway: NauraGateway) {}
     async callNaura(bankName: string): Promise<any> {
         this.nauraGateway.postNotifyFromNaura(
             ENV.MESSAGE_NOTIFY_BIFAST_OPENED_NAURA("BIFAST", bankName, "6281119350138")
