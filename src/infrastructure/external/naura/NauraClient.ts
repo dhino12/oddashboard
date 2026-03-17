@@ -9,7 +9,7 @@ export class NauraClient implements NauraGateway {
     ) {}
     async postToNaura(payload: NauraPayload): Promise<void> {
         let monMetrix = `\n*Incident :*\n${payload.incidentDescription}\n\n*Impacted Applications :*\n${payload.impactedApplications}\n\n*Severity :*\n${payload.priority}\n\n*Type Incident :*\n${payload.typeIncident}\n\n*Impact :*\n${payload.impact}\n\n*Suspect :*\n${payload.suspect}\n\n*Waktu Terindikasi :*\n${payload.waktuTerindikasi}\n\n*Durasi Gangguan :*\n${payload.durasiGangguan}\n\n*Konfirmasi / PIC :*\n${payload.konfirmasiPIC}\n\n*Status / Next Update:*\n${payload.status}\n*Solusi:*\n${payload.solusiNextUpdate}\n\nTerima kasih (${payload.officerName})`;
-        this.logger.info(payload)
+        this.logger.info(`[NauraClient:postToNaura]`,{payload})
         let response
         for (const group of this.groups) {
             try {
@@ -20,20 +20,20 @@ export class NauraClient implements NauraGateway {
                     criticality: "", //Parameter ini untuk menentukan Criticality nya -> Normal | Warning | Critical
                     source_id: "robot_comcen_amtix"
                 }
-                this.logger.info(`naura - sent_to_group: ${group}`)
+                this.logger.info(`[NauraClient:postToNaura] naura - sent_to_group: ${group}`)
                 response = await axios.post(
                     "http://naura.corp.bankmandiri.co.id/api/receiver/index.php",
                     parsedPayload
                 );
                 const responseJson = await response.data
-                this.logger.info(`✅ NAURA - ${responseJson?.message} - sent_to_group: ${group}`, {
+                this.logger.info(`[NauraClient:postToNaura] ✅ NAURA - ${responseJson?.message} - sent_to_group: ${group}`, {
                     statusCode: response.status,
                     url: response.config.baseURL,
                     respBody: responseJson
                 })
             } catch (error: any) {
                 const resTmp = error.response;
-                this.logger.error(`❌ NAURA - ${error?.message} - sent_to_group: ${group}`, {
+                this.logger.error(`[NauraClient:postToNaura] ❌ NAURA - ${error?.message} - sent_to_group: ${group}`, {
                     statusCode: resTmp?.status,
                     url: response?.config?.url ?? "/remedy/naura/index.php",
                     respBody: await response?.data ?? resTmp?.data 
@@ -59,14 +59,13 @@ export class NauraClient implements NauraGateway {
                     parsedPayload
                 );
                 const responseJson = await response.data
-                this.logger.info(`✅ NAURA - ${responseJson?.message} - sent_to_group: ${group}`, {
+                this.logger.info(`[NauraClient:postNotifyFromNaura] ✅ NAURA - ${responseJson?.message} - sent_to_group: ${group}`, {
                     statusCode: response.status,
                     url: response.config.baseURL,
                     respBody: responseJson
                 })
             } catch (error) {
-                this.logger.info(`❌ naura - ${message} - sent_to_group: ${group}`, error)
-                this.logger.error(error)
+                this.logger.error(`[NauraClient:postNotifyFromNaura] ❌ naura - ${message} - sent_to_group: ${group}`, error)
             }
         }
     }

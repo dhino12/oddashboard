@@ -38,7 +38,8 @@ export class AdvancedBifastVerifier {
             noteMessage = noteMessage
         }
         const current = this.stateMachineTrackerRepo.getCurrentState(entity)
-        this.logger.info(decisionPolicy, metrics.signals.filter(s => s.trend?.level === "CRITICAL"))
+        this.logger.info("[AdvancedBifastVerifier:verify]", {decisionPolicy})
+        this.logger.info("[AdvancedBifastVerifier:verify]", {data_metrics: metrics.signals.filter(s => s.trend?.level === "CRITICAL").map(d => `${d.source} - ${d.trend?.trend}`)})
         if (current === decisionPolicy && decisionPolicy !== "WAIT")  {
             return {decision: decisionPolicy, metrics}
         }

@@ -62,7 +62,7 @@ export class BifastMessageHandler {
                 
                 if (prevState && prevState.lastStatus === "CLOSED") {
                     await this.wagComplaintRepo.record(detectMandiri?.toUpperCase() ?? "", parsedComplaint.message ?? "");
-                    this.logger.info("💾 Recorded complaint for " + detectMandiri);
+                    this.logger.info("[BifastMessageHandler:handle] 💾 Recorded complaint for " + detectMandiri);
                 }
             }
         }
@@ -81,19 +81,19 @@ export class BifastMessageHandler {
         const prevState = await this.stateStore.get(dto.source, dto.entity);
         if (dto.status === "CLOSED") {
             if (prevState?.lastStatus !== "CLOSED") {
-                this.logger.info(`Waiting for started schedulers for ${dto.source}:${dto.entity}`);
+                this.logger.info(`[BifastMessageHandler:handle] Waiting for started schedulers for ${dto.source}:${dto.entity}`);
                 this.incStateMachineRepo.transition(dto.entity.toLowerCase(), "-", "CLOSE", `${dto.source} ${dto.entity} has been closed by automation`)
                 this.closeRecoveryScheduler.start(dto.source, dto.entity);
                 this.closeBiFastVerifyScheduler.start(dto.source, dto.entity);
             } else {
-                this.logger.info(`CLOSED received but prevState already CLOSED for ${dto.entity} — skip starting scheduler`);
+                this.logger.info(`[BifastMessageHandler:handle] CLOSED received but prevState already CLOSED for ${dto.entity} — skip starting scheduler`);
             }
         }
 
         if (dto.status === "OPEN") {
             this.closeRecoveryScheduler.stop(dto.source, dto.entity);
             this.closeBiFastVerifyScheduler.stop(dto.source, dto.entity);
-            this.logger.info(`Stopped schedulers for ${dto.source}:${dto.entity}`);
+            this.logger.info(`[BifastMessageHandler:handle] Stopped schedulers for ${dto.source}:${dto.entity}`);
         }
         await this.processor.execute(dto);
     }

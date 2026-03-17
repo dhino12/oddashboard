@@ -35,12 +35,12 @@ export class BifastVerificationJob implements SchedulerPort {
         const timer = setInterval(async () => {
             intervalCount++
             try {
-                this.logger.info(`[BiFASTVerificationJob] - ⏳ RUNNING JOB - ${key}`);
+                this.logger.info(`[BiFASTVerificationJob:start] ⏳ RUNNING JOB - ${key}`);
                 const callBiFastASPChecking = await this.healthChecker.callBiFastASP("")
                 // const isOpen = false
                 const isOpen = await this.healthChecker.isServiceOpenV2(entity, callBiFastASPChecking)
                 if (isOpen) {
-                    this.logger.info(`[BiFASTVerificationJob] - 🛑 STOP Service ${key} already ${isOpen}`);
+                    this.logger.info(`[BiFASTVerificationJob:start] 🛑 STOP Service ${key} already ${isOpen}`);
                     this.stop(source, entity);
                     intervalCount = 0
                     return;
@@ -54,7 +54,7 @@ export class BifastVerificationJob implements SchedulerPort {
                 session.lastResult = result;
                 const elapsed = Date.now() - session.startedAt;
                 const duration = new Date(elapsed).toISOString().substr(11, 8)
-                this.logger.info(`Verification running ${key} → ${result}, elapsed ${duration}ms`);
+                this.logger.info(`[BiFASTVerificationJob:start] Verification running ${key} → ${result}, elapsed ${duration}ms`);
                 console.log(`time to break ? `, !(elapsed < this.observationMs));
                 if (
                     elapsed < this.observationMs && 
@@ -65,13 +65,13 @@ export class BifastVerificationJob implements SchedulerPort {
                     session.lastResult === "CONFIRMED_INCIDENT" ||
                     session.lastResult === "FALSE_POSITIVE"
                 ) {
-                    this.logger.info(`Final decision for ${key}: ${session.lastResult}`);
-                    this.logger.info(`[BiFASTVerificationJob] - 🛑 STOP JOB ${key} after ${duration}`);
+                    this.logger.info(`[BiFASTVerificationJob:start] Final decision for ${key}: ${session.lastResult}`);
+                    this.logger.info(`[BiFASTVerificationJob:start] - 🛑 STOP JOB ${key} after ${duration}`);
                     this.stop(source, entity);
                     intervalCount = 0
                 }
-            } catch (err) {
-                this.logger.error(err);
+            } catch (error:any) {
+                this.logger.error(`[BiFASTVerificationJob:start] ${error.message}`, {error});
             }
         }, 60 * 1000);
 

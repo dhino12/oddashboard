@@ -1234,7 +1234,91 @@ export const resultAxiosElastic1 = {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime1,028"
-                    }
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime690"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime782"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime987"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime686"
+                    },
+                    
+                    
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime645"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime1,028"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime690"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime1082"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime987"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime686"
+                    },
+                    
+                    
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "Filters": "FiltersBCA",
+                        "Average totalTime": "Average totalTime645"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "Filters": "FiltersBRI",
+                        "Average totalTime": "Average totalTime1,028"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "Filters": "FiltersBNI",
+                        "Average totalTime": "Average totalTime690"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "Filters": "FiltersBSI",
+                        "Average totalTime": "Average totalTime982"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "Filters": "FiltersDana",
+                        "Average totalTime": "Average totalTime987"
+                    },
+                    {
+                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "Filters": "FiltersSea Bank",
+                        "Average totalTime": "Average totalTime686"
+                    },
                 ]
             },
             {
@@ -1432,8 +1516,8 @@ export const resultAxiosElastic1 = {
                     },
                     {
                         "filters": "filtersU173",
-                        "Count": "Count232",
-                        "Count percentages": "Count percentages5.6%"
+                        "Count": "Count32",
+                        "Count percentages": "Count percentages1.6%"
                     },
                     {
                         "filters": "filtersU992",
@@ -1583,7 +1667,7 @@ export const resultAxiosElastic1 = {
                     {
                         "filters": "filtersU173",
                         "Count": "Count91",
-                        "Count percentages": "Count percentages2.50%"
+                        "Count percentages": "Count percentages1.50%"
                     },
                     {
                         "filters": "filtersU992",

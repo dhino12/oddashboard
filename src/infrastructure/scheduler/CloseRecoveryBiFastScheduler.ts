@@ -20,18 +20,18 @@ export class CloseRecoveryScheduler implements SchedulerPort {
 
         const timer = setInterval(async () => {
             try {
-                this.logger.info("[CloseRecoveryScheduler] - ⏳ RUNNING JOB")
+                this.logger.info("[CloseRecoveryScheduler:start] ⏳ RUNNING JOB")
                 const isOpen = await this.healthChecker.isServiceOpen(source, entity);
-                this.logger.info(`${key} has been ${isOpen}`)
+                this.logger.info(`[CloseRecoveryScheduler:start] ${key} has been ${isOpen}`)
                 if (isOpen) {
                     this.processMonitoringEvent.execute({
                         source, entity, status: "OPEN"
                     })
-                    this.logger.info(`[CloseRecoveryScheduler] - 🛑 STOP ${key} recoverd via health API `)
+                    this.logger.info(`[CloseRecoveryScheduler:start] 🛑 STOP ${key} recoverd via health API `)
                     this.stop(source, entity)
                 }
             } catch (error) {
-                console.error(`health check failed for ${key}`, error);
+                console.error(`[CloseRecoveryScheduler:start] health check failed for ${key}`, error);
             }
         }, 1 * 60 * 1000);
         this.timers.set(key, timer)
@@ -40,7 +40,7 @@ export class CloseRecoveryScheduler implements SchedulerPort {
     stop(source: SourceHealthCheck, entity: string) {
         const key = `${source}:${entity}`;
         const timer = this.timers.get(key);
-        this.logger.info("[CloseRecoveryScheduler] - 🛑 STOP " + timer)
+        this.logger.info("[CloseRecoveryScheduler:stop] 🛑 STOP " + timer)
         if (timer) {
             clearInterval(timer);
             this.timers.delete(key)

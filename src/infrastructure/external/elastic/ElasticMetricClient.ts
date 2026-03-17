@@ -1,7 +1,7 @@
 import axios from "axios"
 import { Logger } from "winston"
 import { resultAxiosElastic1 } from "../../../config/bifastlist"
-import { MetricConfig } from "./MetricConfig"
+import { getMaxDataPerMinute, MetricConfig } from "./MetricConfig"
 import { stripKeyPrefix } from "../../../utils/RemoveStringNoise"
 
 export type MetricSample = {
@@ -101,7 +101,7 @@ export class ElasticMetricClient {
     // modified fetch in ElasticMetricService (replace inner part)
     async fetch(source: string, entity?: string, option?: Options): Promise<MetricFetchResult> {
         const signals: MetricTrendResult[] = [];
-        this.logger.info("🧲 FETCH ElasticMetricService")
+        this.logger.info(`[ElasticMetricClient:fetch] 🧲 FETCH ElasticMetricService`); 
         if (option?.interval == 1) {
             this.apiClient.reqBody.url = "http://kibana.soabiru.corp.bankmandiri.co.id:5600/app/dashboards#/view/18f4bb53-8bf7-4759-930a-5bd9de96db7e?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-5m,to:now))";
         } else {
@@ -157,7 +157,6 @@ export class ElasticMetricClient {
                         return config.extractSample(normalizedRow, entity, table.title);
                     })
                     .filter(Boolean) as MetricSample[];
-
                 if (samples.length === 0) continue;
 
                 // --- STEP C: append into samples store per source:table:entity (no mixing) ---
@@ -172,7 +171,7 @@ export class ElasticMetricClient {
                 //     s => Date.now() - (s.timestamp ?? Date.now()) <= this.windowMs
                 // );
 
-                this.logger.info("======samples==== " + key + " === "); 
+                this.logger.info(`[ElasticMetricClient:fetch] samples ${key}`); 
                 // this.logger.info(this.samples[key]);
 
                 // --- STEP D: analyze using config-specific analyzer ---
@@ -183,9 +182,9 @@ export class ElasticMetricClient {
                     warning: 2000
                 }, this.windowMs);
 
-                this.logger.info("======trend==== " + key + " ===");
-                this.logger.info(trend);
-                this.logger.info("🚩 =============");
+                this.logger.info(`[ElasticMetricClient:fetch] 🗝️ trend ${key}`);
+                this.logger.info("[ElasticMetricClient:fetch] trend analyze", {...trend});
+                this.logger.info("[ElasticMetricClient:fetch] 🚩 =============");
 
                 if (trend) {
                     signals.push({
@@ -298,22 +297,38 @@ export class ElasticMetricClient {
             // const res = await axios.post(url, reqBody);
             // const rawData = (await res).data    
             // console.log(reqBody);
-            const dataTable = resultAxiosElastic1.data.chart_extracts.map((chart:any) => ({
-                title: chart.title,
-                table: chart.table.map((row:any) =>
-                    Object.fromEntries(
+            const dataTable = resultAxiosElastic1.data.chart_extracts.map((chart) => {
+                if (!chart.title.toLowerCase().includes("avg")) {
+                    return {
+                        title: chart.title,
+                        table: chart.table.map((row:any) =>
+                            Object.fromEntries(
+                                Object.entries(row).map(([key, value]) => [
+                                    key,
+                                    stripKeyPrefix(key, value)
+                                ])
+                            )
+                        )
+                    }
+                }
+                const normalized = chart.table.map((row:any) => {
+                    const cleaned = Object.fromEntries(
                         Object.entries(row).map(([key, value]) => [
                             key,
                             stripKeyPrefix(key, value)
                         ])
                     )
-                )
-            }))
+                    return cleaned
+                })
+                const filtered = getMaxDataPerMinute(normalized)
+                return {
+                    title: chart.title,
+                    table: filtered
+                }
+            })
             return {chart_extracts: dataTable}
-        } catch (error) {
-            console.error("ERROR ELASTIC");
-            console.error(error);
+        } catch (error: any) {
+            this.logger.error(`[ElasticMetricClient:callElastic] Error CallApiElasticKibana ${error?.message}`);
         }
-        // return rawData.data
     }
 }

@@ -42,6 +42,15 @@ function extractTime(value?: string): string | null {
     const match = value.match(/(\d{2}:\d{2}:\d{2})|(\d{2}:\d{2})/);
     return match ? match[0] : null;
 }
+function toMinute(time: string): string {
+    return time.slice(0, 5); // 23:04
+}
+
+function parseAvg(value: string): number {
+    if (!value) return 0;
+    const num = value.replace(/[^\d]/g, ""); // hapus teks + koma
+    return Number(num || 0);
+}
 
 function groupByCodeError(samples: MetricSample[]): Record<string, MetricSample[]> {
   return samples.reduce((acc, s) => {
@@ -317,4 +326,28 @@ export const inquiryDanaErrorConfig: MetricConfig = {
 
     return results.filter(r => r.level == "CRITICAL")[0];
   }
+}
+
+export const getMaxDataPerMinute = (rows: any[]) => {
+    const map = new Map<string, any>();
+    for (const row of rows) {
+        const timeRaw = row["creationDate per 30 seconds"] || row["per 30 seconds"];
+        const time = extractTime(timeRaw);
+        const minute = toMinute(time ?? "");
+
+        const entity = row["Filters"]; // BCA, BRI, dll
+        const avg = parseAvg(row["Average totalTime"]);
+
+        const key = `${minute}-${entity}`;
+
+        if (!map.has(key) || map.get(key).avg < avg) {
+            map.set(key, {
+                ...row,
+                __time: time,
+                __minute: minute,
+                avg
+            });
+        }
+    }
+    return Array.from(map.values());
 }

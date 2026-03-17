@@ -41,10 +41,10 @@ export class WhatsAppClientV2 extends EventEmitter {
         this.socket.on("whatsapp.message", async (msg: RawWhatsAppMessage) => {
             console.log('listener whatsapp');
             if (msg.from === "120363042758870105@g.us") {
-                this.logger.info( `ℹ️ ${msg.from}: ${msg.body?.trim().replace("\n", "")}`)
+                this.logger.info(`[WhatsAppClientV2:start] whatsapp.message`, {data_message: `ℹ️ ${msg.from}: ${msg.body?.trim().replace("\n", "")}`})
             }
             if (msg.body?.toLowerCase().includes("/ping")) {
-                this.logger.info("PING")
+                this.logger.info(`[WhatsAppClientV2:start] whatsapp.message`, {data_message: `PING`})
                 await this.sendMessage(msg.from, "pong!");
             }
             if (msg.body?.toLowerCase().includes("open")) {

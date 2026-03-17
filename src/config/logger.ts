@@ -3,14 +3,22 @@ import winston, { createLogger, format, transports } from "winston";
 
 
 export function initLogger() {
-    const { combine, json, timestamp, printf, colorize, simple } = format;
+    const { combine, metadata, timestamp, printf, colorize, simple } = format;
     const logger = winston.createLogger({
         level: "info",
         format: combine(
             timestamp({
                 format: 'YYYY-MM-DD HH:mm:ss' // Customize timestamp format
             }),
-            json()
+            metadata({fillExcept: ["message", "level", "timestamp"]}),
+            printf((info) => {
+                return JSON.stringify({
+                    level: info.level,
+                    timestamp: info.timestamp,
+                    message: info.message,
+                    data: info.metadata,
+                })
+            }),
         ),
         transports: [
             new transports.Console(),
