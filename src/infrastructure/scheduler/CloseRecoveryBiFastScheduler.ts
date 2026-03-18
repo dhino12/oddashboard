@@ -2,6 +2,8 @@ import { Logger } from "winston";
 import { HealthChecker } from "../external/healthcheck/BiFastHealthChecker";
 import { ProcessMonitoringEvent } from "../../application/usecases/ProcessMonitoringEvent/ProcessMonitoringEvent";
 import { SchedulerPort } from "../../application/ports/SchedulerPort";
+import { StateTrackerUseCase } from "../../application/usecases/StateTrackerUseCase/StateTrackerUseCase";
+import findBiFastAbbreviationByBankName from "../../config/bifastlist";
 
 export type SourceHealthCheck = "BIFAST" | "QRIS";
 type Key = string;
@@ -10,6 +12,7 @@ export class CloseRecoveryScheduler implements SchedulerPort {
     private timers = new Map<Key, NodeJS.Timeout>()
     constructor(
         private healthChecker: HealthChecker,
+        private readonly stateTrackerUseCase: StateTrackerUseCase,
         private processMonitoringEvent: ProcessMonitoringEvent,
         private logger: Logger,
     ){}
@@ -29,6 +32,7 @@ export class CloseRecoveryScheduler implements SchedulerPort {
                     })
                     this.logger.info(`[CloseRecoveryScheduler:start] 🛑 STOP ${key} recoverd via health API `)
                     this.stop(source, entity)
+                    this.stateTrackerUseCase.setOpenTransition(findBiFastAbbreviationByBankName(entity))
                 }
             } catch (error) {
                 console.error(`[CloseRecoveryScheduler:start] health check failed for ${key}`, error);

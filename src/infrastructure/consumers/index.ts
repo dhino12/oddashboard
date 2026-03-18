@@ -97,7 +97,7 @@ export async function registerConsumers(logger: Logger) {
         whatsappNotify,
         incidentRepo, //incidentRepo,
         verifyBifastIncidentUseCase,
-        Number(process.env.FLAP_THRESHOLD ?? 3)
+        Number(process.env.FLAP_THRESHOLD ?? 2)
     );
 
     // =========================== SCHEDULER ===================
@@ -105,12 +105,12 @@ export async function registerConsumers(logger: Logger) {
     const biFastHealthChecker = new BiFastHealthChecker(nauraGateway)
     const closeRecoveryScheduler = new CloseRecoveryScheduler(
         biFastHealthChecker,
+        stateTrackerUseCase,
         processMonitoringEvent,
         logger
     )
     const bifastVerificationJob = new BifastVerificationJob(
         verifyBifastIncidentUseCase, 
-        stateTrackerUseCase,
         biFastHealthChecker,
         logger
     );

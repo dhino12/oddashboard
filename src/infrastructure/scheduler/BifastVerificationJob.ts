@@ -19,7 +19,6 @@ export class BifastVerificationJob implements SchedulerPort {
 
     constructor(
         private readonly verifier: VerifyBifastIncidentUseCase,
-        private readonly stateTrackerUseCase: StateTrackerUseCase,
         private readonly healthChecker: HealthChecker,
         private readonly logger: Logger
     ) {}
@@ -43,7 +42,6 @@ export class BifastVerificationJob implements SchedulerPort {
                 if (isOpen) {
                     this.logger.info(`[BiFASTVerificationJob:start] 🛑 STOP Service ${key} already ${isOpen}`);
                     this.stop(source, entity);
-                    this.stateTrackerUseCase.setOpenTransition(bankName)
                     intervalCount = 0
                     return;
                 }

@@ -65,7 +65,7 @@ export class NauraClient implements NauraGateway {
                     respBody: responseJson
                 })
             } catch (error) {
-                this.logger.error(`[NauraClient:postNotifyFromNaura] ❌ naura - ${message} - sent_to_group: ${group}`, error)
+                this.logger.error(`[NauraClient:postNotifyFromNaura] ❌ naura - ${message} - sent_to_group: ${group}`, {error})
             }
         }
     }

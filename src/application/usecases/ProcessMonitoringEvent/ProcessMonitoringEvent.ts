@@ -29,7 +29,7 @@ export class ProcessMonitoringEvent {
         private readonly notificationGateway: NotificationGateway,
         private readonly incidentRepo: IncidentRepository,
         private readonly verifyBifastIncident: VerifyBifastIncidentUseCase,
-        private readonly threshold: number = 3
+        private readonly threshold: number = 2
     ) {}
 
     async execute(dto: ProcessMonitoringEventDTO): Promise<void> {
@@ -123,15 +123,15 @@ export class ProcessMonitoringEvent {
         }
         console.log(`✅ Treshold tercapai`);
 
-        const decision = await this.verifyBifastIncident.execute(event.source, event.entity);
-        if (decision === "WAIT") {
-            return;
-        }
+        // const decision = await this.verifyBifastIncident.execute(event.source, event.entity);
+        // if (decision === "WAIT") {
+        //     return;
+        // }
 
-        if (decision === "FALSE_POSITIVE") {
-            // optional: mark / log false positive
-            return;
-        }
+        // if (decision === "FALSE_POSITIVE") {
+        //     // optional: mark / log false positive
+        //     return;
+        // }
 
         /**
          * 🔁 Recovery signal
