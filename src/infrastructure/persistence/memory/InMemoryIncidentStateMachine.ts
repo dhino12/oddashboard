@@ -117,6 +117,7 @@ export class InMemoryIncidentStateMachine {
             const time = new Date(e.ts)
                 .toTimeString()
                 .slice(0,5)
+            if (e.state == "NORMAL") return `[${time}] ${e.state} - ${e.note}\n`
             return `[${time}] ${e.state} - ${e.note}`
         })
         return `${header} \n${lines.join("\n")}`
