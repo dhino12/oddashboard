@@ -35,6 +35,7 @@ import { WhatsAppClientV2 } from "./whatsapp/WhatsappClientv2";
 import { WagHelpdeskClient } from "../external/elastic/WagHelpdeskClient";
 import { BifastMessageHandler } from "../../application/usecases/BiFastMessageHandler/BiFastMessageHandler";
 import { InMemoryIncidentEventStore, InMemoryIncidentStateMachine, InMemoryIncidentStateStore } from "../persistence/memory/InMemoryIncidentStateMachine";
+import { StateTrackerUseCase } from "../../application/usecases/StateTrackerUseCase/StateTrackerUseCase";
 
 export async function registerConsumers(logger: Logger) {
     // Domain
@@ -75,11 +76,10 @@ export async function registerConsumers(logger: Logger) {
     waClient.start();
     const whatsappNotify = new WhatsAppNotificationGateway(waClient, ENV.ALERT_WA_NUMBER)
     // =========================== USECASE ===================
+    const stateTrackerUseCase = new StateTrackerUseCase(inMemoryIncStateMachine)
     const advancedBifastVerify = new AdvancedBifastVerifier(
-        elasticMatricService, 
-        wagHelpDeskService, 
-        incidentRepo,
-        inMemoryIncStateMachine,
+        elasticMatricService, wagHelpDeskService, 
+        incidentRepo, stateTrackerUseCase,
         logger,
     )
     const verifyBifastIncidentUseCase = new VerifyBifastIncidentUseCase(
@@ -110,6 +110,7 @@ export async function registerConsumers(logger: Logger) {
     )
     const bifastVerificationJob = new BifastVerificationJob(
         verifyBifastIncidentUseCase, 
+        stateTrackerUseCase,
         biFastHealthChecker,
         logger
     );

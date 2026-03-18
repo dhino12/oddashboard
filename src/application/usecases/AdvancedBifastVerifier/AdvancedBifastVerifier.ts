@@ -6,13 +6,14 @@ import { AdvancedBifastPolicy } from "../../../domain/policy/AdvancedBifastPolic
 import { ElasticMetricClient, MetricFetchResult } from "../../../infrastructure/external/elastic/ElasticMetricClient";
 import { WagHelpdeskClient } from "../../../infrastructure/external/elastic/WagHelpdeskClient";
 import { InMemoryIncidentStateMachine } from "../../../infrastructure/persistence/memory/InMemoryIncidentStateMachine";
+import { StateTrackerUseCase } from "../StateTrackerUseCase/StateTrackerUseCase";
 
 export class AdvancedBifastVerifier {
     constructor(
         private readonly elasticSvc: ElasticMetricClient,
         private readonly wagSvc: WagHelpdeskClient,
         private readonly incidentRepo: IncidentRepository,
-        private readonly stateMachineTrackerRepo: InMemoryIncidentStateMachine,
+        private readonly stateTrackerUseCase: StateTrackerUseCase,
         private readonly logger: Logger,
     ) {}
     async verfiy (source: string, entity: string, options?: {interval: number, isOpen: boolean}): Promise<{decision: "WAIT" | "FALSE_POSITIVE" | "CONFIRMED_INCIDENT", metrics: MetricFetchResult}> {
@@ -29,24 +30,9 @@ export class AdvancedBifastVerifier {
             hasOpenIncident: hasOpen,
             criticalSource
         }, this.logger)
-        let noteMessage = `total complaint: ${hasTotalComplaint}`
-        if (decisionPolicy == "CONFIRMED_INCIDENT") {
-            noteMessage = `INCIDENT HAS BEEN CONFIRMED`
-        } else if (decisionPolicy == "FALSE_POSITIVE") {
-            noteMessage = ""
-        } else {
-            noteMessage = noteMessage
-        }
-        const current = this.stateMachineTrackerRepo.getCurrentState(entity)
         this.logger.info("[AdvancedBifastVerifier:verify]", {decisionPolicy})
         this.logger.info("[AdvancedBifastVerifier:verify]", {data_metrics: metrics.signals.filter(s => s.trend?.level === "CRITICAL").map(d => `${d.source} - ${d.trend?.trend}`)})
-        if (current === decisionPolicy && decisionPolicy !== "WAIT")  {
-            return {decision: decisionPolicy, metrics}
-        }
-        if (decisionPolicy == "CONFIRMED_INCIDENT" && current == "WAIT") {
-            this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), "WAIT", `total complaint: ${hasTotalComplaint}`)
-        }
-        this.stateMachineTrackerRepo.transition(entity, criticalSource.join(", "), decisionPolicy, noteMessage)
+        this.stateTrackerUseCase.setTransition(entity, decisionPolicy, criticalSource, hasTotalComplaint)
         return {decision: decisionPolicy, metrics}
     }
 }

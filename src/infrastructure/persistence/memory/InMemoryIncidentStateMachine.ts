@@ -85,7 +85,8 @@ export class InMemoryIncidentStateMachine {
     }
 
     getTimeline(entity: string): IncidentEvent[] {
-        return this.eventStore.listByEntity(entity)
+        const entityBankName = normalizeBankEntity(entity).toLowerCase();
+        return this.eventStore.listByEntity(entityBankName)
     }
 
     transition(entity: string, metricName: string | undefined, next: IncidentState, note?: string) {

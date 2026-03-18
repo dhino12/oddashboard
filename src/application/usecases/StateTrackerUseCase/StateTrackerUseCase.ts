@@ -7,10 +7,10 @@ export class StateTrackerUseCase {
         let noteMessage = `total complaint ${hasTotalComplaint}`;
         if (decisionPolicy === "CONFIRMED_INCIDENT") {
             this.stateMachine.transition(entity, criticalSource.join(", "), "WAIT", noteMessage)
-            noteMessage = `INCIDENT HAS BEEN CONFIRMED`
+            noteMessage = `Incident Has Been Confirmed`
         } 
         if (decisionPolicy === "FALSE_POSITIVE") {
-            noteMessage = ''
+            noteMessage = `BiFAST ${entity} funds are monitored to spike`
         }
         if (current === decisionPolicy && decisionPolicy !== "WAIT") {
             return 
@@ -21,6 +21,6 @@ export class StateTrackerUseCase {
         this.stateMachine.transition(entity, criticalSource.join(", "), decisionPolicy, noteMessage)
     }
     setOpenTransition(entity: string) {
-        this.stateMachine.transition(entity, undefined, "NORMAL", `Trx BiFast ${entity} has been open`)
+        this.stateMachine.transition(entity, undefined, "NORMAL", `✅ Trx BiFast ${entity} has been OPEN`)
     }
 }

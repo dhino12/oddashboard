@@ -5,13 +5,13 @@ import { HealthChecker } from "../external/healthcheck/BiFastHealthChecker";
 import findBiFastAbbreviationByBankName from "../../config/bifastlist";
 import { VerifyBifastIncidentUseCase } from "../../application/usecases/AdvancedBifastVerifier/VerifyBifastIncidentUseCase";
 import { SchedulerPort } from "../../application/ports/SchedulerPort";
+import { StateTrackerUseCase } from "../../application/usecases/StateTrackerUseCase/StateTrackerUseCase";
 
 type VerificationSession = {
     startedAt: number;
     lastResult: "WAIT" | "CONFIRMED_INCIDENT" | "FALSE_POSITIVE";
 };
 
-// application/schedulers/BifastVerificationJob.ts
 export class BifastVerificationJob implements SchedulerPort {
     private readonly jobs = new Map<string, NodeJS.Timeout>();
     private sessions = new Map<string, VerificationSession>();
@@ -19,6 +19,7 @@ export class BifastVerificationJob implements SchedulerPort {
 
     constructor(
         private readonly verifier: VerifyBifastIncidentUseCase,
+        private readonly stateTrackerUseCase: StateTrackerUseCase,
         private readonly healthChecker: HealthChecker,
         private readonly logger: Logger
     ) {}
@@ -37,15 +38,16 @@ export class BifastVerificationJob implements SchedulerPort {
             try {
                 this.logger.info(`[BiFASTVerificationJob:start] ⏳ RUNNING JOB - ${key}`);
                 const callBiFastASPChecking = await this.healthChecker.callBiFastASP("")
-                // const isOpen = false
+                const bankName = findBiFastAbbreviationByBankName(entity)
                 const isOpen = await this.healthChecker.isServiceOpenV2(entity, callBiFastASPChecking)
                 if (isOpen) {
                     this.logger.info(`[BiFASTVerificationJob:start] 🛑 STOP Service ${key} already ${isOpen}`);
                     this.stop(source, entity);
+                    this.stateTrackerUseCase.setOpenTransition(bankName)
                     intervalCount = 0
                     return;
                 }
-                const result = await this.verifier.execute(source, findBiFastAbbreviationByBankName(entity), {
+                const result = await this.verifier.execute(source, bankName, {
                     interval: intervalCount, 
                     isOpen
                 });
@@ -66,12 +68,12 @@ export class BifastVerificationJob implements SchedulerPort {
                     session.lastResult === "FALSE_POSITIVE"
                 ) {
                     this.logger.info(`[BiFASTVerificationJob:start] Final decision for ${key}: ${session.lastResult}`);
-                    this.logger.info(`[BiFASTVerificationJob:start] - 🛑 STOP JOB ${key} after ${duration}`);
+                    this.logger.info(`[BiFASTVerificationJob:start] 🛑 STOP JOB ${key} after ${duration}`);
                     this.stop(source, entity);
                     intervalCount = 0
                 }
             } catch (error:any) {
-                this.logger.error(`[BiFASTVerificationJob:start] ${error.message}`, {error});
+                this.logger.error(`[BiFASTVerificationJob:start] ❌ ${error.message}`, {error});
             }
         }, 60 * 1000);
 
