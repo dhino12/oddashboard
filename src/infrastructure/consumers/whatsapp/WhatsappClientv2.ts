@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { Logger } from "winston";
 import { MessageBus } from "../ws/MessageBus";
 import { io, Socket } from "socket.io-client";
-import { setAxiosRequestOpenClose } from "../../../config/bifastlist";
+import { formatToISOJakarta, setAxiosRequestOpenClose } from "../../../config/bifastlist";
 
 export type RawWhatsAppMessage = {
     id?: string;
@@ -37,9 +37,11 @@ export class WhatsAppClientV2 extends EventEmitter {
             console.log("🔌 Connected to ingres WA Client V2 " + this.socket.connected)
         })
 
-        // 🔥 INI PENGGANTI BAILEYS LISTENER
         this.socket.on("whatsapp.message", async (msg: RawWhatsAppMessage) => {
             console.log('listener whatsapp');
+            const timestamp = new Date(`${msg.timestamp}`).toLocaleString("id-ID", {
+                timeZone: "Asia/Jakarta"
+            })
             if (msg.from === "120363042758870105@g.us") {
                 this.logger.info(`[WhatsAppClientV2:start] whatsapp.message`, {data_message: `ℹ️ ${msg.from}: ${msg.body?.trim().replace("\n", "")}`})
             }
@@ -53,7 +55,10 @@ export class WhatsAppClientV2 extends EventEmitter {
             if (msg.body?.toLowerCase().includes("close")) {
                 setAxiosRequestOpenClose("CLOSE")
             }
-            this.emit("message", msg)
+            this.emit("message", {
+                ...msg,
+                timestamp: formatToISOJakarta(timestamp)
+            })
         })
     }
 

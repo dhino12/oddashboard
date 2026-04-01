@@ -23,7 +23,7 @@ export class BifastVerificationJob implements SchedulerPort {
         private readonly logger: Logger
     ) {}
 
-    start(source: string, entity: string) {
+    start(source: string, entity: string, timestamp: number) {
         const key = `${source}:${entity}`;
         let intervalCount = 0
         if (this.jobs.has(key)) return;

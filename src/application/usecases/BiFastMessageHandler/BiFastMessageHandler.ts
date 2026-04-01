@@ -83,8 +83,8 @@ export class BifastMessageHandler {
             if (prevState?.lastStatus !== "CLOSED") {
                 this.logger.info(`[BifastMessageHandler:handle] Waiting for started schedulers for ${dto.source}:${dto.entity}`);
                 this.incStateMachineRepo.transition(dto.entity.toLowerCase(), "-", "CLOSE", `${dto.source} ${dto.entity} has been closed by automation`)
-                this.closeRecoveryScheduler.start(dto.source, dto.entity);
-                this.closeBiFastVerifyScheduler.start(dto.source, dto.entity);
+                this.closeRecoveryScheduler.start(dto.source, dto.entity, dto.occurredAt);
+                this.closeBiFastVerifyScheduler.start(dto.source, dto.entity, dto.occurredAt);
             } else {
                 this.logger.info(`[BifastMessageHandler:handle] CLOSED received but prevState already CLOSED for ${dto.entity} — skip starting scheduler`);
             }

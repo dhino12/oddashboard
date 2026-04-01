@@ -2545,12 +2545,36 @@ export function findBifastBankNameByAbbreviation(bankName:string): string {
     })?.nama_bank ?? ""
 }
 
+export function formatToISOJakarta(localStr: string) {
+    const [datePart, timePart] = localStr.split(", ")
+
+    const [day, month, year] = datePart.split("/")
+    const [hh, mm, ss] = timePart.split(".")
+
+    return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T${hh}:${mm}:${ss}`
+}
+
+export function formatDateTimeIso(date = new Date()) {
+    const pad = (num: number, size = 2) => String(num).padStart(size, '0');
+
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    const seconds = pad(date.getSeconds());
+    const milliseconds = pad(date.getMilliseconds(), 3);
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
+}
+
 export function setAxiosRequestOpenClose(indikator: string) {
     const data = resultAxiosRequest.data.chart_extracts[0].table.filter(data => data.ABBREVIATION != "BSI")
     data.push({
         "BANK NAME": "Bank Syariah Indonesia",
         "ABBREVIATION": "BSI",
-        "UPDATED TIME": "2026-02-07 12:49:43.163",
+        "UPDATED TIME": formatDateTimeIso(),
         "STATUS": indikator,
         "UPDATED BY": "ANGGORO WAKHID SUBKHAN HAMID"
     })

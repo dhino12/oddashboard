@@ -146,4 +146,5 @@ source: autoclose_bifast
 - ✅ [ALTERNATE] Mencoba untuk menambah flow close -> open -> close, di `ProcessMonitoringEvent.ts` agar, open -> close 2x, lalu check crawling elastic (apakah kenaikan atau penurunan), lalu check wag bifast helpdesk (apakah ada complaint), create incident
 - ✅ menambahkan request json untuk crawling ini, semua setelah extract_table jangan lupa click `button[aria-label='Close Inspector']`
 - ✅ mengubah create pada IncidentPrismaRepository.ts menjadi upsert saja
-- 
+- Tambahkan Unit Testing
+- Tambahkan API agar kita bisa melakukan seperti hit scheduler" yang ada

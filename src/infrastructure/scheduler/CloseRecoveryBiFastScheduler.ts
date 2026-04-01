@@ -17,9 +17,10 @@ export class CloseRecoveryScheduler implements SchedulerPort {
         private logger: Logger,
     ){}
 
-    start(source: SourceHealthCheck, entity: string) {
+    start(source: SourceHealthCheck, entity: string, timestamp: number) {
         const key = `${source}:${entity}`;
         if (this.timers.has(key)) return;
+        this.healthChecker.setBifastChecking(entity, timestamp);
 
         const timer = setInterval(async () => {
             try {

@@ -7,11 +7,18 @@ export interface HealthChecker {
     isServiceOpen(source: string, entity: string): Promise<boolean>;
     isServiceOpenV2(entity: string, resultJson: any): Promise<boolean>;
     callNaura(bankName: string): Promise<any>;
-    callBiFastASP(url: string): Promise<any>
+    callBiFastASP(url: string): Promise<any>;
+    setBifastChecking(bifast: string, timestamp: number): void;
 }
 
 export class BiFastHealthChecker implements HealthChecker {
+    private bifastClosed: { [key: string]: number } = {}
     constructor(private readonly nauraGateway: NauraGateway) {}
+
+    async setBifastChecking(bifast: string, timestamp: number) {
+        this.bifastClosed[bifast] = timestamp;
+    }
+
     async callNaura(bankName: string): Promise<any> {
         this.nauraGateway.postNotifyFromNaura(
             ENV.MESSAGE_NOTIFY_BIFAST_OPENED_NAURA("BIFAST", bankName, "6281119350138")
@@ -61,8 +68,9 @@ export class BiFastHealthChecker implements HealthChecker {
         // const resultJson = await res.data;
         const resultJson = resultAxiosRequest;
         const entityUpperCase = entity.toUpperCase()
+        const timestampClosed = `${this.bifastClosed[entity]}`.replace("T", " ");
         const findStatusBank = resultJson.data.chart_extracts[0].table.find((item: any) => item["BANK NAME"].toUpperCase() == entityUpperCase || item["ABBREVIATION"].toUpperCase() == entityUpperCase);
-        if (findStatusBank?.STATUS.toUpperCase() == "OPEN") {
+        if (findStatusBank?.STATUS.toUpperCase() == "OPEN" && timestampClosed <= findStatusBank["UPDATED TIME"]) {
             this.nauraGateway.postNotifyFromNaura(
                 ENV.MESSAGE_NOTIFY_BIFAST_OPENED_NAURA("BIFAST", findStatusBank["BANK NAME"], "6281119350138")
             )
