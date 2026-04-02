@@ -76,6 +76,7 @@ export const avgRespTimeConfig: MetricConfig = {
     const rawTime =
         row["creationDate per 30 seconds"] ||
         row["creationDate per minute"] ||
+        row["creationDate per second"] ||
         row["per 30 seconds"];
 
     const timeStr = extractTime(rawTime);

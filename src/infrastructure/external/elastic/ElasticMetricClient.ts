@@ -110,14 +110,1041 @@ export class ElasticMetricClient {
 
         const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
         // const raw = resultAxiosElastic1.data;
-        const resultRaw = raw.chart_extracts ?? [];
+        const resultRaw = [
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                {
+                    "creationDate per second": "05:43:13",
+                    "Filters": "BCA",
+                    "Average totalTime": "505",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 505
+                },
+                {
+                    "creationDate per second": "05:43:11",
+                    "Filters": "BRI",
+                    "Average totalTime": "397",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 397
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "BNI",
+                    "Average totalTime": "571",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 571
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "BSI",
+                    "Average totalTime": "505",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 505
+                },
+                {
+                    "creationDate per second": "05:43:10",
+                    "Filters": "Dana",
+                    "Average totalTime": "null",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 0
+                },
+                {
+                    "creationDate per second": "05:43:11",
+                    "Filters": "Sea Bank",
+                    "Average totalTime": "447",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 447
+                }
+                ]
+            },
+            {
+                "title": "Avg Inquiry BIFAST",
+                "table": [
+                {
+                    "creationDate per second": "05:43:13",
+                    "Filters": "BCA",
+                    "Average totalTime": "505",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 505
+                },
+                {
+                    "creationDate per second": "05:43:11",
+                    "Filters": "BRI",
+                    "Average totalTime": "397",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 397
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "BNI",
+                    "Average totalTime": "571",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 571
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "BSI",
+                    "Average totalTime": "505",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 505
+                },
+                {
+                    "creationDate per second": "05:43:10",
+                    "Filters": "Dana",
+                    "Average totalTime": "null",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 0
+                },
+                {
+                    "creationDate per second": "05:43:11",
+                    "Filters": "Sea Bank",
+                    "Average totalTime": "447",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 447
+                }
+                ]
+            },
+            {
+                "title": "Avg Inquiry CIHUB",
+                "table": [
+                {
+                    "per second": "05:43:13",
+                    "Filters": "BCA",
+                    "Average totalTime": "517",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 517
+                },
+                {
+                    "per second": "05:43:11",
+                    "Filters": "BRI",
+                    "Average totalTime": "364",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 364
+                },
+                {
+                    "per second": "05:43:12",
+                    "Filters": "BNI",
+                    "Average totalTime": "535",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 535
+                },
+                {
+                    "per second": "05:43:12",
+                    "Filters": "BSI",
+                    "Average totalTime": "471",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 471
+                },
+                {
+                    "per second": "05:43:10",
+                    "Filters": "Dana",
+                    "Average totalTime": "null",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 0
+                },
+                {
+                    "per second": "05:43:11",
+                    "Filters": "Sea Bank",
+                    "Average totalTime": "414",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 414
+                }
+                ]
+            },
+            {
+                "title": "Avg Inquiry CIHUB",
+                "table": [
+                {
+                    "per second": "05:43:13",
+                    "Filters": "BCA",
+                    "Average totalTime": "517",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 517
+                },
+                {
+                    "per second": "05:43:11",
+                    "Filters": "BRI",
+                    "Average totalTime": "364",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 364
+                },
+                {
+                    "per second": "05:43:12",
+                    "Filters": "BNI",
+                    "Average totalTime": "535",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 535
+                },
+                {
+                    "per second": "05:43:12",
+                    "Filters": "BSI",
+                    "Average totalTime": "471",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 471
+                },
+                {
+                    "per second": "05:43:10",
+                    "Filters": "Dana",
+                    "Average totalTime": "null",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 0
+                },
+                {
+                    "per second": "05:43:11",
+                    "Filters": "Sea Bank",
+                    "Average totalTime": "414",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 414
+                }
+                ]
+            },
+            {
+                "title": "Avg Transaction BIFAST",
+                "table": [
+                {
+                    "creationDate per second": "05:43:13",
+                    "Filters": "BCA",
+                    "Average totalTime": "846",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 846
+                },
+                {
+                    "creationDate per second": "05:43:13",
+                    "Filters": "BRI",
+                    "Average totalTime": "712",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 712
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "BNI",
+                    "Average totalTime": "812",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 812
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "BSI",
+                    "Average totalTime": "535",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 535
+                },
+                {
+                    "creationDate per second": "05:43:10",
+                    "Filters": "Dana",
+                    "Average totalTime": "null",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 0
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "Sea Bank",
+                    "Average totalTime": "649",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 649
+                }
+                ]
+            },
+            {
+                "title": "Avg Transaction BIFAST",
+                "table": [
+                {
+                    "creationDate per second": "05:43:13",
+                    "Filters": "BCA",
+                    "Average totalTime": "846",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 846
+                },
+                {
+                    "creationDate per second": "05:43:13",
+                    "Filters": "BRI",
+                    "Average totalTime": "712",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 712
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "BNI",
+                    "Average totalTime": "812",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 812
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "BSI",
+                    "Average totalTime": "535",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 535
+                },
+                {
+                    "creationDate per second": "05:43:10",
+                    "Filters": "Dana",
+                    "Average totalTime": "null",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 0
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "Sea Bank",
+                    "Average totalTime": "649",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 649
+                }
+                ]
+            },
+            {
+                "title": "Avg Transaction CIHUB",
+                "table": [
+                {
+                    "creationDate per second": "05:43:13",
+                    "Filters": "BCA",
+                    "Average totalTime": "658",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 658
+                },
+                {
+                    "creationDate per second": "05:43:13",
+                    "Filters": "BRI",
+                    "Average totalTime": "496",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 496
+                },
+                {
+                    "creationDate per second": "05:43:10",
+                    "Filters": "BNI",
+                    "Average totalTime": "500",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 500
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "BSI",
+                    "Average totalTime": "408",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 408
+                },
+                {
+                    "creationDate per second": "05:43:10",
+                    "Filters": "Dana",
+                    "Average totalTime": "null",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 0
+                },
+                {
+                    "creationDate per second": "05:43:10",
+                    "Filters": "Sea Bank",
+                    "Average totalTime": "null",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 0
+                }
+                ]
+            },
+            {
+                "title": "Avg Transaction CIHUB",
+                "table": [
+                {
+                    "creationDate per second": "05:43:13",
+                    "Filters": "BCA",
+                    "Average totalTime": "658",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 658
+                },
+                {
+                    "creationDate per second": "05:43:13",
+                    "Filters": "BRI",
+                    "Average totalTime": "496",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 496
+                },
+                {
+                    "creationDate per second": "05:43:10",
+                    "Filters": "BNI",
+                    "Average totalTime": "500",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 500
+                },
+                {
+                    "creationDate per second": "05:43:12",
+                    "Filters": "BSI",
+                    "Average totalTime": "408",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 408
+                },
+                {
+                    "creationDate per second": "05:43:10",
+                    "Filters": "Dana",
+                    "Average totalTime": "null",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 0
+                },
+                {
+                    "creationDate per second": "05:43:10",
+                    "Filters": "Sea Bank",
+                    "Average totalTime": "null",
+                    "__time": null,
+                    "__minute": "",
+                    "avg": 0
+                }
+                ]
+            },
+            {
+                "title": "BCA Error Inquiry",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "257",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BCA Error Inquiry",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "257",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BRI Error Inquiry",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "351",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BRI Error Inquiry",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "351",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BNI Error Inquiry",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "111",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BNI Error Inquiry",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "111",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BSI Error Inquiry",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "60",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BSI Error Inquiry",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "60",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "Dana Error Inquiry",
+                "table": [
+                {
+                    "filters": "U173",
+                    "Count": "2",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U000",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "Dana Error Inquiry",
+                "table": [
+                {
+                    "filters": "U173",
+                    "Count": "2",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U000",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "Sea Bank Error Inquiry",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "61",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "Sea Bank Error Inquiry",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "61",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BCA Error Transfer",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "214",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BCA Error Transfer",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "214",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BRI Error Transfer",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "313",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BRI Error Transfer",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "313",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BNI Error Transfer",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "94",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BNI Error Transfer",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "94",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BSI Error Transfer",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "61",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "BSI Error Transfer",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "61",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "Dana Error Transfer",
+                "table": [
+                {
+                    "filters": "U173",
+                    "Count": "2",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U000",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "Dana Error Transfer",
+                "table": [
+                {
+                    "filters": "U173",
+                    "Count": "2",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U000",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "Sea Bank Error Transfer",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "46",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            },
+            {
+                "title": "Sea Bank Error Transfer",
+                "table": [
+                {
+                    "filters": "U000",
+                    "Count": "46",
+                    "Count percentages": "100%"
+                },
+                {
+                    "filters": "U170",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U173",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                },
+                {
+                    "filters": "U992",
+                    "Count": "0",
+                    "Count percentages": "0%"
+                }
+                ]
+            }
+            ];
 
         for (const config of this.metricConfigs) {
             // find tables that match this config (could be multiple)
             const tables = resultRaw.filter((t: any) =>
-                    config.matchTable(t.title)&&
-                    tableBelongsToEntity(t.title, entity)
-                );
+                config.matchTable(t.title) &&
+                tableBelongsToEntity(t.title, entity)
+            );
+            this.logger.info(`[ElasticMetricClient:fetch] 🎯 tablesMatch Config`, {tables, name: config.name}); 
+            
             if (!tables.length) continue;
 
             for (const table of tables) {
@@ -171,8 +1198,8 @@ export class ElasticMetricClient {
                 //     s => Date.now() - (s.timestamp ?? Date.now()) <= this.windowMs
                 // );
 
-                this.logger.info(`[ElasticMetricClient:fetch] samples ${key}`); 
-                // this.logger.info(this.samples[key]);
+                this.logger.info(`[ElasticMetricClient:fetch] 🔎 samples ${key}`);
+                this.logger.info(`[ElasticMetricClient:fetch] 🔎 samples ${key}`, {data: this.samples[key]});
 
                 // --- STEP D: analyze using config-specific analyzer ---
                 const trend = config.analyze(this.samples[key], {
@@ -183,7 +1210,7 @@ export class ElasticMetricClient {
                 }, this.windowMs);
 
                 this.logger.info(`[ElasticMetricClient:fetch] 🗝️ trend ${key}`);
-                this.logger.info("[ElasticMetricClient:fetch] trend analyze", {...trend});
+                this.logger.info("[ElasticMetricClient:fetch] trend analyze", {...trend, name: config.name});
                 this.logger.info("[ElasticMetricClient:fetch] 🚩 =============");
 
                 if (trend) {

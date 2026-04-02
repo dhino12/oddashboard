@@ -1153,7 +1153,7 @@ export const resultAxiosElastic1 = {
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime4500"
+                        "Average totalTime": "Average totalTime4,500"
                     },
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
@@ -1183,7 +1183,7 @@ export const resultAxiosElastic1 = {
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime2730"
+                        "Average totalTime": "Average totalTime2,730"
                     },
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
@@ -1213,7 +1213,7 @@ export const resultAxiosElastic1 = {
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime782"
+                        "Average totalTime": "Average totalTime6,782"
                     },
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
@@ -1243,7 +1243,7 @@ export const resultAxiosElastic1 = {
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime782"
+                        "Average totalTime": "Average totalTime4,782"
                     },
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
@@ -1275,7 +1275,7 @@ export const resultAxiosElastic1 = {
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime1082"
+                        "Average totalTime": "Average totalTime5,082"
                     },
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
@@ -1307,7 +1307,7 @@ export const resultAxiosElastic1 = {
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
                         "Filters": "FiltersBSI",
-                        "Average totalTime": "Average totalTime982"
+                        "Average totalTime": "Average totalTime5,982"
                     },
                     {
                         "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
@@ -1741,8 +1741,8 @@ export const resultAxiosElastic1 = {
                     },
                     {
                         "filters": "filtersU173",
-                        "Count": "Count91",
-                        "Count percentages": "Count percentages3.50%"
+                        "Count": "Count111",
+                        "Count percentages": "Count percentages2.10%"
                     },
                     {
                         "filters": "filtersU992",

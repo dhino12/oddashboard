@@ -94,7 +94,7 @@ export class InMemoryIncidentStateMachine {
         const currentRec = this.store.get(entityBankName);
         const current: IncidentState = currentRec?.state ?? "NORMAL";
         const allowed = allowedTransitions[current] ?? [];
-        console.log(entityBankName, next, allowed);
+        // console.log(entityBankName, next, allowed);
 
         if (next === "RESOLVED" || next === "NORMAL") {
             this.apply(entityBankName, metricName, next, note);
@@ -106,7 +106,7 @@ export class InMemoryIncidentStateMachine {
             return false;
         }
 
-        console.log(allowed, current, entityBankName);
+        // console.log(allowed, current, entityBankName);
         this.apply(entityBankName, metricName, next, note);
         return true;
     }
