@@ -12,14 +12,18 @@ export class AdvancedBifastPolicy {
         if (!facts.hasComplaint) return "WAIT"
         if (!facts.hasOpenIncident) {
             const findCritical = (
-                facts.criticalSource.find(source => source.includes("Avg Transaction")) && 
-                facts.criticalSource.find(source => source.includes("Error Transfer"))
+                facts.criticalSource.find(source => source.includes("Avg Transaction")) &&
+                facts.criticalSource.find(source => source.includes("Error Transfer - increasing"))
             )
             if (findCritical) {
                 logger.error("CONFIRMED_CRITICAL_INCIDENT - " + facts.criticalSource.toString())
+                logger.info("[AdvancedBifastPolicy:decide] CONFIRMED_CRITICAL_INCIDENT " + facts.criticalSource.toString())
                 return "CONFIRMED_INCIDENT"
             }
-            return "CONFIRMED_INCIDENT"
+            if (facts.criticalSource.find(source => source.includes("Error Transfer - increasing"))) {
+                return "CONFIRMED_INCIDENT"
+            }
+            // return "CONFIRMED_INCIDENT"
         }
         return "WAIT"
     }

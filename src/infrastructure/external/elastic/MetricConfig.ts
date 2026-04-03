@@ -68,7 +68,7 @@ export const avgRespTimeConfig: MetricConfig = {
 
   matchTable: (title) => title.startsWith("Avg") && (title.includes("BIFAST") || title.includes("CIHUB") || title.includes("Inquiry") || title.includes("Transaction")),
 
-  setName: (name) => { avgRespTimeConfig.name = name; },
+  setName: function(name) { this.name = name; },
 
   extractSample: (row, entity, source) => {
     if (!entity || row.Filters?.toUpperCase() !== entity.toUpperCase()) return null;
