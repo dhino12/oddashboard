@@ -1,5 +1,4 @@
 import { bifastList } from "../../../config/bifastlist";
-
 const mentionedWhatsappMap: Record<string, string> = {
     "137499116617867": "Bank DKI",
     "77296744530170": "DANA",
@@ -10,6 +9,9 @@ const mentionedWhatsappMap: Record<string, string> = {
     "51664480415995": "BPD Jatim",
     "77000240853224": "BI",
     "277892990783613": "Mandiri",
+    "16145167949953": "BPD Kaltimtara",
+    "213120588980301": "BCA",
+    "175943503085798": "BCA",
     "251174099902576": "BRI"
 };
 

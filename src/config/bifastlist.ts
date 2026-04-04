@@ -1844,7 +1844,7 @@ export const requestElasticBifastOutgoingV3 = {
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
-                "nextButton": "button[data-test-subj='pagination-button-next']"
+                "nextButton": "a[data-test-subj='pagination-button-next']"
             }
         },
         {
@@ -1888,7 +1888,7 @@ export const requestElasticBifastOutgoingV3 = {
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
-                "nextButton": "button[data-test-subj='pagination-button-next']"
+                "nextButton": "a[data-test-subj='pagination-button-next']"
             }
         },
         {
@@ -1932,7 +1932,7 @@ export const requestElasticBifastOutgoingV3 = {
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
-                "nextButton": "button[data-test-subj='pagination-button-next']"
+                "nextButton": "a[data-test-subj='pagination-button-next']"
             }
         },
         {
@@ -1976,7 +1976,7 @@ export const requestElasticBifastOutgoingV3 = {
                 "table": "div[data-test-subj='inspectorTable']"
             },
             "pagination": {
-                "nextButton": "button[data-test-subj='pagination-button-next']"
+                "nextButton": "a[data-test-subj='pagination-button-next']"
             }
         },
         {

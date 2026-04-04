@@ -68,16 +68,18 @@ export const avgRespTimeConfig: MetricConfig = {
 
   matchTable: (title) => title.startsWith("Avg") && (title.includes("BIFAST") || title.includes("CIHUB") || title.includes("Inquiry") || title.includes("Transaction")),
 
-  setName: function(name) { this.name = name; },
+  setName: function (name) { this.name = name; },
 
   extractSample: (row, entity, source) => {
     if (!entity || row.Filters?.toUpperCase() !== entity.toUpperCase()) return null;
 
     const rawTime =
-        row["creationDate per 30 seconds"] ||
         row["creationDate per minute"] ||
-        row["creationDate per second"] ||
+        row["creationDate per 30 seconds"] ||
+        row["creationDate per 5 seconds"] ||
+        row["creationDate per seconds"] ||
         row["per 30 seconds"];
+        row["per 5 seconds"];
 
     const timeStr = extractTime(rawTime);
     if (!timeStr) return null;
@@ -93,13 +95,10 @@ export const avgRespTimeConfig: MetricConfig = {
         timestampString: timeStr,
         ratio: 0,
         u173Count: 0
-    };
-    },
+    }; 
+  },
 
-  analyze: (samples: MetricSample[], config: ConfigAnalyze, windowMs: number): AnalyzeTrend => {
-    const now = samples[samples.length - 1]?.timestamp ?? Date.now();
-    const windowSamples = samples.filter(s => now - s.timestamp <= windowMs);
-
+  analyze: (windowSamples: MetricSample[], config: ConfigAnalyze, windowMs: number): AnalyzeTrend => {
     if (windowSamples.length < 3) {
       return {
         average: 0,
@@ -167,10 +166,10 @@ export const avgRespTimeConfig: MetricConfig = {
     // Level
     let level: "CRITICAL" | "WARNING" | "NORMAL" | "UNKNOWN" = "NORMAL";
     if (avg > 4000) level = "CRITICAL";
-    else if (avg >= 1500) level = "WARNING";
+    else if (avg >= 2000) level = "WARNING";
 
     return {
-      metricName: "BSI",  // atau windowSamples[0].bankName
+      metricName: `${windowSamples[0].bankName} - ${avgRespTimeConfig.name}`,  // atau windowSamples[0].bankName
       average: Math.round(avg),
       percentChange: (cv * 100).toFixed(1) + "%",
       stdDeviation: Math.round(stdDev),
@@ -191,7 +190,7 @@ export const inquiryDanaErrorConfig: MetricConfig = {
         return title.includes("Error Inquiry") || title.includes("Error Transfer")
     },
 
-  setName: (name) => { inquiryDanaErrorConfig.name = name; },
+  setName: function (name) { this.name = name; },
 
   extractSample: (row, entity, source) => {
     if (!entity) return null;
@@ -219,9 +218,9 @@ export const inquiryDanaErrorConfig: MetricConfig = {
     };
     },
 
-  analyze: (samples: MetricSample[], config: ConfigAnalyze, windowMs: number): AnalyzeTrend => {
-    const now = samples[samples.length - 1]?.timestamp ?? Date.now();
-    const windowSamples = samples.filter(s => now - s.timestamp <= windowMs);
+  analyze: (windowSamples: MetricSample[], config: ConfigAnalyze, windowMs: number): AnalyzeTrend => {
+    const now = windowSamples[windowSamples.length - 1]?.timestamp ?? Date.now();
+    // const windowSamples = samples.filter(s => now - s.timestamp <= windowMs);
     const grouped = groupByCodeError(windowSamples);
 
     if (windowSamples.length < 2) {

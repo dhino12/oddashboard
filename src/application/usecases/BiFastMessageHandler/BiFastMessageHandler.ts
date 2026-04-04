@@ -13,7 +13,6 @@ import { InMemoryIncidentStateMachine } from "../../../infrastructure/persistenc
 import { parseStateCommand } from "../../../infrastructure/consumers/whatsapp/MessageCommandParser";
 import { NotificationGateway } from "../../ports/NotificationGateway";
 
-// src/application/usecases/BifastMessageHandler.ts
 export type RawWAEnvelope = {
     id: string;
     from: string;
@@ -47,7 +46,8 @@ export class BifastMessageHandler {
         }
         
         if (from === ENV.LISTEN_GROUP_CHAT_BIFAST_HELPDESK ||
-            from === ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST) {
+            from === ENV.LISTEN_GROUP_CHAT_TEST_BROADCAST ||
+            from === ENV.ALERT_WA_NUMBER) {
             const parsedComplaint = detectGangguan(body);
             const complainEntity = parsedComplaint.complainerEntity?.toLowerCase();
             const detectMandiri = complainEntity === "mandiri"
@@ -78,13 +78,15 @@ export class BifastMessageHandler {
             occurredAt: timestamp,
         };
 
-        const prevState = await this.stateStore.get(dto.source, dto.entity);
+        // const prevState = await this.stateStore.get(dto.source, dto.entity);
         if (dto.status === "CLOSED") {
-            if (prevState?.lastStatus !== "CLOSED") {
-                this.logger.info(`[BifastMessageHandler:handle] Waiting for started schedulers for ${dto.source}:${dto.entity}`);
+            const prevState = await this.stateStore.get(dto.source,dto.entity);
+            if (prevState?.lastStatus != dto.status) {
+                this.logger.info("[BifastMessageHandler:handle] ▀▄▀▄▀▄ =============");
                 this.incStateMachineRepo.transition(dto.entity.toLowerCase(), "-", "CLOSE", `${dto.source} ${dto.entity} has been closed by automation`)
                 this.closeRecoveryScheduler.start(dto.source, dto.entity, dto.occurredAt);
                 this.closeBiFastVerifyScheduler.start(dto.source, dto.entity, dto.occurredAt);
+                this.logger.info(`[BifastMessageHandler:handle] ❌ BIFAST ${dto.entity} has been CLOSED ${dto.entity}`);
             } else {
                 this.logger.info(`[BifastMessageHandler:handle] CLOSED received but prevState already CLOSED for ${dto.entity} — skip starting scheduler`);
             }

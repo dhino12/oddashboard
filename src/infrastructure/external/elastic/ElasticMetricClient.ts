@@ -87,7 +87,7 @@ function tableBelongsToEntity(title: string, entity?: string): boolean {
     return true;
 }
 export class ElasticMetricClient {
-    private readonly windowMs = 5 * 60 * 1000
+    private readonly windowMs = 15 * 60 * 1000
 
     private samples: {
         [key: string]: MetricSample[]
@@ -110,30 +110,24 @@ export class ElasticMetricClient {
 
         const raw = await this.callElastic(this.apiClient.urlCrawling, this.apiClient.reqBody)
         const resultRaw = raw.chart_extracts ?? [];
-        this.logger.info("[ElasticMetricClient:fetch] 💬 response_elsatic_bifast")
-        this.logger.info("[ElasticMetricClient:fetch] result fetch ", {data: resultRaw});
+        this.logger.info("[ElasticMetricClient:fetch] 🎯 Result fetch ", {data: resultRaw});
 
         for (const config of this.metricConfigs) {
             // find tables that match this config (could be multiple)
             const tables = resultRaw.filter((t: any) =>
-                config.matchTable(t.title) &&
+                config.matchTable(t.title)  &&
                 tableBelongsToEntity(t.title, entity)
             );
             if (!tables.length) continue;
-
             for (const table of tables) {
                 // --- STEP A: pre-filter rows by entity (normalize Filter value) ---
                 const rows = Array.isArray(table.table) ? table.table : [];
                 const filteredRows =
                     entity && entity.length && !isErrorTable(table.title)
                         ? rows.filter((row: any) => {
-                            const rawFilter =
-                                row["Filters"] ??
-                                row["filters"] ??
-                                row["Filters "];
+                            const rawFilter = row["Filters"] ?? row["filters"] ?? row["Filters "];
                             const normalized = normalizeFilterValue(rawFilter);
                             if (!normalized) return false;
-
                             return normalized
                                 .toLowerCase()
                                 .includes(entity.toLowerCase());
@@ -147,7 +141,7 @@ export class ElasticMetricClient {
                             Filters: normalizedFilter,
                             "Average totalTime": row["Average totalTime"] ?? row["Average totalTime "],
                         };
-                        config.setName(table.title);
+                        config.setName(table.title)
                         return config.extractSample(normalizedRow, entity, table.title);
                     })
                     .filter(Boolean) as MetricSample[];
@@ -157,9 +151,12 @@ export class ElasticMetricClient {
                 if (!this.samples[key]) this.samples[key] = [];
                 this.samples[key].push(...samples); 
 
+                const now = this.samples[key][samples.length - 1]?.timestamp ?? Date.now();
+                const windowSamples = samples.filter(s => now - s.timestamp <= this.windowMs);
                 this.logger.info(`[ElasticMetricClient:fetch] samples ${key}`);
-                this.logger.info("[ElasticMetricClient:fetch] samples " + key, {data: this.samples[key], name: config.name, tableTitle: table.title, totalSample: this.samples[key].length});
-                const trend = config.analyze(this.samples[key], {
+                this.logger.info("[ElasticMetricClient:fetch] samples " + key, {data: windowSamples, name: config.name, tableTitle: table.title, totalSample: windowSamples.length});
+                
+                const trend = config.analyze(windowSamples, {
                     trendThreshold: 6,
                     stabilityStdDev: 0.18,
                     critical: 4000,
@@ -278,9 +275,12 @@ export class ElasticMetricClient {
 
     private async callElastic(url: string, reqBody: {}): Promise<any> {
         try {
-            // const res = await axios.post(url, reqBody);
+            const res = await axios.post(url, reqBody);
             // const rawData = (await res).data
             const rawData = resultAxiosElastic1
+            // console.log(reqBody);
+            this.logger.info("[ElasticMetricClient:callElastic] 💬 response_elsatic_bifast")
+            this.logger.info("[ElasticMetricClient:callElastic] ", rawData)
             const dataTable = rawData.data.chart_extracts.map((chart: any) => {
                 if (!chart.title.toLowerCase().includes("avg")) {
                     return {

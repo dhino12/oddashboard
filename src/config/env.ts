@@ -3,8 +3,9 @@ import { SourceHealthCheck } from "../infrastructure/scheduler/CloseRecoveryBiFa
 export const ENV = {
     REDIS_URL: process.env.REDIS_URL || "redis://127.0.0.1:6379",
     DATABASE_URL: process.env.DATABASE_URL || "mysql://user:pass@localhost:3306/db",
-    SLIDING_WINDOW_MS: Number(process.env.SLIDING_WINDOW_MS) || 30 * 60 * 1000,
-    STABLE_OPEN_MS: Number(process.env.STABLE_OPEN_MS) || 60 * 1000,
+    SLIDING_WINDOW_MS: Number(process.env.SLIDING_WINDOW_MS) || 15 * 60 * 1000,
+    STABLE_OPEN_MS: Number(process.env.STABLE_OPEN_MS) || 40 * 60 * 1000,
+    RESOLVE_JOB: 5 * 60 * 1000,
     INTERVAL_HEALTHCHECK: Number(process.env.STABLE_OPEN_MS) || 60 * 1000,
     MASSIVE_INTERVAL_HEALTHCHECK: Number(process.env.STABLE_OPEN_MS) || 5 * 1000,
     DEDUP_LOCK_TTL_MS: Number(process.env.DEDUP_LOCK_TTL_MS) || 5 * 60 * 1000,
@@ -16,10 +17,11 @@ export const ENV = {
     BROADCAST_WHATSAPP_GROUP_PTR_BROADCAST:"ptr_broadcast",
     BROADCAST_WHATSAPP_GROUP_MANDIRI_CARE:"mandiri_operational_care",
     BROADCAST_WHATSAPP_GROUP_COMCEN:"com_cen",
+    BROADCAST_WHATSAPP_GROUP_BIFAST_MONITORING:"bifast",
     LISTEN_GROUP_CHAT_TEST_BROADCAST: "120363424819385538@g.us",
     LISTEN_GROUP_CHAT_BIFAST_MONITORING: "120363041988450487@g.us",
     LISTEN_GROUP_CHAT_BIFAST_HELPDESK: "120363042758870105@g.us",
     MESSAGE_NOTIFY_BIFAST_OPENED_NAURA: (source: SourceHealthCheck, entity: string, sourceWaNumber: string) => {
-        return `✅ Transaksi ${source} kearah ${entity} sudah dibuka kembali\n\ncc: @${sourceWaNumber}`
+        return `✅ Transaksi ${source} kearah ${entity} sudah dibuka kembali\n\ncc: ${sourceWaNumber}`
     }
 };
