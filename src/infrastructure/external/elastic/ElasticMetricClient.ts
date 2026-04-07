@@ -152,7 +152,7 @@ export class ElasticMetricClient {
                 this.samples[key].push(...samples); 
 
                 const now = this.samples[key][samples.length - 1]?.timestamp ?? Date.now();
-                const windowSamples = samples.filter(s => now - s.timestamp <= this.windowMs);
+                const windowSamples = this.samples[key].filter(s => now - s.timestamp <= this.windowMs);
                 this.logger.info(`[ElasticMetricClient:fetch] samples ${key}`);
                 this.logger.info("[ElasticMetricClient:fetch] samples " + key, {data: windowSamples, name: config.name, tableTitle: table.title, totalSample: windowSamples.length});
                 
@@ -162,9 +162,11 @@ export class ElasticMetricClient {
                     critical: 4000,
                     warning: 2000
                 }, this.windowMs);
-
+                console.log(trend);
+                console.log(trend);
+                
                 this.logger.info(`[ElasticMetricClient:fetch] 🗝️ trend ${key}`);
-                this.logger.info("[ElasticMetricClient:fetch] trend analyze", {...trend});
+                this.logger.info("[ElasticMetricClient:fetch] trend analyze", {result: trend});
                 this.logger.info("[ElasticMetricClient:fetch] 🚩 =============");
 
                 if (trend) {
@@ -275,7 +277,7 @@ export class ElasticMetricClient {
 
     private async callElastic(url: string, reqBody: {}): Promise<any> {
         try {
-            const res = await axios.post(url, reqBody);
+            // const res = await axios.post(url, reqBody);
             // const rawData = (await res).data
             const rawData = resultAxiosElastic1
             // console.log(reqBody);

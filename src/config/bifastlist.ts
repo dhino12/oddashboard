@@ -1136,218 +1136,218 @@ export const resultAxiosElastic1 = {
                 "title": "Avg Transaction BIFAST",
                 "table": [
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime1,276"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime798"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersBNI",
                         "Average totalTime": "Average totalTime584"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersBSI",
                         "Average totalTime": "Average totalTime4,500"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersDana",
                         "Average totalTime": "Average totalTime1,013"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersSea Bank",
                         "Average totalTime": "Average totalTime587"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime622"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime1,011"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersBNI",
                         "Average totalTime": "Average totalTime673"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:45",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:45",
                         "Filters": "FiltersBSI",
                         "Average totalTime": "Average totalTime2,730"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersDana",
                         "Average totalTime": "Average totalTime1,721"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersSea Bank",
                         "Average totalTime": "Average totalTime661"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime675"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime861"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersBNI",
                         "Average totalTime": "Average totalTime690"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:51",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:51",
                         "Filters": "FiltersBSI",
                         "Average totalTime": "Average totalTime6,782"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersDana",
                         "Average totalTime": "Average totalTime987"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersSea Bank",
                         "Average totalTime": "Average totalTime686"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:05:00",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime645"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:05:00",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime1,028"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:05:00",
                         "Filters": "FiltersBNI",
                         "Average totalTime": "Average totalTime690"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersBSI",
                         "Average totalTime": "Average totalTime4,782"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:05:00",
                         "Filters": "FiltersDana",
                         "Average totalTime": "Average totalTime987"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:05:00",
                         "Filters": "FiltersSea Bank",
                         "Average totalTime": "Average totalTime686"
                     },
                     
                     
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:06:00",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime645"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:06:00",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime1,028"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:06:00",
                         "Filters": "FiltersBNI",
                         "Average totalTime": "Average totalTime690"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:31",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:31",
                         "Filters": "FiltersBSI",
                         "Average totalTime": "Average totalTime5,082"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:06:00",
                         "Filters": "FiltersDana",
                         "Average totalTime": "Average totalTime987"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:06:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:06:00",
                         "Filters": "FiltersSea Bank",
                         "Average totalTime": "Average totalTime686"
                     },
                     
                     
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:07:00",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime645"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:07:00",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime1,028"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:07:00",
                         "Filters": "FiltersBNI",
                         "Average totalTime": "Average totalTime690"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:32",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:32",
                         "Filters": "FiltersBSI",
                         "Average totalTime": "Average totalTime5,982"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:07:00",
                         "Filters": "FiltersDana",
                         "Average totalTime": "Average totalTime987"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:07:00",
                         "Filters": "FiltersSea Bank",
                         "Average totalTime": "Average totalTime686"
                     },
                     
                     
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:07:00",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime645"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:07:00",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime1,028"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:07:00",
                         "Filters": "FiltersBNI",
                         "Average totalTime": "Average totalTime690"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:32",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:05:32",
                         "Filters": "FiltersBSI",
                         "Average totalTime": "Average totalTime5,982"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:07:00",
                         "Filters": "FiltersDana",
                         "Average totalTime": "Average totalTime987"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:07:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:07:00",
                         "Filters": "FiltersSea Bank",
                         "Average totalTime": "Average totalTime686"
                     },
@@ -1357,102 +1357,102 @@ export const resultAxiosElastic1 = {
                 "title": "Avg Transaction CIHUB",
                 "table": [
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime1,091"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime624"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersBNI",
                         "Average totalTime": "Average totalTime446"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersBSI",
                         "Average totalTime": "Average totalTime517"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersDana",
                         "Average totalTime": "Average totalTime1,004"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:03:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:03:30",
                         "Filters": "FiltersSea Bank",
                         "Average totalTime": "Average totalTimenull"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime459"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime865"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersBNI",
                         "Average totalTime": "Average totalTime478"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersBSI",
                         "Average totalTime": "Average totalTime585"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersDana",
                         "Average totalTime": "Average totalTime1,795"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:00",
                         "Filters": "FiltersSea Bank",
                         "Average totalTime": "Average totalTimenull"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime497"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime692"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersBNI",
                         "Average totalTime": "Average totalTime511"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersBSI",
                         "Average totalTime": "Average totalTime573"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersDana",
                         "Average totalTime": "Average totalTime886"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:04:30",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:04:30",
                         "Filters": "FiltersSea Bank",
                         "Average totalTime": "Average totalTimenull"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:05:00",
                         "Filters": "FiltersBCA",
                         "Average totalTime": "Average totalTime489"
                     },
                     {
-                        "creationDate per 30 seconds": "creationDate per 30 seconds23:05:00",
+                        "creationDate per 5 seconds": "creationDate per 5 seconds23:05:00",
                         "Filters": "FiltersBRI",
                         "Average totalTime": "Average totalTime864"
                     }

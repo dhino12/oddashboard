@@ -23,7 +23,7 @@ export class AdvancedBifastVerifier {
         const hasOpen = await this.incidentRepo.hasOpenIncident(source, entity);
         const criticalSource = metrics.signals
             .filter(s => s.trend?.level === "CRITICAL")
-            .map(s => s.source)
+            .map(s => `${s.source} - ${s.trend?.trend}`)
         const decisionPolicy = AdvancedBifastPolicy.decide({
             overallLevel: metrics.overallLevel,
             hasComplaint,
@@ -31,7 +31,7 @@ export class AdvancedBifastVerifier {
             criticalSource
         }, this.logger)
         this.logger.info("[AdvancedBifastVerifier:verify]", {decisionPolicy})
-        this.logger.info("[AdvancedBifastVerifier:verify]", {data_metrics: metrics.signals.filter(s => s.trend?.level === "CRITICAL").map(d => `${d.source} - ${d.trend?.trend}`)})
+        this.logger.info("[AdvancedBifastVerifier:verify]", {data_metrics: criticalSource})
         this.stateTrackerUseCase.setTransition(entity, decisionPolicy, criticalSource, hasTotalComplaint)
         return {decision: decisionPolicy, metrics}
     }

@@ -78,8 +78,9 @@ export const avgRespTimeConfig: MetricConfig = {
         row["creationDate per 30 seconds"] ||
         row["creationDate per 5 seconds"] ||
         row["creationDate per seconds"] ||
-        row["per 30 seconds"];
-        row["per 5 seconds"];
+        row["per 30 seconds"] ||
+        row["per 5 seconds"] ||
+        row["per seconds"];
 
     const timeStr = extractTime(rawTime);
     if (!timeStr) return null;
@@ -323,15 +324,20 @@ export const inquiryDanaErrorConfig: MetricConfig = {
         // dataPoints: n
       });
     }
-
-    return results.filter(r => r.level == "CRITICAL")[0];
+    return results.filter(r => r.level == aggregateLevel(results))[0];
   }
 }
 
 export const getMaxDataPerMinute = (rows: any[]) => {
     const map = new Map<string, any>();
     for (const row of rows) {
-        const timeRaw = row["creationDate per 30 seconds"] || row["per 30 seconds"];
+        const timeRaw = row["creationDate per minute"] ||
+        row["creationDate per 30 seconds"] ||
+        row["creationDate per 5 seconds"] ||
+        row["creationDate per seconds"] ||
+        row["per 30 seconds"] ||
+        row["per 5 seconds"] ||
+        row["per seconds"];
         const time = extractTime(timeRaw);
         const minute = toMinute(time ?? "");
 
@@ -350,4 +356,11 @@ export const getMaxDataPerMinute = (rows: any[]) => {
         }
     }
     return Array.from(map.values());
+}
+
+const aggregateLevel = (signals: AnalyzeTrend[]): "CRITICAL" | "WARNING" | "NORMAL" | "UNKNOWN" => {
+    if (signals.some(s => s.level === "CRITICAL")) return "CRITICAL"
+    if (signals.some(s => s.level === "WARNING")) return "WARNING"
+    if (signals.some(s => s.level === "NORMAL")) return "NORMAL"
+    return "UNKNOWN"
 }
